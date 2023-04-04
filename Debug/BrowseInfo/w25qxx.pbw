@@ -121489,7 +121489,7 @@
     "display": "ErrorStatus w25qxx_Init(SPI_TypeDef *)",
     "location": {
       "column": "13",
-      "line": "35",
+      "line": "34",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_Init",
@@ -121503,7 +121503,7 @@
     "display": "ErrorStatus w25qxx_Write(SPI_TypeDef *, const uint8_t *, uint16_t, uint32_t, uint8_t)",
     "location": {
       "column": "13",
-      "line": "88",
+      "line": "87",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_Write",
@@ -121517,7 +121517,7 @@
     "display": "ErrorStatus w25qxx_Read(SPI_TypeDef *, uint8_t *, uint16_t, uint32_t)",
     "location": {
       "column": "13",
-      "line": "123",
+      "line": "122",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_Read",
@@ -121531,7 +121531,7 @@
     "display": "ErrorStatus w25qxx_ReadID(SPI_TypeDef *, uint8_t *)",
     "location": {
       "column": "13",
-      "line": "152",
+      "line": "151",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_ReadID",
@@ -121545,7 +121545,7 @@
     "display": "ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *, uint8_t, const uint8_t *)",
     "location": {
       "column": "13",
-      "line": "169",
+      "line": "168",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_WriteStatus",
@@ -121559,7 +121559,7 @@
     "display": "void w25qxx_ReadStatus(SPI_TypeDef *, uint8_t, uint8_t *)",
     "location": {
       "column": "6",
-      "line": "219",
+      "line": "218",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_ReadStatus",
@@ -121573,7 +121573,7 @@
     "display": "bool IS_Busy(SPI_TypeDef *)",
     "location": {
       "column": "6",
-      "line": "249",
+      "line": "248",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "IS_Busy",
@@ -121581,13 +121581,13 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@6346@F@IS_Busy@status",
+    "ID": "c:w25qxx.c@6344@F@IS_Busy@status",
     "What": "Variable",
     "defdec": "Def",
     "display": "status",
     "location": {
       "column": "10",
-      "line": "251",
+      "line": "250",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "status",
@@ -121601,7 +121601,7 @@
     "display": "ErrorStatus w25qxx_WaitWithTimeout(SPI_TypeDef *, uint32_t)",
     "location": {
       "column": "13",
-      "line": "257",
+      "line": "256",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_WaitWithTimeout",
@@ -121615,7 +121615,7 @@
     "display": "void w25qxx_WriteEnable(SPI_TypeDef *)",
     "location": {
       "column": "6",
-      "line": "278",
+      "line": "277",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_WriteEnable",
@@ -121629,7 +121629,7 @@
     "display": "void w25qxx_WriteDisable(SPI_TypeDef *)",
     "location": {
       "column": "6",
-      "line": "286",
+      "line": "285",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_WriteDisable",
@@ -121643,10 +121643,66 @@
     "display": "ErrorStatus w25qxx_Erase(SPI_TypeDef *, eraseInstruction_Def, uint32_t, uint8_t)",
     "location": {
       "column": "13",
-      "line": "294",
+      "line": "293",
       "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
     },
     "name": "w25qxx_Erase",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:w25qxx.c@7984@F@w25qxx_Erase@i",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "i",
+    "location": {
+      "column": "18",
+      "line": "318",
+      "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
+    },
+    "name": "i",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:w25qxx.c@8910@F@w25qxx_Erase@i",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "i",
+    "location": {
+      "column": "18",
+      "line": "342",
+      "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
+    },
+    "name": "i",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:w25qxx.c@9836@F@w25qxx_Erase@i",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "i",
+    "location": {
+      "column": "18",
+      "line": "366",
+      "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
+    },
+    "name": "i",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:w25qxx.c@10177@F@w25qxx_Erase@i",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "i",
+    "location": {
+      "column": "18",
+      "line": "380",
+      "path": "E:\\IAR projects\\STM32F4xx\\w25qxx\\Libraries\\w25qxx\\w25qxx.c"
+    },
+    "name": "i",
     "origin": "project_file",
     "scope": null
   },

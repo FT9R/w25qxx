@@ -54,3 +54,10 @@
 1448	1610	7018832037536833	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Source/Init.o	32a18314307bf60
 1617	1775	7018832039202564	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Source/main.o	19e91edd0fad24fd
 1782	1854	7018832039936522	E:/IAR projects/STM32F4xx/w25qxx/Debug/Exe/w25qxx.out	205e099dd155166c
+2	256	7023135691197468	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	13e7e6f0671a3141
+265	431	7023135692963296	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Source/main.o	19e91edd0fad24fd
+439	636	7023135695029757	E:/IAR projects/STM32F4xx/w25qxx/Debug/Exe/w25qxx.out	205e099dd155166c
+2	305	7023138809594682	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	13e7e6f0671a3141
+312	384	7023138810428461	E:/IAR projects/STM32F4xx/w25qxx/Debug/Exe/w25qxx.out	205e099dd155166c
+2	241	7023140591809038	E:/IAR projects/STM32F4xx/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	13e7e6f0671a3141
+249	320	7023140592574900	E:/IAR projects/STM32F4xx/w25qxx/Debug/Exe/w25qxx.out	205e099dd155166c

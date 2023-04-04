@@ -315,7 +315,7 @@ ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstructio
 		CS0_High;
 		_delay_us(3);
 		if (waitForTask == delayWait)
-			_delay_ms(SectorEraseTime_4KB);
+			for (uint32_t i = 0; i < (SectorEraseTime_4KB / 100); i++) _delay_ms(100);
 		else if (waitForTask == busyWait)
 			while (IS_Busy(SPIx))
 				;
@@ -339,7 +339,7 @@ ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstructio
 		CS0_High;
 		_delay_us(3);
 		if (waitForTask == delayWait)
-			_delay_ms(BlockEraseTime_32KB);
+			for (uint32_t i = 0; i < (BlockEraseTime_32KB / 100); i++) _delay_ms(100);
 		else if (waitForTask == busyWait)
 			while (IS_Busy(SPIx))
 				;
@@ -363,7 +363,7 @@ ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstructio
 		CS0_High;
 		_delay_us(3);
 		if (waitForTask == delayWait)
-			_delay_ms(BlockEraseTime_64KB);
+			for (uint32_t i = 0; i < (BlockEraseTime_64KB / 100); i++) _delay_ms(100);
 		else if (waitForTask == busyWait)
 			while (IS_Busy(SPIx))
 				;
@@ -377,7 +377,7 @@ ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstructio
 		CS0_High;
 		_delay_us(3);
 		if (waitForTask == delayWait)
-			_delay_ms(ChipEraseTime);
+			for (uint32_t i = 0; i < (ChipEraseTime / 100); i++) _delay_ms(100);
 		else if (waitForTask == busyWait)
 			while (IS_Busy(SPIx))
 				;

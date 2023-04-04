@@ -18,7 +18,7 @@ void main(void)
 
 	if (FLASH_access)
 	{
-		//		w25qxx_Erase(SPI1, chipErase, NULL, busyWait);
+		// w25qxx_Erase(SPI1, chipErase, NULL, delayWait);
 		memset(bufferRead, NULL, sizeof(bufferRead));
 		printf("\r\n First approach to read \r\n");
 		w25qxx_Read(SPI1, bufferRead, sizeof(bufferRead), PAGE_ADDRESS);
