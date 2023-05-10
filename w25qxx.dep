@@ -5,120 +5,90 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Source\Init.c</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\Include\main.h</file>
-            <file>$PROJ_DIR$\Config\stm32f4xx.h</file>
-            <file>$PROJ_DIR$\Config\stm32f4xx_conf.h</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h</file>
-            <file>$PROJ_DIR$\Config\Sys_Init.c</file>
-            <file>$PROJ_DIR$\Libraries\SPI\SPI.h</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.c</file>
-            <file>$PROJ_DIR$\Libraries\Delay\Delay.h</file>
-            <file>$PROJ_DIR$\Libraries\w25qxx\w25qxx.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\Config\Sys_Init.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o</file>
-            <file>$PROJ_DIR$\Config\system_stm32f4xx.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Config\system_stm32f4xx.o</file>
-            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_version.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o</file>
-            <file>$PROJ_DIR$\Debug\Exe\w25qxx.out</file>
-            <file>$PROJ_DIR$\Config\system_stm32f4xx.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\SPI\SPI.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\core_cm4.h</file>
-            <file>$PROJ_DIR$\Config\Sys_Init.h</file>
-            <file>$PROJ_DIR$\Include\Init.h</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h</file>
-            <file>$PROJ_DIR$\Libraries\Delay\Delay.c</file>
-            <file>$PROJ_DIR$\Libraries\w25qxx\w25qxx.h</file>
-            <file>$PROJ_DIR$\Config\startup_stm32f407xx.s</file>
-            <file>$PROJ_DIR$\Source\main.c</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c</file>
-            <file>$PROJ_DIR$\Debug\List\w25qxx.map</file>
-            <file>$PROJ_DIR$\Libraries\SPI\SPI.c</file>
-            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f407xG.icf</file>
-            <file>$PROJ_DIR$\Debug\Obj\Source\main.o</file>
-            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\assert.h</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Config\startup_stm32f407xx.o.rsp</file>
-            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_compiler.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\Delay\Delay.o</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Config\startup_stm32f407xx.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Source\Init.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_iccarm.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Libraries\w25qxx\w25qxx.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\aarch32\iccarm_builtin.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\mpu_armv7.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\lib\m7M_tls.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
             <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+            <file>$PROJ_DIR$\Libraries\SPI\SPI.c</file>
+            <file>$PROJ_DIR$\Config\system_stm32f4xx.h</file>
+            <file>$PROJ_DIR$\Libraries\SPI\SPI.h</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.c</file>
+            <file>$PROJ_DIR$\Libraries\w25qxx\w25qxx.h</file>
+            <file>$PROJ_DIR$\Source\main.c</file>
+            <file>$PROJ_DIR$\Libraries\w25qxx\w25qxx.c</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h</file>
+            <file>$PROJ_DIR$\Config\startup_stm32f407xx.s</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</file>
+            <file>$PROJ_DIR$\Source\Init.c</file>
+            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\mpu_armv7.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$PROJ_DIR$\Include\Init.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\w25qxx\w25qxx.o</file>
+            <file>$PROJ_DIR$\Config\stm32f4xx.h</file>
+            <file>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c</file>
+            <file>$PROJ_DIR$\Config\stm32f4xx_conf.h</file>
+            <file>$PROJ_DIR$\Config\Sys_Init.c</file>
+            <file>$PROJ_DIR$\Config\Sys_Init.h</file>
+            <file>$PROJ_DIR$\Config\system_stm32f4xx.c</file>
+            <file>$PROJ_DIR$\Include\main.h</file>
+            <file>$PROJ_DIR$\Libraries\Delay\Delay.c</file>
+            <file>$PROJ_DIR$\Libraries\Delay\Delay.h</file>
+            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_compiler.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Config\system_stm32f4xx.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\Delay\Delay.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Config\startup_stm32f407xx.o.rsp</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$TOOLKIT_DIR$\config\linker\ST\stm32f407xG.icf</file>
+            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_iccarm.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\assert.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Source\main.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Config\Sys_Init.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\SPI\SPI.o</file>
+            <file>$PROJ_DIR$\Debug\Exe\w25qxx.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tls.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\cmsis_version.h</file>
+            <file>$PROJ_DIR$\Debug\List\w25qxx.map</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Source\Init.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_spi.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Config\startup_stm32f407xx.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\aarch32\iccarm_builtin.h</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$TOOLKIT_DIR$\CMSIS\Core\Include\core_cm4.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 31 18</file>
+                    <file> 50 42</file>
                 </tool>
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Source\Init.c</name>
+            <name>$PROJ_DIR$\Libraries\SPI\SPI.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 50</file>
+                    <file> 41</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 52 21 55 48 1 51 38 58 61 60 3 4 14 24 7 25 35 5</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Config\Sys_Init.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 12</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 1 58 60 23 3 4 14 25 35 5</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 1 58 60 3 4 14 25 35 5</file>
+                    <file> 29 36 49 60 15 33 48 45 16 57 58 43 55 51 61 46 0 17 20 22 3 4 5 6 11</file>
                 </tool>
             </inputs>
         </file>
@@ -127,13 +97,28 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 49</file>
+                    <file> 53</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 1 58 60 3 4 14 25 35 5</file>
+                    <file> 29 36 49 60 15 33 48 45 58 55 46 17 20 22 3 5 6 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Source\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29 36 49 60 15 33 48 45 16 57 58 37 43 55 1 51 61 46 0 17 24 20 22 3 18 26 28 4 5 6 11 8</file>
                 </tool>
             </inputs>
         </file>
@@ -142,58 +127,13 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 54</file>
+                    <file> 19</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 52 21 55 36 48 1 51 38 58 61 60 3 4 14 10 7 25 35 5 27</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\w25qxx.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 31</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 33 37 59 43 45 12 47 15 44 20 13 17 49 54 50 34</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Config\system_stm32f4xx.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 15</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 1 58 60 3 4 14 25 35 5</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Libraries\Delay\Delay.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 44</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 36 1 58 60 3 4 14 10 25 35 5</file>
+                    <file> 29 36 49 60 15 33 48 45 16 57 58 37 43 55 51 61 46 0 17 20 22 3 28 4 5 6 11 8</file>
                 </tool>
             </inputs>
         </file>
@@ -202,28 +142,43 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 47</file>
+                    <file> 54</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 39</file>
+                    <file> 32</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Source\main.c</name>
+            <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 34</file>
+                    <file> 47</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 52 21 55 36 48 1 56 51 38 58 61 60 23 3 4 14 24 2 10 7 25 35 5 27</file>
+                    <file> 29 36 49 60 15 33 48 45 58 55 46 17 20 22 3 5 6 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Source\Init.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 52</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29 36 49 60 15 33 48 45 16 57 58 43 55 51 61 46 0 17 20 22 3 18 4 5 6 11</file>
                 </tool>
             </inputs>
         </file>
@@ -232,28 +187,73 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 17</file>
+                    <file> 39</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 55 1 58 60 3 4 14 25 35 5</file>
+                    <file> 29 36 49 60 15 33 48 45 58 55 46 17 20 22 3 5 6 11</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Libraries\SPI\SPI.c</name>
+            <name>$PROJ_DIR$\Config\Sys_Init.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 20</file>
+                    <file> 40</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 40 53 16 22 57 41 42 46 52 21 55 48 1 51 38 58 61 60 3 4 14 7 25 35 5</file>
+                    <file> 29 36 49 60 15 33 48 45 58 55 46 17 24 20 22 3 5 6 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Config\system_stm32f4xx.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29 36 49 60 15 33 48 45 58 55 46 17 20 22 3 5 6 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Libraries\Delay\Delay.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 31</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29 36 49 60 15 33 48 45 58 37 55 46 17 20 22 3 28 5 6 11</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\w25qxx.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 50</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 35 56 44 34 59 40 54 30 31 41 47 39 53 19 52 38</file>
                 </tool>
             </inputs>
         </file>
@@ -262,11 +262,7 @@
             <tool>ILINK</tool>
         </forcedrebuild>
         <forcedrebuild>
-            <name>$PROJ_DIR$\Source\Init.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\Config\Sys_Init.c</name>
+            <name>$PROJ_DIR$\Libraries\SPI\SPI.c</name>
             <tool>C-STAT</tool>
         </forcedrebuild>
         <forcedrebuild>
@@ -274,7 +270,23 @@
             <tool>C-STAT</tool>
         </forcedrebuild>
         <forcedrebuild>
+            <name>$PROJ_DIR$\Source\main.c</name>
+            <tool>C-STAT</tool>
+        </forcedrebuild>
+        <forcedrebuild>
             <name>$PROJ_DIR$\Libraries\w25qxx\w25qxx.c</name>
+            <tool>C-STAT</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\Source\Init.c</name>
+            <tool>C-STAT</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c</name>
+            <tool>C-STAT</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>$PROJ_DIR$\Config\Sys_Init.c</name>
             <tool>C-STAT</tool>
         </forcedrebuild>
         <forcedrebuild>
@@ -283,18 +295,6 @@
         </forcedrebuild>
         <forcedrebuild>
             <name>$PROJ_DIR$\Libraries\Delay\Delay.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\Source\main.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\Libraries\SPI\SPI.c</name>
             <tool>C-STAT</tool>
         </forcedrebuild>
         <forcedrebuild>

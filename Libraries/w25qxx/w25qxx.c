@@ -163,7 +163,6 @@ ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Transmit(SPIx, status, 1);
 		CS0_High;
-
 		break;
 
 	case 2:
@@ -172,7 +171,6 @@ ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Transmit(SPIx, status, 1);
 		CS0_High;
-
 		break;
 
 	case 3:
@@ -181,7 +179,6 @@ ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Transmit(SPIx, status, 1);
 		CS0_High;
-
 		break;
 	}
 
@@ -198,7 +195,6 @@ void w25qxx_ReadStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, uint8_t *stat
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Receive(SPIx, status, 1);
 		CS0_High;
-
 		break;
 
 	case 2:
@@ -207,7 +203,6 @@ void w25qxx_ReadStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, uint8_t *stat
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Receive(SPIx, status, 1);
 		CS0_High;
-
 		break;
 
 	case 3:
@@ -216,7 +211,6 @@ void w25qxx_ReadStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, uint8_t *stat
 		SPI_Transmit(SPIx, &w25qxx_Handle.cmd, 1);
 		SPI_Receive(SPIx, status, 1);
 		CS0_High;
-
 		break;
 	}
 }

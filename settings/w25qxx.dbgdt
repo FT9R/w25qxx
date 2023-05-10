@@ -149,7 +149,7 @@
                     <item>bufferRead</item>
                     <item>w25qxx_Handle.numberOfPages</item>
                     <item>FLASH_access</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>
