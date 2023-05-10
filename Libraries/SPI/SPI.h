@@ -2,7 +2,6 @@
 #define SPI_H
 
 #include "stm32f4xx.h"
-#include "stm32f4xx_spi.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

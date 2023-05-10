@@ -5,16 +5,63 @@
 #include "Delay.h"
 #include <stdbool.h>
 
-/* Timings [ms] */
-#define WriteStatusRegisterTime 15
-#define PageProgramTime 3
-#define SectorEraseTime_4KB 400
-#define BlockEraseTime_32KB 1600
-#define BlockEraseTime_64KB 2000
-#define ChipEraseTime 25000
+/* Instruction Set */
+#define W25QXX_CMD_WRITE_ENABLE 0x06
+#define W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE 0x50
+#define W25QXX_CMD_WRITE_DISABLE 0x04
+#define W25QXX_CMD_RELEASE_POWER_DOWN 0xAB
+#define W25QXX_CMD_MANUFACTURER_DEVICE_ID 0x90
+#define W25QXX_CMD_JEDEC_ID 0x9F
+#define W25QXX_CMD_READ_UNIQUE_ID 0x4B
+#define W25QXX_CMD_READ_DATA 0x03
+#define W25QXX_CMD_FAST_READ 0x0B
+#define W25QXX_CMD_PAGE_PROGRAM 0x02
+#define W25QXX_CMD_SECTOR_ERASE_4KB 0x20
+#define W25QXX_CMD_BLOCK_ERASE_32KB 0x52
+#define W25QXX_CMD_BLOCK_ERASE_64KB 0xD8
+#define W25QXX_CMD_CHIP_ERASE 0xC7
+#define W25QXX_CMD_READ_STATUS_REGISTER1 0x05
+#define W25QXX_CMD_WRITE_STATUS_REGISTER1 0x01
+#define W25QXX_CMD_READ_STATUS_REGISTER2 0x35
+#define W25QXX_CMD_WRITE_STATUS_REGISTER2 0x31
+#define W25QXX_CMD_READ_STATUS_REGISTER3 0x15
+#define W25QXX_CMD_WRITE_STATUS_REGISTER3 0x11
+#define W25QXX_CMD_READ_SFDP_REGISTER 0x5A
+#define W25QXX_CMD_ERASE_SECURITY_REGISTER 0x44
+#define W25QXX_CMD_PROGRAM_SECURITY_REGISTER 0x42
+#define W25QXX_CMD_READ_SECURITY_REGISTER 0x48
+#define W25QXX_CMD_GLOBAL_BLOCK_LOCK 0x7E
+#define W25QXX_CMD_GLOBAL_BLOCK_UNLOCK 0x98
+#define W25QXX_CMD_READ_BLOCK_LOCK 0x3D
+#define W25QXX_CMD_INDIVIDUAL_BLOCK_LOCK 0x36
+#define W25QXX_CMD_INDIVIDUAL_BLOCK_UNLOCK 0x39
+#define W25QXX_CMD_ERASE_PROGRAM_SUSPEND 0x75
+#define W25QXX_CMD_ERASE_PROGRAM_RESUME 0x7A
+#define W25QXX_CMD_POWER_DOWN 0xB9
+#define W25QXX_CMD_ENABLE_RESET 0x66
+#define W25QXX_CMD_RESET_DEVICE 0x99
 
-#define PageSize 256
-#define AddressBytesMask 0xFFFFFF
+/* Timings [ms] */
+#define W25QXX_WRITE_STATUS_REGISTER_TIME 15
+#define W25QXX_PAGE_PROGRAM_TIME 3
+#define W25QXX_SECTOR_ERASE_TIME_4KB 400
+#define W25QXX_BLOCK_ERASE_TIME_32KB 1600
+#define W25QXX_BLOCK_ERASE_TIME_64KB 2000
+#define W25QXX_CHIP_ERASE_TIME 25000
+
+/* Device constants */
+#define W25QXX_MANUFACTURER_ID 0xEF
+#define W25QXX_PAGE_SIZE 256
+typedef enum
+{
+	w25q80 = 0x13,
+	w25q16,
+	w25q32,
+	w25q64,
+	w25q128,
+} w25qxx_Def;
+
+/* Macro */
 #define KBtoByte(KB) (KB * 1024)
 
 typedef enum
@@ -32,123 +79,92 @@ typedef enum
 	busyWait
 } waitForTask_Def;
 
-typedef enum
+typedef struct
 {
-	w25q80 = 0x13,
-	w25q16 = 0x14,
-	w25q32 = 0x15,
-	w25q64 = 0x16,
-	w25q128 = 0x17,
-} w25qxx_Def;
+	uint32_t numberOfPages;
+	uint8_t addressBytes[3];
+	uint8_t cmd;
+	uint8_t ID[2];
+} w25qxx_HandleTypeDef;
 
 /**
- * @brief  Check if the device is available and determine the number of pages
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @retval operation status (SUCCESS or ERROR)
+ * @brief	Check if the device is available and determine the number of pages
+ * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+ * @retval	operation status (SUCCESS or ERROR)
  */
 ErrorStatus w25qxx_Init(SPI_TypeDef *SPIx);
 
 /**
-* @brief  Write data to w25qxx from external buffer via SPIx
-* @param  SPIx: where x can be 1, 2 or 3 in SPI mode
-* @param  buf: pointer to external buffer, that contains the data to send
+* @brief	Write data to w25qxx from external buffer via SPIx
+* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param 	buf: pointer to external buffer, that contains the data to send
 * @param	bufSize: size of external buffer, that contains the data to send
 * @param	address: page address to write (multiple of 256 bytes)
 * @param	waitForTask: the way to ensure that operation is completed
---------- @arg noWait: external routines has to provide necessary timings
---------- @arg delayWait: use delay to halt the main cycle while operation is completed
---------- @arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
-* @retval operation status (SUCCESS or ERROR)
+---------	@arg noWait: external routines have to provide necessary timings
+---------	@arg delayWait: use delay to halt the main cycle while operation is completed
+---------	@arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
+* @retval	operation status (SUCCESS or ERROR)
 */
 ErrorStatus w25qxx_Write(SPI_TypeDef *SPIx, const uint8_t *buf, uint16_t bufSize, uint32_t address, uint8_t waitForTask);
 
 /**
- * @brief  Read data from w25qxx to external buffer via SPIx
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @param  buf: pointer to external buffer, that contains the data to receive
+ * @brief	Read data from w25qxx to external buffer via SPIx
+ * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+ * @param	buf: pointer to external buffer, that contains the data to receive
  * @param	bufSize: size of external buffer, that contains the data to receive
  * @param	address: page address to read (multiple of 256 bytes)
- * @retval operation status (SUCCESS or ERROR)
+ * @retval	operation status (SUCCESS or ERROR)
  */
 ErrorStatus w25qxx_Read(SPI_TypeDef *SPIx, uint8_t *buf, uint16_t bufSize, uint32_t address);
 
 /**
- * @brief  Read the JEDEC assigned manufacturer ID and the specific device ID
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @param  ID_Buf[2]: pointer to external buffer, that contains the data to receive
- * @retval operation status (SUCCESS or ERROR)
+ * @brief	Read the JEDEC assigned manufacturer ID and the specific device ID
+ * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+ * @param	ID_Buf[2]: pointer to external buffer, that contains the data to receive
+ * @retval	operation status (SUCCESS or ERROR)
  */
 ErrorStatus w25qxx_ReadID(SPI_TypeDef *SPIx, uint8_t *ID_Buf);
 
 /**
-* @brief  Write a byte to the status register
-* @param  SPIx: where x can be 1, 2 or 3 in SPI mode
-* @param  statusRegisterx: number of status register
---------- @arg 1
---------- @arg 2
---------- @arg 3
-* @param  status: pointer to the status byte to be written to the status register
-* @retval operation status (SUCCESS or ERROR)
+* @brief	Write a byte to the status register
+* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	statusRegisterx: number of status register
+---------	@arg 1
+---------	@arg 2
+---------	@arg 3
+* @param	status: pointer to the status byte to be written to the status register
+* @retval	operation status (SUCCESS or ERROR)
 */
 ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const uint8_t *status);
 
 /**
-* @brief  Read a byte from the status register
-* @param  SPIx: where x can be 1, 2 or 3 in SPI mode
-* @param  statusRegisterx: number of status register
---------- @arg 1
---------- @arg 2
---------- @arg 3
-* @param  status: pointer to a byte that will contain the data from the status register
-* @retval none
+* @brief	Read a byte from the status register
+* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	statusRegisterx: number of status register
+---------	@arg 1
+---------	@arg 2
+---------	@arg 3
+* @param 	status: pointer to a byte that will contain the data from the status register
+* @retval	none
 */
 void w25qxx_ReadStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, uint8_t *status);
 
 /**
- * @brief  Check if IC is busy or not through the status register 1
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @retval true in case if IC is busy
- */
-bool IS_Busy(SPI_TypeDef *SPIx);
-
-/**
- * @brief  Halt main cycle while IC is busy with determined timeout
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @param  timeout: timeout[ms]
- * @retval operation status (SUCCESS or ERROR)
- * @note		retval = SUCCESS if IC is ready to any command
- * @note		retval = ERROR if timeout is expired
- */
-ErrorStatus w25qxx_WaitWithTimeout(SPI_TypeDef *SPIx, uint32_t timeout);
-
-/**
- * @brief  Enable write access prior to every write or erase operation
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @retval none
- */
-void w25qxx_WriteEnable(SPI_TypeDef *SPIx);
-
-/**
- * @brief  Disable write access manually
- * @param  SPIx: where x can be 1, 2 or 3 in SPI mode
- * @retval none
- */
-void w25qxx_WriteDisable(SPI_TypeDef *SPIx);
-
-/**
-* @brief  Begin erase operation of sector, block or whole memory array
-* @param  SPIx: where x can be 1, 2 or 3 in SPI mode
-* @param  eraseInstruction: the way to erase
---------- @arg sectorErase_4KB
---------- @arg blockErase_32KB
---------- @arg blockErase_64KB
---------- @arg chipErase
-* @param  address: start address of sector or block to be erased
+* @brief	Begin erase operation of sector, block or whole memory array
+* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	eraseInstruction: the way to erase
+---------	@arg sectorErase_4KB
+---------	@arg blockErase_32KB
+---------	@arg blockErase_64KB
+---------	@arg chipErase
+* @param	address: start address of sector or block to be erased
+---------	@arg NULL in case if chipErase
 * @param	waitForTask: the way to ensure that operation is completed
---------- @arg noWait: external routines has to provide necessary timings
---------- @arg delayWait: use delay to halt the main cycle while operation is completed
---------- @arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
-* @retval operation status (SUCCESS or ERROR)
+---------	@arg noWait: external routines have to provide necessary timings
+---------	@arg delayWait: use delay to halt the main cycle while operation is completed
+---------	@arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
+* @retval	operation status (SUCCESS or ERROR)
 */
 ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstruction, uint32_t address, uint8_t waitForTask);
 

@@ -16,6 +16,7 @@ E:\IAR\ projects\STM32F4xx\w25qxx\Debug\BrowseInfo\Libraries\SPI\SPI.pbi: \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\CMSIS\Core\Include\mpu_armv7.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\Config\system_stm32f4xx.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\Config\stm32f4xx_conf.h \
+  E:\IAR\ projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_spi.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\stdbool.h \

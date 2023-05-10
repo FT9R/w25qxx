@@ -11,8 +11,8 @@ To make the use of the library as safe and understandable as possible, any opera
 * w25q128
 
 ## Conditions
-`Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 `Toolchain - IAR EWARM v9.20.1`
+`Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
 ## Quick start
 Burn it into MCU and debug through terminal I/O

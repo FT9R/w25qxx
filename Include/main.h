@@ -3,16 +3,16 @@
 
 //#define USE_IO_TERMINAL
 #define PAGE	1408
-#define PAGE_ADDRESS	(PAGE * PageSize)
+#define PAGE_ADDRESS	(PAGE * W25QXX_PAGE_SIZE)
 
 #include "stm32f4xx.h"
 #include "Sys_Init.h"
-#include <string.h>
-#include <stdio.h>
-#include "Delay.h"
 #include "Init.h"
+#include "Delay.h"
 #include "SPI.h"
 #include "w25qxx.h"
+#include <string.h>
+#include <stdio.h>
 
 #ifndef USE_IO_TERMINAL
 #define printf(param, ...) ((void)0)

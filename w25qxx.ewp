@@ -2174,6 +2174,9 @@
             <group>
                 <name>inc</name>
                 <file>
+                    <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_gpio.h</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_rcc.h</name>
                 </file>
                 <file>
@@ -2182,6 +2185,9 @@
             </group>
             <group>
                 <name>src</name>
+                <file>
+                    <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</name>
+                </file>
                 <file>
                     <name>$PROJ_DIR$\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c</name>
                 </file>
