@@ -81,10 +81,10 @@ typedef enum
 
 typedef struct
 {
-	uint32_t numberOfPages;
-	uint8_t addressBytes[3];
-	uint8_t cmd;
 	uint8_t ID[2];
+	uint32_t numberOfPages;
+	uint8_t cmd;
+	uint8_t addressBytes[3];
 } w25qxx_HandleTypeDef;
 
 /**
