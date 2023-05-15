@@ -1,7 +1,7 @@
 #ifndef W25QXX_H
 #define W25QXX_H
 
-#include "SPI.h"
+#include "SPI_Interface.h"
 #include "Delay.h"
 #include <stdbool.h>
 
@@ -63,6 +63,8 @@ typedef enum
 
 /* Macro */
 #define KBtoByte(KB) (KB * 1024)
+#define CS_LOW(CS_Port, CS_Pin) (CLEAR_BIT(CS_Port->ODR, CS_Pin))
+#define CS_HIGH(CS_Port, CS_Pin) (SET_BIT(CS_Port->ODR, CS_Pin))
 
 typedef enum
 {
@@ -85,18 +87,24 @@ typedef struct
 	uint32_t numberOfPages;
 	uint8_t cmd;
 	uint8_t addressBytes[3];
+	SPI_TypeDef *SPIx;
+	GPIO_TypeDef *CS_Port;
+	uint16_t CS_Pin;
 } w25qxx_HandleTypeDef;
 
 /**
  * @brief	Check if the device is available and determine the number of pages
+ * @param	w25qxx_Handle: pointer to the device handle structure
  * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+ * @param	CS_Port: GPIOx
+ * @param	CS_Pin: GPIO_Pin_x
  * @retval	operation status (SUCCESS or ERROR)
  */
-ErrorStatus w25qxx_Init(SPI_TypeDef *SPIx);
+ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, GPIO_TypeDef *CS_Port, uint16_t CS_Pin);
 
 /**
-* @brief	Write data to w25qxx from external buffer via SPIx
-* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @brief	Write data to w25qxx from external buffer
+* @param	w25qxx_Handle: pointer to the device handle structure
 * @param 	buf: pointer to external buffer, that contains the data to send
 * @param	bufSize: size of external buffer, that contains the data to send
 * @param	address: page address to write (multiple of 256 bytes)
@@ -106,29 +114,21 @@ ErrorStatus w25qxx_Init(SPI_TypeDef *SPIx);
 ---------	@arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
 * @retval	operation status (SUCCESS or ERROR)
 */
-ErrorStatus w25qxx_Write(SPI_TypeDef *SPIx, const uint8_t *buf, uint16_t bufSize, uint32_t address, uint8_t waitForTask);
+ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address, uint8_t waitForTask);
 
 /**
- * @brief	Read data from w25qxx to external buffer via SPIx
- * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+ * @brief	Read data from w25qxx to external buffer
+ * @param	w25qxx_Handle: pointer to the device handle structure
  * @param	buf: pointer to external buffer, that contains the data to receive
  * @param	bufSize: size of external buffer, that contains the data to receive
  * @param	address: page address to read (multiple of 256 bytes)
  * @retval	operation status (SUCCESS or ERROR)
  */
-ErrorStatus w25qxx_Read(SPI_TypeDef *SPIx, uint8_t *buf, uint16_t bufSize, uint32_t address);
-
-/**
- * @brief	Read the JEDEC assigned manufacturer ID and the specific device ID
- * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
- * @param	ID_Buf[2]: pointer to external buffer, that contains the data to receive
- * @retval	operation status (SUCCESS or ERROR)
- */
-ErrorStatus w25qxx_ReadID(SPI_TypeDef *SPIx, uint8_t *ID_Buf);
+ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t bufSize, uint32_t address);
 
 /**
 * @brief	Write a byte to the status register
-* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	w25qxx_Handle: pointer to the device handle structure
 * @param	statusRegisterx: number of status register
 ---------	@arg 1
 ---------	@arg 2
@@ -136,11 +136,11 @@ ErrorStatus w25qxx_ReadID(SPI_TypeDef *SPIx, uint8_t *ID_Buf);
 * @param	status: pointer to the status byte to be written to the status register
 * @retval	operation status (SUCCESS or ERROR)
 */
-ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const uint8_t *status);
+ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, const uint8_t *status);
 
 /**
 * @brief	Read a byte from the status register
-* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	w25qxx_Handle: pointer to the device handle structure
 * @param	statusRegisterx: number of status register
 ---------	@arg 1
 ---------	@arg 2
@@ -148,24 +148,24 @@ ErrorStatus w25qxx_WriteStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, const
 * @param 	status: pointer to a byte that will contain the data from the status register
 * @retval	none
 */
-void w25qxx_ReadStatus(SPI_TypeDef *SPIx, uint8_t statusRegisterx, uint8_t *status);
+void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, uint8_t *status);
 
 /**
 * @brief	Begin erase operation of sector, block or whole memory array
-* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	w25qxx_Handle: pointer to the device handle structure
 * @param	eraseInstruction: the way to erase
 ---------	@arg sectorErase_4KB
 ---------	@arg blockErase_32KB
 ---------	@arg blockErase_64KB
 ---------	@arg chipErase
 * @param	address: start address of sector or block to be erased
----------	@arg NULL in case if chipErase
+---------	@arg NULL in case if chipErase has been chosen
 * @param	waitForTask: the way to ensure that operation is completed
 ---------	@arg noWait: external routines have to provide necessary timings
 ---------	@arg delayWait: use delay to halt the main cycle while operation is completed
 ---------	@arg busyWait: check BUSY bit in status register 1 and halt main cycle while it is set to 1
 * @retval	operation status (SUCCESS or ERROR)
 */
-ErrorStatus w25qxx_Erase(SPI_TypeDef *SPIx, eraseInstruction_Def eraseInstruction, uint32_t address, uint8_t waitForTask);
+ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_Def eraseInstruction, uint32_t address, uint8_t waitForTask);
 
 #endif

@@ -1,13 +1,13 @@
-"C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\w25qxx\w25qxx.c"
+"C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\w25qxx\SPI_Interface.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
 -funsigned-char
 -MD
 -MF
-C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Libraries\w25qxx\w25qxx.pbi.dep
+C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Libraries\w25qxx\SPI_Interface.pbi.dep
 -o
-C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Libraries\w25qxx\w25qxx.pbi
+C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Libraries\w25qxx\SPI_Interface.pbi
 -I
 C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\w25qxx
 -I

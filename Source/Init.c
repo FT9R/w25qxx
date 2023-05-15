@@ -26,7 +26,7 @@ void IO_Init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	// PA15 - NSS
-	CS0_High;
+	SET_BIT(GPIOA->ODR, GPIO_Pin_15);
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;

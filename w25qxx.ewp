@@ -2199,6 +2199,12 @@
         <group>
             <name>w25qxx</name>
             <file>
+                <name>$PROJ_DIR$\Libraries\w25qxx\SPI_Interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\Libraries\w25qxx\SPI_Interface.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\Libraries\w25qxx\w25qxx.c</name>
             </file>
             <file>

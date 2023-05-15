@@ -1,31 +1,31 @@
-"E:\IAR projects\STM32F4xx\w25qxx\Source\main.c"
+"C:\Users\cheryomushkinra\Desktop\w25qxx\Source\main.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
 -funsigned-char
 -MD
 -MF
-E:\IAR projects\STM32F4xx\w25qxx\Debug\BrowseInfo\Source\main.pbi.dep
+C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Source\main.pbi.dep
 -o
-E:\IAR projects\STM32F4xx\w25qxx\Debug\BrowseInfo\Source\main.pbi
+C:\Users\cheryomushkinra\Desktop\w25qxx\Debug\BrowseInfo\Source\main.pbi
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Source
+C:\Users\cheryomushkinra\Desktop\w25qxx\Source
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Config\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Config
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Include\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Include
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\src\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\src
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\Delay\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\Delay
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\SPI\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\SPI
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\w25qxx\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\w25qxx
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Source\
+C:\Users\cheryomushkinra\Desktop\w25qxx\Source
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\arm\CMSIS\Core\Include\
 -I
@@ -37,21 +37,21 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\arm\inc\c
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Config
+C:\Users\cheryomushkinra\Desktop\w25qxx\Config
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Include
+C:\Users\cheryomushkinra\Desktop\w25qxx\Include
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\inc
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\src
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\STM32F4xx_StdPeriph_Driver\src
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\Delay
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\Delay
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\SPI
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\SPI
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Libraries\w25qxx
+C:\Users\cheryomushkinra\Desktop\w25qxx\Libraries\w25qxx
 -I
-E:\IAR projects\STM32F4xx\w25qxx\Source
+C:\Users\cheryomushkinra\Desktop\w25qxx\Source
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\arm\CMSIS\Core\Include
 -I

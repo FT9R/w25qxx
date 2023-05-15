@@ -9,8 +9,6 @@
 #define ReadBufferSize	100
 #define WriteBufferSize	100
 #define	DontCareByte	(uint8_t)0
-#define	CS0_High	SET_BIT(GPIOA->ODR, GPIO_ODR_ODR15)
-#define	CS0_Low	CLEAR_BIT(GPIOA->ODR, GPIO_ODR_ODR15)
 
 /**
 * @brief SPI State structure definition
