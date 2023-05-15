@@ -123773,30 +123773,30 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.h@2113@macro@CS_LOW",
-    "What": "MacroDef",
-    "defdec": "Def",
-    "display": "CS_LOW",
-    "location": {
-      "column": "9",
-      "line": "66",
-      "path": "C:\\Users\\cheryomushkinra\\Desktop\\w25qxx\\Libraries\\w25qxx\\w25qxx.h"
-    },
-    "name": "CS_LOW",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:w25qxx.h@2180@macro@CS_HIGH",
+    "ID": "c:w25qxx.h@2113@macro@CS_HIGH",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "CS_HIGH",
     "location": {
       "column": "9",
-      "line": "67",
+      "line": "66",
       "path": "C:\\Users\\cheryomushkinra\\Desktop\\w25qxx\\Libraries\\w25qxx\\w25qxx.h"
     },
     "name": "CS_HIGH",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:w25qxx.h@2205@macro@CS_LOW",
+    "What": "MacroDef",
+    "defdec": "Def",
+    "display": "CS_LOW",
+    "location": {
+      "column": "9",
+      "line": "67",
+      "path": "C:\\Users\\cheryomushkinra\\Desktop\\w25qxx\\Libraries\\w25qxx\\w25qxx.h"
+    },
+    "name": "CS_LOW",
     "origin": "user_include",
     "scope": null
   },
@@ -124409,7 +124409,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@8845@F@w25qxx_Erase@i",
+    "ID": "c:w25qxx.c@8013@F@w25qxx_Erase@i",
     "What": "Variable",
     "defdec": "Def",
     "display": "i",
@@ -124423,7 +124423,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@10021@F@w25qxx_Erase@i",
+    "ID": "c:w25qxx.c@9125@F@w25qxx_Erase@i",
     "What": "Variable",
     "defdec": "Def",
     "display": "i",
@@ -124437,7 +124437,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@11197@F@w25qxx_Erase@i",
+    "ID": "c:w25qxx.c@10237@F@w25qxx_Erase@i",
     "What": "Variable",
     "defdec": "Def",
     "display": "i",
@@ -124451,7 +124451,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@11807@F@w25qxx_Erase@i",
+    "ID": "c:w25qxx.c@10783@F@w25qxx_Erase@i",
     "What": "Variable",
     "defdec": "Def",
     "display": "i",
@@ -124479,7 +124479,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@12243@F@w25qxx_ReadID@dummyByte",
+    "ID": "c:w25qxx.c@11219@F@w25qxx_ReadID@dummyByte",
     "What": "Variable",
     "defdec": "Def",
     "display": "dummyByte",
@@ -124507,7 +124507,7 @@
     "scope": null
   },
   {
-    "ID": "c:w25qxx.c@12848@F@IS_Busy@status",
+    "ID": "c:w25qxx.c@11760@F@IS_Busy@status",
     "What": "Variable",
     "defdec": "Def",
     "display": "status",

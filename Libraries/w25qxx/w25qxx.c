@@ -17,19 +17,19 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 	w25qxx_Handle->CS_Pin = CS_Pin;
 	/* Release from power-down */
 	w25qxx_Handle->cmd = W25QXX_CMD_RELEASE_POWER_DOWN;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 	_delay_ms(1);
 	/* Reset device*/
 	w25qxx_Handle->cmd = W25QXX_CMD_ENABLE_RESET;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 	w25qxx_Handle->cmd = W25QXX_CMD_RESET_DEVICE;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 	_delay_ms(1);
 	/* Get the ManufacturerID and DeviceID */
 	w25qxx_ReadID(w25qxx_Handle);
@@ -80,7 +80,7 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
 	/* Page program */
 	w25qxx_WriteEnable(w25qxx_Handle);
 	w25qxx_Handle->cmd = W25QXX_CMD_PAGE_PROGRAM;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	/* A23-A0 - Start address of the desired page */
 	w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
@@ -89,7 +89,7 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 	/* Data write */
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, buf, bufSize);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 
 	if (waitForTask == delayWait)
 		_delay_ms(W25QXX_PAGE_PROGRAM_TIME);
@@ -115,7 +115,7 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
 
 	/* Page read */
 	w25qxx_Handle->cmd = W25QXX_CMD_READ_DATA;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	/* A23-A0 - Start address of the desired page */
 	w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
@@ -124,7 +124,7 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 	/* Data read */
 	SPI_Receive_Interface(w25qxx_Handle->SPIx, buf, bufSize);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 
 	return SUCCESS;
 }
@@ -135,34 +135,34 @@ ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t stat
 		return ERROR;
 
 	w25qxx_Handle->cmd = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 
 	switch (statusRegisterx)
 	{
 	case 1:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER1;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 2:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER2;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 3:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER3;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 	}
 
@@ -175,26 +175,26 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
 	{
 	case 1:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER1;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 2:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 3:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 		break;
 	}
 }
@@ -215,14 +215,14 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		/* Sector Erase */
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_SECTOR_ERASE_4KB;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		/* A23-A0 - Start address of the desired sector */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
 		{
@@ -248,14 +248,14 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		/* Block Erase */
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_32KB;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		/* A23-A0 - Start address of the desired block */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
 		{
@@ -281,14 +281,14 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		/* Block Erase */
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_64KB;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		/* A23-A0 - Start address of the desired block */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
 		{
@@ -311,9 +311,9 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		/* Chip Erase */
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_CHIP_ERASE;
-		CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_LOW(w25qxx_Handle);
 		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-		CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
 		{
@@ -344,13 +344,13 @@ ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 	uint8_t dummyByte = NULL;
 	w25qxx_Handle->cmd = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
 	SPI_Receive_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->ID, 2);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 
 	return SUCCESS;
 }
@@ -383,15 +383,15 @@ ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t
 void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
 	w25qxx_Handle->cmd = W25QXX_CMD_WRITE_ENABLE;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 }
 
 void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
 	w25qxx_Handle->cmd = W25QXX_CMD_WRITE_DISABLE;
-	CS_LOW(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_LOW(w25qxx_Handle);
 	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-	CS_HIGH(w25qxx_Handle->CS_Port, w25qxx_Handle->CS_Pin);
+	CS_HIGH(w25qxx_Handle);
 }

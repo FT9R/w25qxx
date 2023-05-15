@@ -63,8 +63,8 @@ typedef enum
 
 /* Macro */
 #define KBtoByte(KB) (KB * 1024)
-#define CS_LOW(CS_Port, CS_Pin) (CLEAR_BIT(CS_Port->ODR, CS_Pin))
-#define CS_HIGH(CS_Port, CS_Pin) (SET_BIT(CS_Port->ODR, CS_Pin))
+#define CS_HIGH(w25qxx_Handle) SET_BIT(w25qxx_Handle->CS_Port->ODR, w25qxx_Handle->CS_Pin)
+#define CS_LOW(w25qxx_Handle) CLEAR_BIT(w25qxx_Handle->CS_Port->ODR, w25qxx_Handle->CS_Pin)
 
 typedef enum
 {
@@ -93,13 +93,13 @@ typedef struct
 } w25qxx_HandleTypeDef;
 
 /**
- * @brief	Check if the device is available and determine the number of pages
- * @param	w25qxx_Handle: pointer to the device handle structure
- * @param	SPIx: where x can be 1, 2 or 3 in SPI mode
- * @param	CS_Port: GPIOx
- * @param	CS_Pin: GPIO_Pin_x
- * @retval	operation status (SUCCESS or ERROR)
- */
+* @brief	Check if the device is available and determine the number of pages
+* @param	w25qxx_Handle: pointer to the device handle structure
+* @param	SPIx: where x can be 1, 2 or 3 in SPI mode
+* @param	CS_Port: GPIOx
+* @param	CS_Pin: GPIO_Pin_x
+* @retval	operation status (SUCCESS or ERROR)
+*/
 ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, GPIO_TypeDef *CS_Port, uint16_t CS_Pin);
 
 /**
@@ -117,13 +117,13 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address, uint8_t waitForTask);
 
 /**
- * @brief	Read data from w25qxx to external buffer
- * @param	w25qxx_Handle: pointer to the device handle structure
- * @param	buf: pointer to external buffer, that contains the data to receive
- * @param	bufSize: size of external buffer, that contains the data to receive
- * @param	address: page address to read (multiple of 256 bytes)
- * @retval	operation status (SUCCESS or ERROR)
- */
+* @brief	Read data from w25qxx to external buffer
+* @param	w25qxx_Handle: pointer to the device handle structure
+* @param	buf: pointer to external buffer, that contains the data to receive
+* @param	bufSize: size of external buffer, that contains the data to receive
+* @param	address: page address to read (multiple of 256 bytes)
+* @retval	operation status (SUCCESS or ERROR)
+*/
 ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t bufSize, uint32_t address);
 
 /**
