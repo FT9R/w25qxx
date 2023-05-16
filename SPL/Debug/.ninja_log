@@ -89,3 +89,15 @@
 2488	2693	7059466140556444	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	2b45c8c1657a097e
 2702	2957	7059466143154726	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	c438d8db08ddf271
 2965	3050	7059466144154191	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	d4b83a71dad5b7af
+1	34	7059472529489530	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/startup_stm32f40_41xxx.o	9b409e07f9dd3cf
+37	275	7059472531788288	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/Sys_Init.o	ec781a57f3ea596c
+283	469	7059472533787220	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/system_stm32f4xx.o	98883d15cb92a82a
+477	722	7059472536285869	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.o	199417298c2cb682
+730	928	7059472538384743	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.o	2021904d44f56217
+936	1213	7059472541183450	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	fa801e893f284e49
+1222	1399	7059472543082452	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/Delay/Delay.o	860808de6b7b04e0
+1406	1623	7059472545281259	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/SPI/SPI.o	8fd067237cdcdd23
+1631	1826	7059472547379910	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	2b45c8c1657a097e
+1837	2025	7059472549279172	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	95b6651430eade4e
+2033	2220	7059472551278043	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/Init.o	42118f60f9b8fbd0
+2231	2455	7059472553576813	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	c438d8db08ddf271

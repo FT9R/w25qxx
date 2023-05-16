@@ -234,7 +234,7 @@
                     <item>bufferRead</item>
                     <item>w25qxx_Handle</item>
                     <item>SystemCoreClock</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

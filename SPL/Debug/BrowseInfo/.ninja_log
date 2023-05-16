@@ -89,3 +89,11 @@
 1605	1760	7059466223451398	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx_part3.pbi	6e7155dffc343958
 1762	1919	7059466225050752	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx.pbd	add9f61d506e1ed5
 1921	2845	7059466234045936	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx.pbw	be2e2ef2016e25a6
+6	255	7059472498398681	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/Libraries/w25qxx/w25qxx_Interface.pbi	3d87ba0a81877845
+2	260	7059472498498627	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/Source/main.pbi	6e3687973ffcd4f2
+257	508	7059472500997297	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/Source/Init.pbi	bb9a68dfbf2612a2
+261	514	7059472500997297	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/Libraries/w25qxx/w25qxx.pbi	d26d62f7b24a5568
+510	669	7059472502596422	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx_part3.pbi	6e7155dffc343958
+516	673	7059472502596422	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx_part2.pbi	bbf368a79b0de9e0
+676	829	7059472504195788	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx.pbd	add9f61d506e1ed5
+832	1761	7059472513190725	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/BrowseInfo/w25qxx.pbw	be2e2ef2016e25a6

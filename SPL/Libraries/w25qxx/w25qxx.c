@@ -19,6 +19,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 	/* Release from power-down */
 	w25qxx_Handle->cmd = W25QXX_CMD_RELEASE_POWER_DOWN;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	CS_HIGH(w25qxx_Handle);
 	w25qxx_Delay(1);
@@ -32,6 +33,21 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	CS_HIGH(w25qxx_Handle);
 	w25qxx_Delay(1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+	CS_HIGH(w25qxx_Handle);
+	_delay_ms(1);
+	/* Reset device*/
+	w25qxx_Handle->cmd = W25QXX_CMD_ENABLE_RESET;
+	CS_LOW(w25qxx_Handle);
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+	CS_HIGH(w25qxx_Handle);
+	w25qxx_Handle->cmd = W25QXX_CMD_RESET_DEVICE;
+	CS_LOW(w25qxx_Handle);
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+	CS_HIGH(w25qxx_Handle);
+	_delay_ms(1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	/* Get the ManufacturerID and DeviceID */
 	w25qxx_ReadID(w25qxx_Handle);
 	if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
@@ -82,14 +98,22 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
 	w25qxx_WriteEnable(w25qxx_Handle);
 	w25qxx_Handle->cmd = W25QXX_CMD_PAGE_PROGRAM;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	/* A23-A0 - Start address of the desired page */
 	w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 	w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 	w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 	/* Data write */
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, bufSize);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, buf, bufSize);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 
 	if (waitForTask == delayWait)
@@ -117,14 +141,22 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
 	/* Page read */
 	w25qxx_Handle->cmd = W25QXX_CMD_READ_DATA;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	/* A23-A0 - Start address of the desired page */
 	w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 	w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 	w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 	/* Data read */
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Receive(w25qxx_Handle->SPIx, buf, bufSize);
+=======
+	SPI_Receive_Interface(w25qxx_Handle->SPIx, buf, bufSize);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 
 	return SUCCESS;
@@ -137,7 +169,11 @@ ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t stat
 
 	w25qxx_Handle->cmd = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 
 	switch (statusRegisterx)
@@ -145,24 +181,39 @@ ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t stat
 	case 1:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER1;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 2:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER2;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 3:
 		w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER3;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 	}
@@ -177,24 +228,39 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
 	case 1:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER1;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 2:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 
 	case 3:
 		w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 		w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+		SPI_Receive_Interface(w25qxx_Handle->SPIx, status, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 		break;
 	}
@@ -217,12 +283,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_SECTOR_ERASE_4KB;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		/* A23-A0 - Start address of the desired sector */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
@@ -250,12 +324,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_32KB;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		/* A23-A0 - Start address of the desired block */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
@@ -283,12 +365,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_64KB;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		/* A23-A0 - Start address of the desired block */
 		w25qxx_Handle->addressBytes[0] = (uint8_t)(address >> 16);
 		w25qxx_Handle->addressBytes[1] = (uint8_t)(address >> 8);
 		w25qxx_Handle->addressBytes[2] = (uint8_t)(address);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
@@ -313,7 +403,11 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		w25qxx_WriteEnable(w25qxx_Handle);
 		w25qxx_Handle->cmd = W25QXX_CMD_CHIP_ERASE;
 		CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 		w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+		SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 		CS_HIGH(w25qxx_Handle);
 
 		if (waitForTask == delayWait)
@@ -346,11 +440,19 @@ ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 	uint8_t dummyByte = NULL;
 	w25qxx_Handle->cmd = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
 	w25qxx_SPI_Receive(w25qxx_Handle->SPIx, w25qxx_Handle->ID, 2);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &dummyByte, 1);
+	SPI_Receive_Interface(w25qxx_Handle->SPIx, w25qxx_Handle->ID, 2);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 
 	return SUCCESS;
@@ -385,7 +487,11 @@ void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
 	w25qxx_Handle->cmd = W25QXX_CMD_WRITE_ENABLE;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 }
 
@@ -393,6 +499,10 @@ void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
 	w25qxx_Handle->cmd = W25QXX_CMD_WRITE_DISABLE;
 	CS_LOW(w25qxx_Handle);
+<<<<<<< HEAD:SPL/Libraries/w25qxx/w25qxx.c
 	w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+=======
+	SPI_Transmit_Interface(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+>>>>>>> 2f17f587a366cc995dc09e4fffd9864716f23c90:Libraries/w25qxx/w25qxx.c
 	CS_HIGH(w25qxx_Handle);
 }
