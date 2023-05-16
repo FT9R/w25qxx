@@ -1,5 +1,5 @@
 {
-    "ewp": "${workspaceFolder}\\w25qxx.ewp",
+    "ewp": "${workspaceFolder}\\SPL\\w25qxx.ewp",
     "configuration": "Debug",
     "toolchain": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 9.0"
 }

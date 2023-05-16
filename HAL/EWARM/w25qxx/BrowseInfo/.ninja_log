@@ -1,0 +1,162 @@
+# ninja log v5
+1	96	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.xcl	23fa7226de326118
+314	408	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.xcl	cc2aa8ce479a5e13
+102	202	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.xcl	56cfaba32a6b7fd0
+6	106	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.xcl	c2cc04fd7db55da8
+2553	2837	7059437765066951	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.pbi	f1c3e76a84f9fa21
+952	1066	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.xcl	66b7fd9f787f7471
+110	214	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.xcl	f7b50b9098a92e
+207	300	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.xcl	ea4e7711d3ce9648
+944	1058	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.xcl	2601cf31e5a86c1e
+219	310	7059437730000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.xcl	e07e66b55f487afd
+305	396	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.xcl	d9c960feea66a528
+403	502	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.xcl	d41c7f0f0c101934
+1267	1670	7059437843158960	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.pbi	8856aeef833627c0
+412	510	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.xcl	1042bb15f2a1758d
+515	622	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.xcl	cc61dbc4a34eee71
+507	632	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.xcl	98e19a395a4b8d64
+628	730	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.xcl	a1305137a0717492
+637	738	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.xcl	fb7ae46e5f0e0099
+6	279	7059437829234186	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.pbi	a02d604bf31f6c9f
+735	833	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.xcl	8c04540305cacdbd
+1301	1600	7059437842459339	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.pbi	35fb2c5bf97f2ddc
+742	846	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.xcl	df394f5b1572777
+838	939	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.xcl	922aecf1feb9fad0
+1537	1635	7059437750000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx_Interface.xcl	d5dd38eea54692df
+850	947	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.xcl	ebbfbc27e1eb2b1a
+1063	1151	7059437740000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.xcl	6958573997908197
+308	667	7059455125195726	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx_part0.pbi	c1db33215820cc52
+3	305	7059455121597576	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.pbi	de271e4589b55c0
+2000	2374	7059437850255151	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx_part2.pbi	4b407ce2d9ff5fd2
+282	565	7059437832132629	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.pbi	3465d708f1f0d319
+3	305	7059450666291699	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.pbi	5ece4cc478674d52
+1388	1476	7059437750000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.xcl	a53d50aaed734391
+1446	1532	7059437750000000	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx.xcl	f30d438be237e3a3
+1481	1808	7059437754772297	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.pbi	c99c51429984f9a5
+1640	1945	7059437756171528	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.pbi	466ac22751c7e585
+2628	3086	7059437857305073	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx_part3.pbi	d1c4837a93e56748
+7	298	7059448206824450	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx_Interface.pbi	834d8cd290cc61ee
+1810	2115	7059437757870608	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.pbi	5d37280b88be050a
+1972	2249	7059437848955847	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.pbi	e24bae4288cf32a6
+1948	2236	7059437759069979	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.pbi	703c6abdf8813d6c
+2117	2415	7059437760869009	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.pbi	e80781f02ac8a83c
+672	944	7059455127994239	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx.pbd	3efffbfc4d5e4bce
+2238	2551	7059437762268251	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.pbi	285169ab0a3f975e
+977	1298	7059437839414096	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.pbi	7ebf7e640018350d
+2417	2729	7059437763967335	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.pbi	1cf57693858dfc30
+3	389	7059437830333596	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.pbi	765c0b2dc30afcaf
+568	854	7059437835031075	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.pbi	961d1e5913d2e1c8
+392	691	7059437833331992	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.pbi	f896a94ce989b74
+693	974	7059437836230749	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.pbi	2b9d8aa08f59a64b
+858	1264	7059437839114265	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.pbi	6f0705ac4a9414b2
+300	596	7059448209822841	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx.pbi	956137c9beccbd4c
+1602	1996	7059437846456977	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.pbi	9696382376a6a1c7
+2251	2624	7059437852753589	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx_part1.pbi	7d88e05b9c9922a9
+599	905	7059448212921172	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx_part4.pbi	5e8692455eb5ce74
+948	2352	7059455141686899	E:/ST/w25qxx/EWARM/w25qxx/BrowseInfo/w25qxx.pbw	af7567ca7404bc07
+44	136	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.xcl	69623eae42870635
+49	148	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.xcl	d7f300c620b24f0e
+145	259	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.xcl	cf77c4e990690766
+153	270	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.xcl	d813f03bfc7dd87d
+277	415	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.xcl	add7db039bbf96e3
+267	425	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.xcl	65d5562fb223acfd
+421	558	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.xcl	3ab739bcde4fe249
+429	592	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.xcl	8937418437d8997c
+565	681	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.xcl	569f2b9488bce993
+598	711	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.xcl	e7b9dce3decd82a5
+688	793	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.xcl	edcbfc0e415d16a
+717	825	7059463840000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.xcl	23aa64d2f6701d44
+800	921	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.xcl	2086cf5b712b2887
+831	973	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.xcl	b23afbdc4acb6932
+927	1047	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.xcl	5e96677dcea5fe4f
+979	1101	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.xcl	a21835dfa0f7c8e0
+1052	1166	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.xcl	7ff08e4e1dfc5e32
+1108	1222	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.xcl	9d4f4a52b0389b7b
+1171	1281	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.xcl	20f471f25130ca72
+1287	1385	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.xcl	1b8153aa0c70b0c2
+1228	1744	7059463858788763	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.pbi	fe18b2152e0185fb
+1392	1759	7059463858934489	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.pbi	44a95e66f05cb9e8
+1746	1842	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.xcl	82f2d2b9e00f2526
+1761	1851	7059463850000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.xcl	5d77d84a0d7e50c6
+1848	2166	7059463862991252	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.pbi	2cf918b3c3621e2e
+1856	2292	7059463864187908	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.pbi	6a962c71ae49f148
+2168	2469	7059463865986936	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.pbi	24af3a5fdbea036d
+2294	2595	7059463867286466	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.pbi	d6a073364fb21e09
+2471	2772	7059463868985621	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.pbi	f1cdb5f9f2f0be72
+2597	3003	7059463871384269	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.pbi	ad8427b76beaf8e5
+2774	3071	7059463871983963	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.pbi	6ed052a1c1e069a1
+3006	3309	7059463874382448	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.pbi	c0d2e4cd8b44772
+3073	3472	7059463875981677	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.pbi	8911add6e25cac6
+3313	3727	7059463878580436	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.pbi	9913cbb6ee6b616a
+3475	3880	7059463880079394	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.pbi	d61aa271957921dd
+3730	4022	7059463881478650	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.pbi	6ab14c26c772e563
+3884	4323	7059463884576981	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.pbi	c4ee5d172ec1387b
+4025	4353	7059463884876832	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.pbi	acb86ff9e8398ad5
+4326	4621	7059463887475655	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.pbi	a5be4ce503a62171
+4356	4665	7059463887975163	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.pbi	8392f7900dba7d82
+4624	4914	7059463890474064	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.pbi	cfae4bf6cf0262fa
+4668	4996	7059463891273395	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.pbi	32386bc2001b6994
+4917	5199	7059463893272330	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.pbi	a6379b7452e439e4
+3	384	7059463949160075	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part0.pbi	d8bfbfc92b877be0
+7	396	7059463949359959	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part2.pbi	cc213559a6334bdf
+402	682	7059463952158686	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.pbi	79b69a8cde48f9d3
+389	773	7059463953058267	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part3.pbi	f9e8589317ba7269
+778	949	7059463954857235	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part4.pbi	62f4383add1a5b6f
+687	1090	7059463956256474	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part1.pbi	1a4b6627d116320e
+1095	1359	7059463958955031	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbd	159f45ee9378c85a
+1363	2855	7059463973447055	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbw	29c32d4b67dda4c
+8	116	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.xcl	4cfc5bfd163ff4ac
+12	125	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.xcl	e7ece2113510f709
+122	228	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.xcl	d231d6b93d4d3acb
+130	237	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.xcl	800a41d42ad57220
+234	337	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.xcl	b276c04f70060a53
+242	347	7059464960000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.xcl	6532b87ecbdcc55e
+343	445	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.xcl	43c4b35ce9913e80
+352	454	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.xcl	6ba7b3ee329a1ece
+451	547	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.xcl	269b603c4a98d325
+460	557	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.xcl	5cd22f305a8877f
+553	655	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.xcl	64cb5647cd724dfc
+562	664	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.xcl	3017fefe5c2ab446
+661	756	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.xcl	b212a099ae9d9904
+670	766	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.xcl	9b55a9a9bab49462
+763	862	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.xcl	2617344ca959b8d3
+771	872	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.xcl	add24ff0ef84a6fd
+869	966	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.xcl	af4169c464176be6
+877	976	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx.xcl	a245835ba0ba0218
+972	1084	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.xcl	763b7308db9d06bb
+981	1108	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.xcl	cdd4ae7fda4a785e
+1090	1180	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.xcl	a0888d7344fa9d0
+1114	1210	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx_Interface.xcl	2eaf6b9aa65dedbb
+1186	1283	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.xcl	d49ea2cfdb0bd952
+1215	1310	7059464970000000	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.xcl	4f35bd9d06785fe0
+1290	1596	7059464981860207	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.pbi	44a95e66f05cb9e8
+1316	1604	7059464981960155	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/gpio.pbi	fe18b2152e0185fb
+1598	1892	7059464984858599	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/CMSIS/system_stm32f4xx.pbi	6a962c71ae49f148
+1606	1898	7059464984858599	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_hal_msp.pbi	d6a073364fb21e09
+1894	2190	7059464987856992	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/stm32f4xx_it.pbi	ad8427b76beaf8e5
+1901	2195	7059464987856992	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/spi.pbi	f1cdb5f9f2f0be72
+2193	2490	7059464990855407	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash.pbi	d61aa271957921dd
+2197	2501	7059464990955333	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma.pbi	2cf918b3c3621e2e
+2503	2785	7059464993753848	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_cortex.pbi	24af3a5fdbea036d
+2492	2790	7059464993753848	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma_ex.pbi	c0d2e4cd8b44772
+2788	3078	7059464996652287	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal.pbi	6ed052a1c1e069a1
+2792	3083	7059464996752232	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.pbi	6ab14c26c772e563
+3086	3374	7059464999650680	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr.pbi	cfae4bf6cf0262fa
+3081	3379	7059464999650680	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_gpio.pbi	9913cbb6ee6b616a
+3377	3666	7059465002549128	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_pwr_ex.pbi	a6379b7452e439e4
+3381	3681	7059465002749018	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc.pbi	8392f7900dba7d82
+3684	3970	7059465005647468	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.pbi	acb86ff9e8398ad5
+3670	4062	7059465006546984	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ex.pbi	c4ee5d172ec1387b
+4066	4350	7059465009445438	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.pbi	79b69a8cde48f9d3
+3973	4367	7059465009545385	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.pbi	8911add6e25cac6
+4353	4642	7059465012343899	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx_Interface.pbi	a4b3de76caed0c3b
+4370	4786	7059465013743447	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Libraries/w25qxx/w25qxx.pbi	5b784c56ff1ac524
+4646	4965	7059465015542172	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_spi.pbi	32386bc2001b6994
+4788	5176	7059465017641047	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_rcc_ex.pbi	a5be4ce503a62171
+4968	5371	7059465019639978	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part0.pbi	d8bfbfc92b877be0
+5179	5574	7059465021638906	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part1.pbi	1a4b6627d116320e
+5375	5685	7059465022738314	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part4.pbi	e36bc5940c6e1b18
+5580	5961	7059465025537095	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part2.pbi	cc213559a6334bdf
+5688	6075	7059465026636462	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part3.pbi	f9e8589317ba7269
+6080	6350	7059465029434730	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbd	159f45ee9378c85a
+6355	7746	7059465043027448	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbw	29c32d4b67dda4c
