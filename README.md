@@ -15,4 +15,36 @@ To make the use of the library as safe and understandable as possible, any opera
 `Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
 ## Quick start
-Burn it into MCU and debug through terminal I/O
+First of all provide defines regarding to Chip Select pin:
+```
+#define CS0_Pin GPIO_PIN_15
+#define CS0_GPIO_Port GPIOA
+```
+### Usage with HAL
+In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
+```
+case SPIx_BASE:
+HAL_SPI_Transmit(&hspix, (uint8_t *)pBuffer, lengthTX, 1000);
+break;
+///
+case SPIx_BASE:
+HAL_SPI_Receive(&hspix, (uint8_t *)pBuffer, lengthRX, 1000);
+break;
+```
+Now compiler is looking for hspix declaration so ensure that it really exists   
+in `spi.h` that CubeMX creates. Something like that:
+```
+/* USER CODE END Includes */
+extern SPI_HandleTypeDef hspi1;
+/* USER CODE BEGIN Private defines */
+```
+### Usage with SPL
+In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
+In `w25qxx_Interface.c` change next sections to yours:
+```
+SPI_Transmit(SPIx, pBuffer, lengthTX);
+///
+SPI_Receive(SPIx, pBuffer, lengthRX);
+///
+_delay_ms(ms);
+```
