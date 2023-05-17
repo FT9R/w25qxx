@@ -16,13 +16,13 @@ To make the use of the library as safe and understandable as possible, any opera
 
 ## Quick start
 Provide defines regarding to Chip Select pin:
-```
+```C
 #define CS0_Pin GPIO_PIN_15
 #define CS0_GPIO_Port GPIOA
 ```
 ### Interfacing with HAL
 In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
-```
+```C
 case SPIx_BASE:
 HAL_SPI_Transmit(&hspix, (uint8_t *)pBuffer, lengthTX, 1000);
 break;
@@ -33,7 +33,7 @@ break;
 ```
 Now compiler is looking for hspix declaration so ensure that it really exists   
 in `spi.h` that CubeMX creates. Something like that:
-```
+```C
 /* USER CODE END Includes */
 extern SPI_HandleTypeDef hspi1;
 /* USER CODE BEGIN Private defines */
@@ -41,7 +41,7 @@ extern SPI_HandleTypeDef hspi1;
 ### Interfacing with SPL
 In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
 In `w25qxx_Interface.c` change next sections to yours:
-```
+```C
 SPI_Transmit(SPIx, pBuffer, lengthTX);
 ///
 SPI_Receive(SPIx, pBuffer, lengthRX);
