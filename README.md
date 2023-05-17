@@ -15,6 +15,11 @@ To make the use of the library as safe and understandable as possible, any opera
 `Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
 ## Quick start
+First of all provide defines regarding to Chip Select pin:
+```
+#define CS0_Pin GPIO_PIN_15
+#define CS0_GPIO_Port GPIOA
+```
 ### Usage with HAL
 In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
 ```
