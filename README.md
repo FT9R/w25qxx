@@ -15,7 +15,7 @@ To make the use of the library as safe and understandable as possible, any opera
 `Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
 ## Quick start
-First of all provide defines regarding to Chip Select pin:
+Provide defines regarding to Chip Select pin:
 ```
 #define CS0_Pin GPIO_PIN_15
 #define CS0_GPIO_Port GPIOA
@@ -48,3 +48,4 @@ SPI_Receive(SPIx, pBuffer, lengthRX);
 ///
 _delay_ms(ms);
 ```
+For application use refer to `main.c`
