@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "HAL"
+		},
+		{
+			"path": "w25qxx"
+		}
+	],
+	"settings": {}
+}
