@@ -1,0 +1,5 @@
+{
+    "ewp": "${workspaceFolder}\\EWARM\\w25qxx.ewp",
+    "configuration": "w25qxx",
+    "toolchain": "C:\\\\Program Files (x86)\\\\IAR Systems\\\\Embedded Workbench 9.0"
+}
