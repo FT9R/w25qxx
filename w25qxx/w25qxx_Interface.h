@@ -1,5 +1,5 @@
-#ifndef SPI_INTERFACE_H
-#define SPI_INTERFACE_H
+#ifndef W25QXX_INTERFACE_H
+#define W25QXX_INTERFACE_H
 
 #include "main.h" // target MCU header
 #include <stdlib.h>
