@@ -26,8 +26,15 @@ case SPIx_BASE:
 HAL_SPI_Receive(&hspix, (uint8_t *)pBuffer, lengthRX, 1000);
 break;
 ```
+Now compiler is looking for hspix declaration so ensure that it really exists   
+in `spi.h` that CubeMX creates. Something like that:
+```
+/* USER CODE END Includes */
+extern SPI_HandleTypeDef hspi1;
+/* USER CODE BEGIN Private defines */
+```
 ### Usage with SPL
-In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes
+In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
 In `w25qxx_Interface.c` change next sections to yours:
 ```
 SPI_Transmit(SPIx, pBuffer, lengthTX);
