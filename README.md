@@ -20,7 +20,7 @@ Provide defines regarding to Chip Select pin:
 #define CS0_Pin GPIO_PIN_15
 #define CS0_GPIO_Port GPIOA
 ```
-### Usage with HAL
+### Interfacing with HAL
 In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
 ```
 case SPIx_BASE:
@@ -38,7 +38,7 @@ in `spi.h` that CubeMX creates. Something like that:
 extern SPI_HandleTypeDef hspi1;
 /* USER CODE BEGIN Private defines */
 ```
-### Usage with SPL
+### Interfacing with SPL
 In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
 In `w25qxx_Interface.c` change next sections to yours:
 ```
