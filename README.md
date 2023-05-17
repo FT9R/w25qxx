@@ -1,4 +1,4 @@
-# Decsription
+# Description
 A simple library designed to perform basic write/read operations with serial flash memory devices of the w25qxx family.  
 Data transfer is carried out by standard SPI instructions using the CLK, /CS, DI, DO pins.  
 Based on the device ID, received from the IC, this library can calculate the number of pages to eliminate some address issues for write/read and erase operations.  
