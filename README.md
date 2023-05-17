@@ -10,7 +10,7 @@ To make the use of the library as safe and understandable as possible, any opera
 * w25q64
 * w25q128
 
-## Conditions
+## Example conditions
 `Toolchain - IAR EWARM v9.20.1`  
 `Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
