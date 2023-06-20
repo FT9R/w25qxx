@@ -168,4 +168,11 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
 */
 ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_Def eraseInstruction, uint32_t address, uint8_t waitForTask);
 
+/**
+ * @brief	Check BUSY bit in status register 1
+ * @param	w25qxx_Handle: pointer to the device handle structure
+ * @retval	True - busy, False - free
+ */
+bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle);
+
 #endif

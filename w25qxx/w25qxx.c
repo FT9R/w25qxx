@@ -2,7 +2,6 @@
 
 /* Private function prototypes */
 ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
-bool IS_Busy(w25qxx_HandleTypeDef *w25qxx_Handle);
 ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
 void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
 void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
@@ -95,7 +94,7 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
 	if (waitForTask == delayWait)
 		w25qxx_Delay(W25QXX_PAGE_PROGRAM_TIME);
 	else if (waitForTask == busyWait)
-		while (IS_Busy(w25qxx_Handle))
+		while (w25qxx_Busy(w25qxx_Handle))
 		{
 		}
 
@@ -234,7 +233,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		}
 		else if (waitForTask == busyWait)
 		{
-			while (IS_Busy(w25qxx_Handle))
+			while (w25qxx_Busy(w25qxx_Handle))
 			{
 			}
 		}
@@ -267,7 +266,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		}
 		else if (waitForTask == busyWait)
 		{
-			while (IS_Busy(w25qxx_Handle))
+			while (w25qxx_Busy(w25qxx_Handle))
 			{
 			}
 		}
@@ -300,7 +299,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		}
 		else if (waitForTask == busyWait)
 		{
-			while (IS_Busy(w25qxx_Handle))
+			while (w25qxx_Busy(w25qxx_Handle))
 			{
 			}
 		}
@@ -325,7 +324,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
 		}
 		else if (waitForTask == busyWait)
 		{
-			while (IS_Busy(w25qxx_Handle))
+			while (w25qxx_Busy(w25qxx_Handle))
 			{
 			}
 		}
@@ -356,7 +355,7 @@ ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 	return SUCCESS;
 }
 
-bool IS_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
+bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
 	uint8_t status;
 	w25qxx_ReadStatus(w25qxx_Handle, 1, &status);
@@ -368,7 +367,7 @@ ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t
 {
 	while (true)
 	{
-		if (IS_Busy(w25qxx_Handle))
+		if (w25qxx_Busy(w25qxx_Handle))
 		{
 			timeout--;
 			w25qxx_Delay(1);
