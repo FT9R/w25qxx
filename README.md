@@ -11,15 +11,21 @@ To make the use of the library as safe and understandable as possible, any opera
 * w25q128
 
 # Example conditions
-`Toolchain - IAR EWARM v9.20.1`  
+`Toolchain - IAR EWARM v9.40.1`  
 `Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
 
 # Quick start
-Provide defines regarding to Chip Select pin:
+## Common routine
+* Don't forget the following line:
+```C
+#include "w25qxx.h"
+```
+* Provide defines regarding to Chip Select pin:
 ```C
 #define CS0_Pin       GPIO_PIN_15
 #define CS0_GPIO_Port GPIOA
 ```
+* Initialize SPIx periphery
 ## Interfacing with HAL
 In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
 ```C
