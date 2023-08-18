@@ -17,7 +17,7 @@ To make the use of the library as safe and understandable as possible, any opera
 # Quick start
 Provide defines regarding to Chip Select pin:
 ```C
-#define CS0_Pin GPIO_PIN_15
+#define CS0_Pin       GPIO_PIN_15
 #define CS0_GPIO_Port GPIOA
 ```
 ## Interfacing with HAL
