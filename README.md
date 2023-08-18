@@ -30,7 +30,7 @@ To make the use of the library as safe and understandable as possible, any opera
 ```C
 w25qxx_Init(&w25qxx_Handle, SPIx, CS0_GPIO_Port, CS0_Pin);
 ```
-where SPIx could be replaced by `hspix.Instance` (for HAL only)
+where `SPIx` could be replaced by `hspix.Instance` (for HAL only)
 ## Interfacing with HAL
 * In `w25qxx_Interface.h` uncomment definitions if you are going to use not only SPI1:
 ```C
