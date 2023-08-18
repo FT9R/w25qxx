@@ -58,9 +58,9 @@ typedef enum { w25q80 = 0x13, w25q16, w25q32, w25q64, w25q128 } w25qxx_Def;
 #define CS_HIGH(DEVICE_HANDLE) SET_BIT((DEVICE_HANDLE)->CS_Port->ODR, (DEVICE_HANDLE)->CS_Pin)
 #define CS_LOW(DEVICE_HANDLE)  CLEAR_BIT((DEVICE_HANDLE)->CS_Port->ODR, (DEVICE_HANDLE)->CS_Pin)
 
-typedef enum { sectorErase_4KB, blockErase_32KB, blockErase_64KB, chipErase } eraseInstruction_Def;
+typedef enum { SECTOR_ERASE_4KB, BLOCK_ERASE_32KB, BLOCK_ERASE_64KB, CHIP_ERASE } eraseInstruction_t;
 
-typedef enum { noWait, delayWait, busyWait } waitForTask_Def;
+typedef enum { WAIT_NO, WAIT_DELAY, WAIT_BUSY } waitForTask_t;
 
 typedef struct
 {
@@ -99,7 +99,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
  * @return ErrorStatus
  */
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address,
-                         uint8_t waitForTask);
+                         waitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -140,8 +140,8 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
  * @param waitForTask: the way to ensure that operation is completed
  * @return ErrorStatus
  */
-ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_Def eraseInstruction, uint32_t address,
-                         uint8_t waitForTask);
+ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
+                         waitForTask_t waitForTask);
 
 /**
  * @brief Checks the BUSY bit in status register 1

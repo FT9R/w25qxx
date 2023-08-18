@@ -98,7 +98,7 @@ int main(void)
     w25qxx_Init(&w25qxx_Handle, hspi1.Instance, CS0_GPIO_Port, CS0_Pin);
     if (w25qxx_Handle.status == SUCCESS)
     {
-        // w25qxx_Erase(&w25qxx_Handle, chipErase, NULL, busyWait);
+        // w25qxx_Erase(&w25qxx_Handle, CHIP_ERASE, NULL, WAIT_BUSY);
         printf("\r\n First approach to read \r\n");
         w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS);
         if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
@@ -109,7 +109,7 @@ int main(void)
         {
             printf("Data doesn't exist at page %i boundaries \r\n", PAGE);
             printf("Page programming...");
-            w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, delayWait);
+            w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, WAIT_DELAY);
             printf("\r\n Second approach to read \r\n");
             w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS);
             if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)

@@ -77,7 +77,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 }
 
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address,
-                         uint8_t waitForTask)
+                         waitForTask_t waitForTask)
 {
     if ((bufSize == 0) || (bufSize > W25QXX_PAGE_SIZE))
         return ERROR; // 1-256 bytes data can be written
@@ -105,9 +105,9 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, bufSize);
     CS_HIGH(w25qxx_Handle);
 
-    if (waitForTask == delayWait)
+    if (waitForTask == WAIT_DELAY)
         w25qxx_Delay(W25QXX_PAGE_PROGRAM_TIME);
-    else if (waitForTask == busyWait)
+    else if (waitForTask == WAIT_BUSY)
         while (w25qxx_Busy(w25qxx_Handle)) {}
 
     return SUCCESS;
@@ -213,15 +213,15 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
     }
 }
 
-ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_Def eraseInstruction, uint32_t address,
-                         uint8_t waitForTask)
+ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
+                         waitForTask_t waitForTask)
 {
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
         return ERROR;
 
     switch (eraseInstruction)
     {
-    case sectorErase_4KB:
+    case SECTOR_ERASE_4KB:
         if ((address % KB_TO_BYTE(4)) != 0)
             return ERROR; // Incorrect start address for sector
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(4)))
@@ -240,20 +240,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == delayWait)
+        if (waitForTask == WAIT_DELAY)
         {
             for (uint32_t i = 0; i < (W25QXX_SECTOR_ERASE_TIME_4KB / 100); i++)
             {
                 w25qxx_Delay(100);
             }
         }
-        else if (waitForTask == busyWait)
+        else if (waitForTask == WAIT_BUSY)
         {
             while (w25qxx_Busy(w25qxx_Handle)) {}
         }
         break;
 
-    case blockErase_32KB:
+    case BLOCK_ERASE_32KB:
         if ((address % KB_TO_BYTE(32)) != 0)
             return ERROR; // Incorrect start address for block
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(32)))
@@ -272,20 +272,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == delayWait)
+        if (waitForTask == WAIT_DELAY)
         {
             for (uint32_t i = 0; i < (W25QXX_BLOCK_ERASE_TIME_32KB / 100); i++)
             {
                 w25qxx_Delay(100);
             }
         }
-        else if (waitForTask == busyWait)
+        else if (waitForTask == WAIT_BUSY)
         {
             while (w25qxx_Busy(w25qxx_Handle)) {}
         }
         break;
 
-    case blockErase_64KB:
+    case BLOCK_ERASE_64KB:
         if ((address % KB_TO_BYTE(64)) != 0)
             return ERROR; // Incorrect start address for block
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(64)))
@@ -304,20 +304,20 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == delayWait)
+        if (waitForTask == WAIT_DELAY)
         {
             for (uint32_t i = 0; i < (W25QXX_BLOCK_ERASE_TIME_64KB / 100); i++)
             {
                 w25qxx_Delay(100);
             }
         }
-        else if (waitForTask == busyWait)
+        else if (waitForTask == WAIT_BUSY)
         {
             while (w25qxx_Busy(w25qxx_Handle)) {}
         }
         break;
 
-    case chipErase:
+    case CHIP_ERASE:
         if (address != NULL)
             return ERROR;
 
@@ -328,14 +328,14 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == delayWait)
+        if (waitForTask == WAIT_DELAY)
         {
             for (uint32_t i = 0; i < (W25QXX_CHIP_ERASE_TIME / 100); i++)
             {
                 w25qxx_Delay(100);
             }
         }
-        else if (waitForTask == busyWait)
+        else if (waitForTask == WAIT_BUSY)
         {
             while (w25qxx_Busy(w25qxx_Handle)) {}
         }
@@ -348,6 +348,17 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
     return SUCCESS;
 }
 
+bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
+{
+    uint8_t status;
+    w25qxx_ReadStatus(w25qxx_Handle, 1, &status);
+
+    return READ_BIT(status, 0x01);
+}
+
+/**
+ * @section Private functions
+ */
 ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
@@ -364,14 +375,6 @@ ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
     CS_HIGH(w25qxx_Handle);
 
     return SUCCESS;
-}
-
-bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
-{
-    uint8_t status;
-    w25qxx_ReadStatus(w25qxx_Handle, 1, &status);
-
-    return READ_BIT(status, 0x01);
 }
 
 ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)

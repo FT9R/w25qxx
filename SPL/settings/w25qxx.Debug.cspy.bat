@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\common\bin\cspybat" -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.general.xcl" --backend -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 9.2\common\bin\cspybat" -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.general.xcl" --backend -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\common\bin\cspybat" -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.general.xcl" "--debug_file=%~1" --backend -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 9.2\common\bin\cspybat" -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.general.xcl" "--debug_file=%~1" --backend -f "E:\IAR projects\STM32F4xx\w25qxx\SPL\settings\w25qxx.Debug.driver.xcl" 
 
 @echo off 
 :end

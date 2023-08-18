@@ -6,7 +6,7 @@
 
 "-p" 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 9.0\arm\CONFIG\debugger\ST\STM32F407VG.ddf" 
+"C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\config\debugger\ST\STM32F407VG.ddf" 
 
 "--semihosting" 
 
@@ -21,6 +21,8 @@
 "--drv_catch_exceptions=0x000" 
 
 "--drv_debug_ap=0" 
+
+"--stlink_probe_supplied_power=3.3" 
 
 
 

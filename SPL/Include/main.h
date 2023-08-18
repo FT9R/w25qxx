@@ -18,4 +18,6 @@
 #define printf(param, ...) ((void) 0)
 #endif
 
+void Error_Handler(void);
+
 #endif
