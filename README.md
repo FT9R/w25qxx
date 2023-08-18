@@ -48,4 +48,4 @@ SPI_Receive(SPIx, pBuffer, lengthRX);
 ///
 _delay_ms(ms);
 ```
-For application use refer to `main.c`
+For application use refer to [`HAL/../main.c`](./HAL/Core/Src/main.c) or [`SPL/../main.c`](./SPL/Source/main.c) 
