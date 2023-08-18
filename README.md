@@ -10,10 +10,6 @@ To make the use of the library as safe and understandable as possible, any opera
 * w25q64
 * w25q128
 
-# Example conditions
-`Toolchain - IAR EWARM v9.40.1`  
-`Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`  
-
 # Quick start
 ## Common routine
 * Don't forget the following line:
@@ -59,4 +55,8 @@ SPI_Receive(SPIx, pBuffer, lengthRX);
 _delay_ms(ms);
 ```
 # Example
+## Conditions
+`Toolchain - IAR EWARM v9.40.1`  
+`Target MCU - STM32F407VGT6 (STM32F4XX_M devBoard)`
+## References
 For application use refer to [`HAL/../main.c`](./HAL/Core/Src/main.c) or [`SPL/../main.c`](./SPL/Source/main.c) 
