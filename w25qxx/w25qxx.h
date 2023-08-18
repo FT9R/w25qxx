@@ -92,13 +92,13 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
  * @brief Writes data to w25qxx from external buffer
  *
  * @param w25qxx_Handle: pointer to the device handle structure
- * @param buf: pointer to external buffer, that contains the data to send
- * @param bufSize: size of external buffer, that contains the data to send
+ * @param buf: pointer to external buffer, that contains the data to write
+ * @param dataLength: number of bytes to write
  * @param address: page address to write (multiple of 256 bytes)
  * @param waitForTask: the way to ensure that operation is completed
  * @return ErrorStatus
  */
-ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address,
+ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
                          waitForTask_t waitForTask);
 
 /**
@@ -106,11 +106,11 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
  *
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param buf: pointer to external buffer, that will contain the received data
- * @param bufSize: size of external buffer, that will contain the received data
+ * @param dataLength: number of bytes to read
  * @param address: page address to read (multiple of 256 bytes)
  * @return ErrorStatus
  */
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t bufSize, uint32_t address);
+ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address);
 
 /**
  * @brief Writes a byte to the status register

@@ -76,14 +76,14 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
     return w25qxx_Handle->status = SUCCESS;
 }
 
-ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t bufSize, uint32_t address,
+ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
                          waitForTask_t waitForTask)
 {
-    if ((bufSize == 0) || (bufSize > W25QXX_PAGE_SIZE))
+    if ((dataLength == 0) || (dataLength > W25QXX_PAGE_SIZE))
         return ERROR; // 1-256 bytes data can be written
     if ((address % W25QXX_PAGE_SIZE) != 0)
         return ERROR; // Only first byte of the page can be pointed as the start byte
-    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - bufSize))
+    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - dataLength))
         return ERROR;
 
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
@@ -102,7 +102,7 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 
     /* Data write */
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, bufSize);
+    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, dataLength);
     CS_HIGH(w25qxx_Handle);
 
     if (waitForTask == WAIT_DELAY)
@@ -113,13 +113,13 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     return SUCCESS;
 }
 
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t bufSize, uint32_t address)
+ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address)
 {
-    if ((bufSize == 0) || (bufSize > W25QXX_PAGE_SIZE))
+    if ((dataLength == 0) || (dataLength > W25QXX_PAGE_SIZE))
         return ERROR; // 1-256 bytes data can be read
     if ((address % W25QXX_PAGE_SIZE) != 0)
         return ERROR; // Only first byte of the page can be pointed as the start byte
-    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - bufSize))
+    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - dataLength))
         return ERROR;
 
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
@@ -137,7 +137,7 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
 
     /* Data read */
-    w25qxx_SPI_Receive(w25qxx_Handle->SPIx, buf, bufSize);
+    w25qxx_SPI_Receive(w25qxx_Handle->SPIx, buf, dataLength);
     CS_HIGH(w25qxx_Handle);
 
     return SUCCESS;
