@@ -27,18 +27,17 @@ To make the use of the library as safe and understandable as possible, any opera
 ```
 * Initialize SPIx periphery
 ## Interfacing with HAL
-In `w25qxx_Interface.c` uncomment sections if you are going to use not only SPI1:
+* In `w25qxx_Interface.h` uncomment definitions if you are going to use not only SPI1:
 ```C
-case SPIx_BASE:
-HAL_SPI_Transmit(&hspix, (uint8_t *)pBuffer, lengthTX, 1000);
-break;
-///
-case SPIx_BASE:
-HAL_SPI_Receive(&hspix, (uint8_t *)pBuffer, lengthRX, 1000);
-break;
+/* HAL SPIx definitions */
+#ifdef USE_HAL_DRIVER
+#define USE_SPI1
+// #define USE_SPI2
+// #define USE_SPI3
+#endif
 ```
-Now compiler is looking for hspix declaration so ensure that it really exists   
-in `spi.h` that CubeMX creates. Something like that:
+* Now compiler is looking for hspix declaration so ensure that it really exists   
+in `spi.h` that CubeMX creates. Usually it looks like that:
 ```C
 /* USER CODE END Includes */
 extern SPI_HandleTypeDef hspi1;
@@ -46,7 +45,7 @@ extern SPI_HandleTypeDef hspi1;
 ```
 ## Interfacing with SPL
 In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
-In `w25qxx_Interface.c` change next sections to yours:
+In `w25qxx_Interface.c` change next func calls to yours:
 ```C
 SPI_Transmit(SPIx, pBuffer, lengthTX);
 ///
