@@ -3,6 +3,14 @@
 
 #include "main.h" // target MCU header
 #include <stdlib.h>
+
+/* HAL SPIx definitions */
+#ifdef USE_HAL_DRIVER
+#define USE_SPI1
+// #define USE_SPI2
+// #define USE_SPI3
+#endif
+
 /* Driver interface switch */
 #ifdef USE_HAL_DRIVER
 #include "spi.h" // SPI_HandleTypeDef reference

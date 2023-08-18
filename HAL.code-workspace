@@ -9,7 +9,9 @@
 	],
 	"settings": {
 		"files.associations": {
-			"w25qxx.h": "c"
+			"w25qxx.h": "c",
+			"w25qxx_interface.h": "c",
+			"main.h": "c"
 		}
 	}
 }
