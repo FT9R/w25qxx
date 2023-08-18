@@ -15,7 +15,8 @@
 			"limits": "cpp",
 			"type_traits": "cpp",
 			"xmemory": "cpp",
-			"xutility": "cpp"
+			"xutility": "cpp",
+			"main.h": "c"
 		}
 	}
 }

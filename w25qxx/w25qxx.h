@@ -74,6 +74,9 @@ typedef struct
     ErrorStatus status;
 } w25qxx_HandleTypeDef;
 
+/* Exported variables */
+extern w25qxx_HandleTypeDef w25qxx_Handle;
+
 /**
  * @brief Checks if the device is available and determines the number of pages
  *

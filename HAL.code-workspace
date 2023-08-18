@@ -7,5 +7,9 @@
 			"path": "w25qxx"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"w25qxx.h": "c"
+		}
+	}
 }

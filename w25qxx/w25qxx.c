@@ -1,5 +1,8 @@
 #include "w25qxx.h"
 
+/* Public variables */
+w25qxx_HandleTypeDef w25qxx_Handle;
+
 /* Private function prototypes */
 ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
 ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
@@ -15,12 +18,18 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
     w25qxx_Handle->CS_Port = CS_Port;
     w25qxx_Handle->CS_Pin = CS_Pin;
     w25qxx_Handle->status = ERROR;
+
+    /* Check for SPI1-3 match */
+    if ((w25qxx_Handle->SPIx != SPI1) && (w25qxx_Handle->SPIx != SPI2) && (w25qxx_Handle->SPIx != SPI3))
+        return w25qxx_Handle->status;
+
     /* Release from power-down */
     w25qxx_Handle->cmd = W25QXX_CMD_RELEASE_POWER_DOWN;
     CS_LOW(w25qxx_Handle);
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
     CS_HIGH(w25qxx_Handle);
     w25qxx_Delay(1);
+
     /* Reset device*/
     w25qxx_Handle->cmd = W25QXX_CMD_ENABLE_RESET;
     CS_LOW(w25qxx_Handle);
@@ -31,10 +40,12 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
     CS_HIGH(w25qxx_Handle);
     w25qxx_Delay(1);
+
     /* Get the ManufacturerID and DeviceID */
     w25qxx_ReadID(w25qxx_Handle);
     if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
-        return ERROR;
+        return w25qxx_Handle->status;
+
     /* Determine number of pages */
     switch (w25qxx_Handle->ID[1])
     {
@@ -59,7 +70,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
         break;
 
     default:
-        return ERROR; // Unsupported device
+        return w25qxx_Handle->status; // Unsupported device
     }
 
     return w25qxx_Handle->status = SUCCESS;
@@ -83,11 +94,13 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     w25qxx_Handle->cmd = W25QXX_CMD_PAGE_PROGRAM;
     CS_LOW(w25qxx_Handle);
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+
     /* A23-A0 - Start address of the desired page */
     w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
     w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
     w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+
     /* Data write */
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, bufSize);
     CS_HIGH(w25qxx_Handle);
@@ -116,11 +129,13 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
     w25qxx_Handle->cmd = W25QXX_CMD_READ_DATA;
     CS_LOW(w25qxx_Handle);
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+
     /* A23-A0 - Start address of the desired page */
     w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
     w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
     w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
     w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+
     /* Data read */
     w25qxx_SPI_Receive(w25qxx_Handle->SPIx, buf, bufSize);
     CS_HIGH(w25qxx_Handle);
@@ -217,6 +232,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_Handle->cmd = W25QXX_CMD_SECTOR_ERASE_4KB;
         CS_LOW(w25qxx_Handle);
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+
         /* A23-A0 - Start address of the desired sector */
         w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
         w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
@@ -248,6 +264,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_32KB;
         CS_LOW(w25qxx_Handle);
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+
         /* A23-A0 - Start address of the desired block */
         w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
         w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
@@ -279,6 +296,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
         w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_64KB;
         CS_LOW(w25qxx_Handle);
         w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+
         /* A23-A0 - Start address of the desired block */
         w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
         w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
@@ -302,6 +320,7 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_D
     case chipErase:
         if (address != NULL)
             return ERROR;
+
         /* Chip Erase */
         w25qxx_WriteEnable(w25qxx_Handle);
         w25qxx_Handle->cmd = W25QXX_CMD_CHIP_ERASE;
