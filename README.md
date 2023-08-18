@@ -26,6 +26,11 @@ To make the use of the library as safe and understandable as possible, any opera
 #define CS0_GPIO_Port GPIOA
 ```
 * Initialize SPIx periphery
+* Initialize the FLASH device:
+```C
+w25qxx_Init(&w25qxx_Handle, SPIx, CS0_GPIO_Port, CS0_Pin);
+```
+where SPIx could be replaced by 'hspix.Instance'(for HAL only)
 ## Interfacing with HAL
 * In `w25qxx_Interface.h` uncomment definitions if you are going to use not only SPI1:
 ```C
@@ -44,8 +49,8 @@ extern SPI_HandleTypeDef hspi1;
 /* USER CODE BEGIN Private defines */
 ```
 ## Interfacing with SPL
-In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
-In `w25qxx_Interface.c` change next func calls to yours:
+* In `w25qxx_Interface.h` provide your own `SPI.h` and `Delay.h` includes   
+* In `w25qxx_Interface.c` change next func calls to yours:
 ```C
 SPI_Transmit(SPIx, pBuffer, lengthTX);
 ///
@@ -53,4 +58,5 @@ SPI_Receive(SPIx, pBuffer, lengthRX);
 ///
 _delay_ms(ms);
 ```
+# Example
 For application use refer to [`HAL/../main.c`](./HAL/Core/Src/main.c) or [`SPL/../main.c`](./SPL/Source/main.c) 
