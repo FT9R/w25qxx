@@ -1,5 +1,21 @@
 {
-    "ewp": "${workspaceFolder}\\EWARM\\w25qxx.ewp",
-    "configuration": "w25qxx",
-    "toolchain": "C:\\\\Program Files (x86)\\\\IAR Systems\\\\Embedded Workbench 9.0"
+  "ewp": "${workspaceFolder}\\EWARM\\w25qxx.ewp",
+  "configuration": "w25qxx",
+  "toolchain": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 9.0",
+  "workspace": {
+    "path": "${workspaceFolder}\\EWARM\\Project.eww"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\EWARM\\Project.eww": {
+      "configs": {
+        "${workspaceFolder}\\EWARM\\w25qxx.ewp": "w25qxx"
+      },
+      "selected": {
+        "path": "${workspaceFolder}\\EWARM\\w25qxx.ewp"
+      }
+    }
+  },
+  "workbench": {
+    "path": "C:\\\\Program Files\\\\IAR Systems\\\\Embedded Workbench 9.2"
+  }
 }

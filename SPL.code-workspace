@@ -7,5 +7,15 @@
 			"path": "w25qxx"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"bit": "cpp",
+			"compare": "cpp",
+			"cstddef": "cpp",
+			"limits": "cpp",
+			"type_traits": "cpp",
+			"xmemory": "cpp",
+			"xutility": "cpp"
+		}
+	}
 }

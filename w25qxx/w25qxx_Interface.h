@@ -7,8 +7,8 @@
 #ifdef USE_HAL_DRIVER
 #include "spi.h" // SPI_HandleTypeDef reference
 #else
-#include "SPI.h"
 #include "Delay.h"
+#include "SPI.h"
 #endif
 
 void w25qxx_SPI_Transmit(SPI_TypeDef *SPIx, const uint8_t *pBuffer, uint32_t lengthTX);

@@ -131,3 +131,10 @@
 509	889	7060134050604648	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part0.pbi	d8bfbfc92b877be0
 895	1178	7060134053503093	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbd	159f45ee9378c85a
 1181	2647	7060134067795433	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbw	29c32d4b67dda4c
+299	625	7105186549586700	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/Application/User/Core/main.pbi	44a95e66f05cb9e8
+303	639	7105186549686703	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx/w25qxx_Interface.pbi	65b6a9e960eb0f64
+627	968	7105186553022253	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx/w25qxx.pbi	50080be24e0ce18c
+641	1326	7105186556591244	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part0.pbi	d8bfbfc92b877be0
+971	1489	7105186558188229	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx_part4.pbi	7f022f9a8b515bbc
+1494	1972	7105186563021157	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbd	159f45ee9378c85a
+1976	3426	7105186577188214	E:/IAR projects/STM32F4xx/w25qxx/HAL/EWARM/w25qxx/BrowseInfo/w25qxx.pbw	29c32d4b67dda4c
