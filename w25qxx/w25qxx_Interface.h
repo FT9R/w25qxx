@@ -11,6 +11,10 @@
 // #define USE_SPI3
 #endif
 
+/* Timeouts */
+#define W25QXX_TX_TIMEOUT 1000
+#define W25QXX_RX_TIMEOUT 1000
+
 /* Driver interface switch */
 #ifdef USE_HAL_DRIVER
 #include "spi.h" // SPI_HandleTypeDef reference
