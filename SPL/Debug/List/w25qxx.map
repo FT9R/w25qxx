@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V9.40.1.364/W64 for ARM                  18/Aug/2023  11:27:10
+# IAR ELF Linker V9.40.1.364/W64 for ARM                  19/Sep/2023  13:54:36
 # Copyright 2007-2023 IAR Systems AB.
 #
 #    Output file  =  E:\IAR projects\STM32F4xx\w25qxx\SPL\Debug\Exe\w25qxx.out
@@ -561,12 +561,12 @@ main                     0x800'1135   0x8c  Code  Gb  main.o [4]
 qs                      0x2000'00b8    0x4  Data  Lc  no_free_heap0.o [7]
 rcc_clocks              0x2000'00a8   0x10  Data  Gb  Sys_Init.o [1]
 strncmp                  0x800'1255   0x2a  Code  Gb  strncmp.o [7]
-w25qxx_Busy              0x800'053b   0x14  Code  Gb  w25qxx.o [6]
+w25qxx_Busy              0x800'04cd   0x14  Code  Gb  w25qxx.o [6]
 w25qxx_Delay             0x800'05b1    0x8  Code  Gb  w25qxx_Interface.o [6]
 w25qxx_Handle           0x2000'0068   0x18  Data  Gb  w25qxx.o [6]
 w25qxx_Init              0x800'0189  0x118  Code  Gb  w25qxx.o [6]
 w25qxx_Read              0x800'036f   0x9e  Code  Gb  w25qxx.o [6]
-w25qxx_ReadID            0x800'04cd   0x6e  Code  Gb  w25qxx.o [6]
+w25qxx_ReadID            0x800'04e1   0x6e  Code  Gb  w25qxx.o [6]
 w25qxx_ReadStatus        0x800'040d   0xb2  Code  Gb  w25qxx.o [6]
 w25qxx_SPI_Receive       0x800'05a9    0x8  Code  Gb  w25qxx_Interface.o [6]
 w25qxx_SPI_Transmit      0x800'05a1    0x8  Code  Gb  w25qxx_Interface.o [6]

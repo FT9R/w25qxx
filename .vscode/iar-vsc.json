@@ -1,0 +1,18 @@
+{
+  "workspace": {
+    "path": "${workspaceFolder}\\HAL\\EWARM\\Project.eww"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\HAL\\EWARM\\Project.eww": {
+      "configs": {
+        "${workspaceFolder}\\HAL\\EWARM\\w25qxx.ewp": "w25qxx"
+      },
+      "selected": {
+        "path": "${workspaceFolder}\\HAL\\EWARM\\w25qxx.ewp"
+      }
+    }
+  },
+  "workbench": {
+    "path": "C:\\\\Program Files\\\\IAR Systems\\\\Embedded Workbench 9.2"
+  }
+}
