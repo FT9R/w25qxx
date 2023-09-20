@@ -43,11 +43,11 @@
         <CStepIntDis>_ 0</CStepIntDis>
     </StLinkDriver>
     <ArmDriver>
-        <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
         <EnableCache>0</EnableCache>
+        <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>1503722746</Checksum>
+        <Checksum>3456003487</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -162,10 +162,9 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 0 "EMUL_DATA_LOG" "w25qxx_ID_Read" 0 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\Source\main.c}.48.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\Source\main.c}.60.5" 0 0 1 "" 0 "" 0</Bp2>
-        <Count>3</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\Source\main.c}.46.5" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\Source\main.c}.57.5" 0 0 1 "" 0 "" 0</Bp1>
+        <Count>2</Count>
     </Breakpoints2>
     <Aliases>
         <Count>0</Count>

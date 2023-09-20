@@ -1,12 +1,13 @@
 #ifndef DELAY_H
 #define DELAY_H
 
-//#define	NDEBUG
-
 #include "stm32f4xx.h"
-#include <assert.h>
 
-void _delay_ms(const uint32_t ms);
-void _delay_us(const uint32_t us);
+#define GLOBAL_TICK_FREQ 1 // 1 kHz
+
+extern uint32_t uwTick;
+extern void Error_Handler(void);
+
+void Delay(uint32_t ms);
 
 #endif
