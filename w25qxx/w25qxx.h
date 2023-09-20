@@ -119,10 +119,11 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
  * @param dataLength: number of bytes to read
  * @param address: page address to read (multiple of 256 bytes)
  * @param trailingCRC: compare or not compare CRC at the end of frame
+ * @param fastRead: set true if SPIclk > 50MHz
  * @return Operation status
  */
 ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                        bool trailingCRC);
+                        bool trailingCRC, bool fastRead);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
