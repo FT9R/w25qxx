@@ -90,59 +90,55 @@ typedef struct
 
 /**
  * @brief Checks if the device is available and determines the number of pages
- *
  * @param w25qxx_Handle: pointer to the device handle structure
- * @param SPIx: SPI1, SPI2 or SPI3
+ * @param hspix: pointer to target SPI handle
  * @param CS_Port: GPIOx
  * @param CS_Pin: GPIO_Pin_x
- * @return ErrorStatus
+ * @return Operation status
  */
 ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
                         uint16_t CS_Pin);
 
 /**
  * @brief Writes data to w25qxx from external buffer
- *
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param buf: pointer to external buffer, that contains the data to write
  * @param dataLength: number of bytes to write
  * @param address: page address to write (multiple of 256 bytes)
+ * @param trailingCRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
- * @return ErrorStatus
+ * @return Operation status
  */
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
                          bool trailingCRC, waitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
- *
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param buf: pointer to external buffer, that will contain the received data
  * @param dataLength: number of bytes to read
  * @param address: page address to read (multiple of 256 bytes)
- * @return ErrorStatus
+ * @param trailingCRC: compare or not compare CRC at the end of frame
+ * @return Operation status
  */
 ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
                         bool trailingCRC);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
- *
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param eraseInstruction: pages groups to be erased
- * @param address: start address of sector or block to be erased
+ * @param address: start address of page, block or sector to be erased
  * @param waitForTask: the way to ensure that operation is completed
- * @return ErrorStatus
+ * @return Operation status
  */
 ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
                          waitForTask_t waitForTask);
 
 /**
- * @brief Checks the BUSY bit in status register 1
- *
+ * @brief Checks if the device is busy or not
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return true: device is busy
- * @return false: device is free
+ * @return True - device is busy
  */
 bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle);
 
