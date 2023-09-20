@@ -14,7 +14,7 @@ void main(void)
     {
         // w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, NULL, W25QXX_WAIT_BUSY);
         printf("\r\n First approach to read \r\n");
-        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true);
+        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
         if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
         {
             printf("Data already exist at page %i boundaries \r\n", PAGE);
@@ -25,7 +25,7 @@ void main(void)
             printf("Page programming...");
             w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, true, W25QXX_WAIT_BUSY);
             printf("\r\n Second approach to read \r\n");
-            w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true);
+            w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
             if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
             {
                 printf("Writing process success \r\n");

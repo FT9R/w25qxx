@@ -3,7 +3,7 @@
 
 #include "init.h"
 #include "w25qxx.h"
-#include <stdbool.h>
+#include <stdio.h>
 
 /* Definitions */
 // #define USE_IO_TERMINAL

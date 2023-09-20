@@ -54,4 +54,5 @@ E:\IAR\ projects\STM32F4xx\w25qxx\SPL\Debug\BrowseInfo\Source_158122631547980674
   E:\IAR\ projects\STM32F4xx\w25qxx\SPL\..\w25qxx\w25qxx_Interface.h \
   C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdbool.h \
   C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\string.h \
-  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product_string.h
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product_string.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdio.h

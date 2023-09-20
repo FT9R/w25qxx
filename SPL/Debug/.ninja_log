@@ -1,172 +1,58 @@
 # ninja log v5
-3	343	7059453342503817	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-569	848	7059250840318813	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	864cc64a61ecbed7
-1	96	7059245447315986	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/startup_stm32f407xx.o	407163478f7c2d67
-820	908	7059453348100593	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-354	560	7059453344602741	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-2	326	7059250835121564	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/Sys_Init.o	70e37e402e8bfd6c
-858	1085	7059250842717500	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/Delay/Delay.o	5b8fbb44614350d3
-1306	1534	7059250847215089	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/SPI/SPI.o	d6ee3bf69383ab57
-2259	2491	7059250856809954	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	4732fa475b101d83
-334	555	7059250837420611	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.o	96c1b21a3c711386
-1094	1294	7059250844816657	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/system_stm32f4xx.o	21833fb2e8b7fb12
-2057	2251	7059250854411252	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-2	283	7058542480486861	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/SPI_Interface.o	7aad538b7add87b5
-571	812	7059453347201066	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-2	28	7059250250744687	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/startup_stm32f40_41xxx.o	a6bb854ee292a203
-1542	1832	7059250850213485	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.o	62c2ab4b7d151744
-2	295	7059455723237817	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-480	732	7059455727635666	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-2	373	7059456467962812	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-380	568	7059456469861797	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-577	770	7059456471960670	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-778	864	7059456472860198	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	307	7059456616535847	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-315	511	7059456618634721	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-521	775	7059456621233533	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-787	979	7059456623232256	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-987	1065	7059456624131778	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	266	7059456686833194	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-272	468	7059456688832127	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-476	675	7059456690931000	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-684	936	7059456693529610	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-945	1024	7059456694429123	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	212	7059456939363445	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-221	300	7059456940262955	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-6	238	7059457326396165	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-244	444	7059457328395057	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-452	702	7059457330993658	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-712	905	7059457332993010	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-914	992	7059457333892491	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	321	7059457465127225	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-330	526	7059457467226110	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-534	731	7059457469225033	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-2	317	7059457501428465	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-325	525	7059457503527345	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-537	729	7059457505526565	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-737	936	7059457507625379	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-945	1024	7059457508524667	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	258	7059457554220154	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-265	464	7059457556219077	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-474	672	7059457558317955	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-682	931	7059457560916556	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-941	1019	7059457561816083	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	211	7059457649820625	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-219	427	7059457652019564	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-436	685	7059457654618055	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-694	886	7059457656616985	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-895	975	7059457657516500	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-2	209	7059458397725444	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	3de921bddc0c260b
-216	413	7059458399724377	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	9f43f660dac5dd3f
-424	680	7059458402423216	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	e9e9cf5e63041f3a
-693	897	7059458404522064	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	42a6fd075a0d9611
-905	988	7059458405421548	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
-1	204	7059459439247533	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/Sys_Init.o	ee292bceeb493b55
-211	237	7059459439647542	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/startup_stm32f40_41xxx.o	a6bb854ee292a203
-240	472	7059459441846129	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Config/system_stm32f4xx.o	53ad8309da44a10c
-478	717	7059459444345021	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/SPI/SPI.o	8e3c3c4413d371b8
-725	937	7059459446543887	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.o	b0d23c3af22c3003
-947	1135	7059459448542542	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/Delay/Delay.o	849a44679013c64
-1146	1402	7059459451141385	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.o	551856a0d1b119b
-1414	1695	7059459454139544	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	dd8ae256ac8ae0ab
-1703	1901	7059459456138711	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/Init.o	b161199a98282bc2
-1909	2103	7059459458237354	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx_Interface.o	6eb82a008eea6811
-2115	2316	7059459460336440	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Source/main.o	2afb52a2aad9c6b8
-2324	2553	7059459462734940	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	e011204e99263d4e
-2562	2815	7059459465333555	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Obj/Libraries/w25qxx/w25qxx.o	5c097aa3e32fc707
-2823	2901	7059459466233284	C:/Users/cheryomushkinra/Desktop/w25qxx/Debug/Exe/w25qxx.out	2178f7e5582c1b27
+677	864	7060034357536728	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/Init.o	c6fea607d0ba8ed5
+819	1091	7140403594311380	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_gpio.o	4e1db03050adc98b
 1	37	7060032288796938	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/startup_stm32f40_41xxx.o	9b409e07f9dd3cf
+1348	1480	7140403598401527	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config_11493520833803052547.dir/startup_stm32f40_41xxx.o	8a953d2c0378885e
+2	294	7169104823870866	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
+277	471	7060034353603797	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	6584377fd8e13277
+862	1099	7089417629130748	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	ac041c6562c9a9ba
+786	1069	7089417628781688	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx_Interface.o	6533bf5e2da338fe
+750	1097	7140403594311380	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_flash.o	ecea662b7cf7e997
 40	222	7060032290563910	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/Sys_Init.o	85b8d7b5c6d7f70e
+285	530	7169000543786444	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
+903	1123	7060032299562314	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/SPI/SPI.o	7320aaca3bab632f
 230	417	7060032292463424	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/system_stm32f4xx.o	a70164b67563ab00
 425	613	7060032294462971	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/Delay/Delay.o	41f60032240a4c2a
 624	894	7060032297296351	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	5f7f7e77032a8df4
-903	1123	7060032299562314	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/SPI/SPI.o	7320aaca3bab632f
 1130	1386	7060032302230177	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.o	35ab9d1976896a05
 1394	1602	7060032304397207	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.o	24422509c1888c4f
-1611	1801	7060032306300085	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx_Interface.o	682ed06521b0957d
-1808	2002	7060032308396641	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/Init.o	c6fea607d0ba8ed5
-2010	2237	7060032310730394	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	b8384353d4a7f8f9
-2249	2498	7060032313295811	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx.o	f8e84d2706d14a6c
-2505	2699	7060032315296767	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	6584377fd8e13277
-2706	2816	7060032316462563	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	72d53c13257453c3
-2	270	7060034351602375	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx.o	f8e84d2706d14a6c
-277	471	7060034353603797	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	6584377fd8e13277
 479	668	7060034355604223	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx_Interface.o	682ed06521b0957d
-677	864	7060034357536728	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/Init.o	c6fea607d0ba8ed5
-875	951	7060034358437362	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	72d53c13257453c3
-7	182	7089417620057157	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/startup_stm32f40_41xxx.o	e6b26534a1531795
+2	270	7060034351602375	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx.o	f8e84d2706d14a6c
+2010	2237	7060032310730394	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	b8384353d4a7f8f9
 69	490	7089417622969361	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/Sys_Init.o	b7b2b856b0a1e805
+204	288	7169002355480195	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+84	817	7140403591384654	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config_11493520833803052547.dir/system_stm32f4xx.o	c70124a693259f23
+7	182	7089417620057157	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/startup_stm32f40_41xxx.o	e6b26534a1531795
+3	271	7169000540873640	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/SPI_17047752498144604355.dir/SPI.o	a489ed6318f9da73
 185	542	7089417623527839	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/Delay/Delay.o	c311bffa47b722a1
 88	573	7089417623737266	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/SPI/SPI.o	4762e86caf999392
+548	966	7089417627694595	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	8922022b63ccede3
 82	601	7089417624016521	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.o	c43d731992fca507
 509	779	7089417625891104	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config/system_stm32f4xx.o	25f7624d05aae9a4
 580	856	7089417626527715	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.o	734b44d32bffcf0a
 608	942	7089417627545002	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx.o	9b83d4b8bed8e46c
-548	966	7089417627694595	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.o	8922022b63ccede3
-786	1069	7089417628781688	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx/w25qxx_Interface.o	6533bf5e2da338fe
-862	1099	7089417629130748	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/main.o	ac041c6562c9a9ba
 973	1190	7089417630098963	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source/Init.o	6f5fe2072dc94a03
 947	1227	7089417630461146	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.o	4b350f359016979b
 1235	1633	7089417634541142	e:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	39850e90eaff478a
 1	749	7140403590931775	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config_11493520833803052547.dir/Sys_Init.o	2cf6e3c0be8a598a
-80	798	7140403591225057	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Delay_15897712922073547611.dir/Delay.o	679203e78a27a8b8
-84	817	7140403591384654	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config_11493520833803052547.dir/system_stm32f4xx.o	c70124a693259f23
-100	915	7140403592555723	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/SPI_17047752498144604355.dir/SPI.o	a489ed6318f9da73
-819	1091	7140403594311380	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_gpio.o	4e1db03050adc98b
-750	1097	7140403594311380	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_flash.o	ecea662b7cf7e997
+9	314	7169000541274637	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Delay_15897712922073547611.dir/Delay.o	679203e78a27a8b8
 813	1235	7140403595436014	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_rcc.o	30be30399d16db0e
 916	1242	7140403595715088	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/src_4334390804880101107.dir/stm32f4xx_spi.o	2c3da8356070afcb
-1092	1347	7140403596948419	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-1099	1459	7140403598088532	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-1348	1480	7140403598401527	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Config_11493520833803052547.dir/startup_stm32f40_41xxx.o	8a953d2c0378885e
-1237	1532	7140403598883375	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-1243	1595	7140403599521297	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-1597	2223	7140403605768110	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-15	250	7140404213290938	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-30	285	7140404213484599	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-21	309	7140404213797661	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-24	346	7140404214276388	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-348	430	7140404215131922	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-3	253	7140405626205203	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-9	259	7140405626225158	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-14	291	7140405626634049	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-20	354	7140405627307590	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-356	441	7140405628205143	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-2	359	7140424571144534	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-15	360	7140424571244263	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-9	386	7140424571529485	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-22	485	7140424572596618	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-2	204	7140424759606327	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-206	287	7140424760441509	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-8	260	7140501863185788	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-2	287	7140501863275559	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-19	387	7140501864478523	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-2	202	7140502278364381	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-2	203	7140502411322708	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-204	285	7140502412150766	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-3	280	7140503367568313	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-3	230	7140504307307500	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-9	254	7140504307526912	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-13	268	7140504307586755	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-18	332	7140504308374643	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-333	415	7140504309212627	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-3	598	7167488573390669	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-9	604	7167488573390669	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-606	811	7167488575490370	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-599	861	7167488575990368	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-864	1088	7167488578291913	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-2	293	7168239269163312	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-294	407	7168239270263364	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-2	205	7168240759978226	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-206	290	7168240760809890	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
 17	262	7169000540940650	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/Init.o	b32a386941c7c237
-3	271	7169000540873640	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/SPI_17047752498144604355.dir/SPI.o	a489ed6318f9da73
-9	314	7169000541274637	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Delay_15897712922073547611.dir/Delay.o	679203e78a27a8b8
-13	443	7169000542606561	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx.o	c7da41277eabaa29
-285	530	7169000543786444	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/w25qxx_12202358171051320134.dir/w25qxx_Interface.o	58673c2d880555d9
-2	201	7169000938601645	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-202	388	7169000940370811	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
-2	202	7169001998517125	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-203	286	7169001999349715	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
 2	203	7169002354544726	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
-204	288	7169002355480195	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+3	199	7169104962433773	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+200	341	7169104963768259	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	203	7169105035533248	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+205	297	7169105036432168	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	207	7169105233862178	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+209	306	7169105234764668	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	263	7169105301194019	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+264	356	7169105302103039	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+3	212	7169107227868170	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+212	302	7169107228718616	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	231	7169107498047698	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+231	320	7169107499000715	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	219	7169107826975145	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+220	301	7169107827817813	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
+2	212	7169108199025162	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Obj/Source_15812263154798067462.dir/main.o	eeeac0b11b4661fa
+212	311	7169108200045386	E:/IAR projects/STM32F4xx/w25qxx/SPL/Debug/Exe/w25qxx.out	42d9c56638c3bf54
