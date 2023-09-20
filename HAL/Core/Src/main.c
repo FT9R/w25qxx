@@ -24,8 +24,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "w25qxx.h"
-#include <stdio.h>
-#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,6 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+w25qxx_HandleTypeDef w25qxx_Handle;
 const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 uint8_t bufferRead[sizeof(bufferWrite)] = {0};
 /* USER CODE END PV */
@@ -95,12 +94,12 @@ int main(void)
     MX_GPIO_Init();
     MX_SPI1_Init();
     /* USER CODE BEGIN 2 */
-    w25qxx_Init(&w25qxx_Handle, hspi1.Instance, CS0_GPIO_Port, CS0_Pin);
+    w25qxx_Init(&w25qxx_Handle, &hspi1, CS0_GPIO_Port, CS0_Pin);
     if (w25qxx_Handle.status == SUCCESS)
     {
         // w25qxx_Erase(&w25qxx_Handle, CHIP_ERASE, NULL, WAIT_BUSY);
         printf("\r\n First approach to read \r\n");
-        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS);
+        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true);
         if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
         {
             printf("Data already exist at page %i boundaries \r\n", PAGE);
@@ -109,9 +108,9 @@ int main(void)
         {
             printf("Data doesn't exist at page %i boundaries \r\n", PAGE);
             printf("Page programming...");
-            w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, WAIT_DELAY);
+            w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, true, W25QXX_WAIT_BUSY);
             printf("\r\n Second approach to read \r\n");
-            w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS);
+            w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true);
             if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
             {
                 printf("Writing process success \r\n");
@@ -186,21 +185,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_Delay(uint32_t Delay)
-{
-    uint32_t tickstart = HAL_GetTick();
-    uint32_t wait = Delay;
 
-    //	// This section has been commented in order to get specified delay
-    //	// but standart HAL function gives delay+1ms
-    //	/* Add a freq to guarantee minimum wait */
-    //	if (wait < HAL_MAX_DELAY)
-    //	{
-    //		wait += (uint32_t)(uwTickFreq);
-    //	}
-
-    while ((HAL_GetTick() - tickstart) < wait) {}
-}
 /* USER CODE END 4 */
 
 /**

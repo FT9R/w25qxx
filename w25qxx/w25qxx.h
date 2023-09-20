@@ -2,7 +2,6 @@
 #define W25QXX_H
 
 #include "w25qxx_Interface.h"
-#include <stdbool.h>
 
 /* Instruction Set */
 #define W25QXX_CMD_WRITE_ENABLE              0x06
@@ -48,6 +47,11 @@
 #define W25QXX_BLOCK_ERASE_TIME_64KB      2000
 #define W25QXX_CHIP_ERASE_TIME            25000
 
+/* Timeouts [ms] */
+#define W25QXX_TX_TIMEOUT       100
+#define W25QXX_RX_TIMEOUT       100
+#define W25QXX_RESPONSE_TIMEOUT 100
+
 /* Device constants */
 #define W25QXX_MANUFACTURER_ID 0xEF
 #define W25QXX_PAGE_SIZE       256
@@ -55,27 +59,34 @@ typedef enum { w25q80 = 0x13, w25q16, w25q32, w25q64, w25q128 } w25qxx_Def;
 
 /* Macro */
 #define KB_TO_BYTE(KB)         (KB * 1024)
-#define CS_HIGH(DEVICE_HANDLE) SET_BIT((DEVICE_HANDLE)->CS_Port->ODR, (DEVICE_HANDLE)->CS_Pin)
-#define CS_LOW(DEVICE_HANDLE)  CLEAR_BIT((DEVICE_HANDLE)->CS_Port->ODR, (DEVICE_HANDLE)->CS_Pin)
+#define CS_HIGH(DEVICE_HANDLE) SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin)
+#define CS_LOW(DEVICE_HANDLE)  SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin << 16)
+#define ADDRESS_BYTES_SWAP(DEVICE_HANDLE, ADDRESS)              \
+    DEVICE_HANDLE->addressBytes[0] = (uint8_t) (ADDRESS >> 16); \
+    DEVICE_HANDLE->addressBytes[1] = (uint8_t) (ADDRESS >> 8);  \
+    DEVICE_HANDLE->addressBytes[2] = (uint8_t) (ADDRESS >> 0)
 
-typedef enum { SECTOR_ERASE_4KB, BLOCK_ERASE_32KB, BLOCK_ERASE_64KB, CHIP_ERASE } eraseInstruction_t;
+typedef enum {
+    W25QXX_SECTOR_ERASE_4KB,
+    W25QXX_BLOCK_ERASE_32KB,
+    W25QXX_BLOCK_ERASE_64KB,
+    W25QXX_CHIP_ERASE
+} eraseInstruction_t;
 
-typedef enum { WAIT_NO, WAIT_DELAY, WAIT_BUSY } waitForTask_t;
+typedef enum { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } waitForTask_t;
 
 typedef struct
 {
     uint8_t ID[2];
-    uint32_t numberOfPages;
-    uint8_t cmd;
+    uint8_t statusRegister;
     uint8_t addressBytes[3];
-    SPI_TypeDef *SPIx;
+    uint8_t CMD;
+    SPI_HandleTypeDef *hspix;
     GPIO_TypeDef *CS_Port;
     uint16_t CS_Pin;
+    uint32_t numberOfPages;
     ErrorStatus status;
 } w25qxx_HandleTypeDef;
-
-/* Exported variables */
-extern w25qxx_HandleTypeDef w25qxx_Handle;
 
 /**
  * @brief Checks if the device is available and determines the number of pages
@@ -86,7 +97,8 @@ extern w25qxx_HandleTypeDef w25qxx_Handle;
  * @param CS_Pin: GPIO_Pin_x
  * @return ErrorStatus
  */
-ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, GPIO_TypeDef *CS_Port, uint16_t CS_Pin);
+ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
+                        uint16_t CS_Pin);
 
 /**
  * @brief Writes data to w25qxx from external buffer
@@ -99,7 +111,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
  * @return ErrorStatus
  */
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                         waitForTask_t waitForTask);
+                         bool trailingCRC, waitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -110,26 +122,8 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
  * @param address: page address to read (multiple of 256 bytes)
  * @return ErrorStatus
  */
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address);
-
-/**
- * @brief Writes a byte to the status register
- *
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param statusRegisterx: number of status register (1, 2 or 3)
- * @param status: pointer to the status byte to be written to the status register
- * @return ErrorStatus
- */
-ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, const uint8_t *status);
-
-/**
- * @brief Reads a byte from the status register
- *
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param statusRegisterx: number of status register
- * @param status: pointer to a byte that will contain the received status register data
- */
-void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, uint8_t *status);
+ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                        bool trailingCRC);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array

@@ -1,6 +1,7 @@
 E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\w25qxx\BrowseInfo\w25qxx_12202358171051320134.dir\w25qxx_Interface.pbi: \
   E:\IAR\ projects\STM32F4xx\w25qxx\w25qxx\w25qxx_Interface.c \
   E:\IAR\ projects\STM32F4xx\w25qxx\w25qxx\w25qxx_Interface.h \
+  E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Core\Inc\SPI.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Core\Inc\main.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Core\Inc\stm32f4xx_hal_conf.h \
@@ -37,7 +38,8 @@ E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\w25qxx\BrowseInfo\w25qxx_12202358171
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h \
   E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdbool.h \
   C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdlib.h \
   C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product_stdlib.h \
-  E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Core\Inc\spi.h \
-  E:\IAR\ projects\STM32F4xx\w25qxx\HAL\EWARM\..\Core\Inc\main.h
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\string.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product_string.h

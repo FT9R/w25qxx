@@ -1,47 +1,51 @@
 #include "w25qxx.h"
 
-/* Public variables */
-w25qxx_HandleTypeDef w25qxx_Handle;
-
 /* Private function prototypes */
-ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
-ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
-void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
-void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
+// static ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+//                                       const uint8_t *status);
+static void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, uint8_t *status);
+static ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
+static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
+static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
+// static void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
+static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 
-ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, GPIO_TypeDef *CS_Port, uint16_t CS_Pin)
+ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
+                        uint16_t CS_Pin)
 {
     w25qxx_Delay(100);
 
     /* SPI device specific info retrieve */
-    w25qxx_Handle->SPIx = SPIx;
+    w25qxx_Handle->hspix = hspix;
     w25qxx_Handle->CS_Port = CS_Port;
     w25qxx_Handle->CS_Pin = CS_Pin;
     w25qxx_Handle->status = ERROR;
 
     /* Check for SPI1-3 match */
-    if ((w25qxx_Handle->SPIx != SPI1) && (w25qxx_Handle->SPIx != SPI2) && (w25qxx_Handle->SPIx != SPI3))
+    if ((w25qxx_Handle->hspix->Instance != SPI1) && (w25qxx_Handle->hspix->Instance != SPI2)
+        && (w25qxx_Handle->hspix->Instance != SPI3))
         return w25qxx_Handle->status;
 
     /* Release from power-down */
-    w25qxx_Handle->cmd = W25QXX_CMD_RELEASE_POWER_DOWN;
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_RELEASE_POWER_DOWN;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
     w25qxx_Delay(1);
 
     /* Reset device*/
-    w25qxx_Handle->cmd = W25QXX_CMD_ENABLE_RESET;
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_ENABLE_RESET;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
-    w25qxx_Handle->cmd = W25QXX_CMD_RESET_DEVICE;
+    w25qxx_Delay(1);
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_RESET_DEVICE;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
     w25qxx_Delay(1);
 
-    /* Get the ManufacturerID and DeviceID */
+    /* Get the Manufacturer ID and Device ID */
     w25qxx_ReadID(w25qxx_Handle);
     if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
         return w25qxx_Handle->status;
@@ -77,275 +81,251 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_TypeDef *SPIx, 
 }
 
 ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                         waitForTask_t waitForTask)
+                         bool trailingCRC, waitForTask_t waitForTask)
 {
-    if ((dataLength == 0) || (dataLength > W25QXX_PAGE_SIZE))
-        return ERROR; // 1-256 bytes data can be written
+    w25qxx_Handle->status = ERROR;
+    uint16_t CRC16 = 0x0000;
+
+    /* Argument guards */
+    if ((dataLength == 0) || (buf == NULL))
+        return w25qxx_Handle->status;
+    if (trailingCRC)
+        dataLength += sizeof(uint16_t);
+    if (dataLength > W25QXX_PAGE_SIZE)
+        return w25qxx_Handle->status;
     if ((address % W25QXX_PAGE_SIZE) != 0)
-        return ERROR; // Only first byte of the page can be pointed as the start byte
-    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - dataLength))
-        return ERROR;
+        return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
+    if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
+        return w25qxx_Handle->status; // The boundaries of write operation beyond memory
 
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
-        return ERROR;
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+        return w25qxx_Handle->status;
 
-    /* Page program */
+    /* Middle buffer operations */
+    uint8_t *midBuf = malloc(sizeof(*midBuf) * dataLength);
+    if (midBuf == NULL)
+        return w25qxx_Handle->status; // Insufficient heap memory available
+    if (trailingCRC)
+    {
+        /* Data + checksum */
+        memcpy(midBuf, buf, dataLength - sizeof(uint16_t));
+        CRC16 = ModBus_CRC(buf, dataLength - sizeof(uint16_t));
+        midBuf[dataLength - 2] = ((CRC16 >> 8) & 0xFF);
+        midBuf[dataLength - 1] = (CRC16 & 0xFF);
+    }
+    else
+        /* Pure data */
+        memcpy(midBuf, buf, dataLength);
+
+    /* Command */
     w25qxx_WriteEnable(w25qxx_Handle);
-    w25qxx_Handle->cmd = W25QXX_CMD_PAGE_PROGRAM;
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_PAGE_PROGRAM;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* A23-A0 - Start address of the desired page */
-    w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
-    w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
-    w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+    ADDRESS_BYTES_SWAP(w25qxx_Handle, address);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                        W25QXX_TX_TIMEOUT);
 
     /* Data write */
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, buf, dataLength);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, midBuf, dataLength, W25QXX_TX_TIMEOUT);
+    free(midBuf);
     CS_HIGH(w25qxx_Handle);
 
-    if (waitForTask == WAIT_DELAY)
+    /* Wait options */
+    if (waitForTask == W25QXX_WAIT_DELAY)
         w25qxx_Delay(W25QXX_PAGE_PROGRAM_TIME);
-    else if (waitForTask == WAIT_BUSY)
-        while (w25qxx_Busy(w25qxx_Handle)) {}
+    else if (waitForTask == W25QXX_WAIT_BUSY)
+    {
+        if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_PAGE_PROGRAM_TIME) != SUCCESS)
+            return w25qxx_Handle->status;
+    }
 
-    return SUCCESS;
+    return w25qxx_Handle->status = SUCCESS;
 }
 
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address)
+ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                        bool trailingCRC)
 {
-    if ((dataLength == 0) || (dataLength > W25QXX_PAGE_SIZE))
-        return ERROR; // 1-256 bytes data can be read
+    w25qxx_Handle->status = ERROR;
+    uint16_t CRC16 = 0x0000;
+
+    /* Argument guards */
+    if ((dataLength == 0) || (buf == NULL))
+        return w25qxx_Handle->status;
+    if (trailingCRC)
+        dataLength += sizeof(uint16_t);
+    if (dataLength > W25QXX_PAGE_SIZE)
+        return w25qxx_Handle->status;
     if ((address % W25QXX_PAGE_SIZE) != 0)
-        return ERROR; // Only first byte of the page can be pointed as the start byte
-    if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - dataLength))
-        return ERROR;
+        return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
+    if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
+        return w25qxx_Handle->status; // The boundaries of read operation beyond memory
 
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
-        return ERROR;
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+        return w25qxx_Handle->status;
 
-    /* Page read */
-    w25qxx_Handle->cmd = W25QXX_CMD_READ_DATA;
+    /* Middle buffer operations */
+    uint8_t *midBuf = malloc(sizeof(*midBuf) * dataLength);
+    if (midBuf == NULL)
+        return w25qxx_Handle->status; // Insufficient heap memory available
+
+    /* Command */
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_READ_DATA;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* A23-A0 - Start address of the desired page */
-    w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
-    w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
-    w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+    ADDRESS_BYTES_SWAP(w25qxx_Handle, address);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                        W25QXX_TX_TIMEOUT);
 
     /* Data read */
-    w25qxx_SPI_Receive(w25qxx_Handle->SPIx, buf, dataLength);
+    w25qxx_SPI_Receive(w25qxx_Handle->hspix, midBuf, dataLength, W25QXX_RX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
 
-    return SUCCESS;
-}
-
-ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, const uint8_t *status)
-{
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
-        return ERROR;
-
-    w25qxx_Handle->cmd = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
-    CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-    CS_HIGH(w25qxx_Handle);
-
-    switch (statusRegisterx)
+    /* Checksum compare */
+    if (trailingCRC)
     {
-    case 1:
-        w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER1;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
-
-    case 2:
-        w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER2;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
-
-    case 3:
-        w25qxx_Handle->cmd = W25QXX_CMD_WRITE_STATUS_REGISTER3;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
+        CRC16 = ModBus_CRC(midBuf, dataLength - sizeof(uint16_t));
+        if ((midBuf[dataLength - 2] != ((CRC16 >> 8) & 0xFF)) || (midBuf[dataLength - 1] != (CRC16 & 0xFF)))
+        {
+            free(midBuf);
+            return w25qxx_Handle->status; // CRC error
+        }
     }
 
-    return SUCCESS;
-}
+    /* Copy middle buffer content to the destination buffer */
+    if (trailingCRC)
+        memcpy(buf, midBuf, dataLength - sizeof(uint16_t));
+    else
+        memcpy(buf, midBuf, dataLength);
+    free(midBuf);
 
-void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, uint8_t *status)
-{
-    switch (statusRegisterx)
-    {
-    case 1:
-        w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER1;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
-
-    case 2:
-        w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
-
-    case 3:
-        w25qxx_Handle->cmd = W25QXX_CMD_READ_STATUS_REGISTER2;
-        CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-        w25qxx_SPI_Receive(w25qxx_Handle->SPIx, status, 1);
-        CS_HIGH(w25qxx_Handle);
-        break;
-    }
+    return w25qxx_Handle->status = SUCCESS;
 }
 
 ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
                          waitForTask_t waitForTask)
 {
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
-        return ERROR;
+    w25qxx_Handle->status = ERROR;
+
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+        return w25qxx_Handle->status;
 
     switch (eraseInstruction)
     {
-    case SECTOR_ERASE_4KB:
+    case W25QXX_SECTOR_ERASE_4KB:
         if ((address % KB_TO_BYTE(4)) != 0)
-            return ERROR; // Incorrect start address for sector
+            return w25qxx_Handle->status; // Incorrect start address for sector
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(4)))
-            return ERROR; // The boundaries of erase operation beyond memory
+            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
 
-        /* Sector Erase */
+        /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        w25qxx_Handle->cmd = W25QXX_CMD_SECTOR_ERASE_4KB;
         CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+        w25qxx_Handle->CMD = W25QXX_CMD_SECTOR_ERASE_4KB;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
-        /* A23-A0 - Start address of the desired sector */
-        w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
-        w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
-        w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+        /* A23-A0 - Start address of the desired page */
+        ADDRESS_BYTES_SWAP(w25qxx_Handle, address);
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                            W25QXX_TX_TIMEOUT);
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == WAIT_DELAY)
+        /* Wait options */
+        if (waitForTask == W25QXX_WAIT_DELAY)
+            w25qxx_Delay(W25QXX_SECTOR_ERASE_TIME_4KB);
+        else if (waitForTask == W25QXX_WAIT_BUSY)
         {
-            for (uint32_t i = 0; i < (W25QXX_SECTOR_ERASE_TIME_4KB / 100); i++)
-            {
-                w25qxx_Delay(100);
-            }
-        }
-        else if (waitForTask == WAIT_BUSY)
-        {
-            while (w25qxx_Busy(w25qxx_Handle)) {}
+            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_SECTOR_ERASE_TIME_4KB) != SUCCESS)
+                return w25qxx_Handle->status;
         }
         break;
 
-    case BLOCK_ERASE_32KB:
+    case W25QXX_BLOCK_ERASE_32KB:
         if ((address % KB_TO_BYTE(32)) != 0)
-            return ERROR; // Incorrect start address for block
+            return w25qxx_Handle->status; // Incorrect start address for block
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(32)))
-            return ERROR; // The boundaries of erase operation beyond memory
+            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
 
-        /* Block Erase */
+        /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_32KB;
         CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+        w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_32KB;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
-        /* A23-A0 - Start address of the desired block */
-        w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
-        w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
-        w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+        /* A23-A0 - Start address of the desired page */
+        ADDRESS_BYTES_SWAP(w25qxx_Handle, address);
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                            W25QXX_TX_TIMEOUT);
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == WAIT_DELAY)
+        /* Wait options */
+        if (waitForTask == W25QXX_WAIT_DELAY)
+            w25qxx_Delay(W25QXX_BLOCK_ERASE_TIME_32KB);
+        else if (waitForTask == W25QXX_WAIT_BUSY)
         {
-            for (uint32_t i = 0; i < (W25QXX_BLOCK_ERASE_TIME_32KB / 100); i++)
-            {
-                w25qxx_Delay(100);
-            }
-        }
-        else if (waitForTask == WAIT_BUSY)
-        {
-            while (w25qxx_Busy(w25qxx_Handle)) {}
+            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_32KB) != SUCCESS)
+                return w25qxx_Handle->status;
         }
         break;
 
-    case BLOCK_ERASE_64KB:
+    case W25QXX_BLOCK_ERASE_64KB:
         if ((address % KB_TO_BYTE(64)) != 0)
-            return ERROR; // Incorrect start address for block
+            return w25qxx_Handle->status; // Incorrect start address for block
         if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(64)))
-            return ERROR; // The boundaries of erase operation beyond memory
+            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
 
-        /* Block Erase */
+        /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        w25qxx_Handle->cmd = W25QXX_CMD_BLOCK_ERASE_64KB;
         CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+        w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_64KB;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
-        /* A23-A0 - Start address of the desired block */
-        w25qxx_Handle->addressBytes[0] = (uint8_t) (address >> 16);
-        w25qxx_Handle->addressBytes[1] = (uint8_t) (address >> 8);
-        w25qxx_Handle->addressBytes[2] = (uint8_t) (address);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes));
+        /* A23-A0 - Start address of the desired page */
+        ADDRESS_BYTES_SWAP(w25qxx_Handle, address);
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                            W25QXX_TX_TIMEOUT);
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == WAIT_DELAY)
+        /* Wait options */
+        if (waitForTask == W25QXX_WAIT_DELAY)
+            w25qxx_Delay(W25QXX_BLOCK_ERASE_TIME_64KB);
+        else if (waitForTask == W25QXX_WAIT_BUSY)
         {
-            for (uint32_t i = 0; i < (W25QXX_BLOCK_ERASE_TIME_64KB / 100); i++)
-            {
-                w25qxx_Delay(100);
-            }
-        }
-        else if (waitForTask == WAIT_BUSY)
-        {
-            while (w25qxx_Busy(w25qxx_Handle)) {}
+            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_64KB) != SUCCESS)
+                return w25qxx_Handle->status;
         }
         break;
 
-    case CHIP_ERASE:
+    case W25QXX_CHIP_ERASE:
         if (address != NULL)
-            return ERROR;
+            return w25qxx_Handle->status;
 
-        /* Chip Erase */
+        /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        w25qxx_Handle->cmd = W25QXX_CMD_CHIP_ERASE;
         CS_LOW(w25qxx_Handle);
-        w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+        w25qxx_Handle->CMD = W25QXX_CMD_CHIP_ERASE;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
         CS_HIGH(w25qxx_Handle);
 
-        if (waitForTask == WAIT_DELAY)
+        /* Wait options */
+        if (waitForTask == W25QXX_WAIT_DELAY)
+            w25qxx_Delay(W25QXX_CHIP_ERASE_TIME);
+        else if (waitForTask == W25QXX_WAIT_BUSY)
         {
-            for (uint32_t i = 0; i < (W25QXX_CHIP_ERASE_TIME / 100); i++)
-            {
-                w25qxx_Delay(100);
-            }
-        }
-        else if (waitForTask == WAIT_BUSY)
-        {
-            while (w25qxx_Busy(w25qxx_Handle)) {}
+            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_CHIP_ERASE_TIME) != SUCCESS)
+                return w25qxx_Handle->status;
         }
         break;
 
     default:
-        return ERROR; //	Invalid erase instruction
+        return w25qxx_Handle->status; // Invalid erase instruction
     }
 
-    return SUCCESS;
+    return w25qxx_Handle->status = SUCCESS;
 }
 
 bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
@@ -353,59 +333,155 @@ bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
     uint8_t status;
     w25qxx_ReadStatus(w25qxx_Handle, 1, &status);
 
-    return READ_BIT(status, 0x01);
+    return READ_BIT(status, 1 << 1);
 }
 
 /**
  * @section Private functions
  */
-ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
+// static ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+//                                       const uint8_t *status)
+// {
+//     w25qxx_Handle->status = ERROR;
+
+// if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+//     return w25qxx_Handle->status;
+
+// CS_LOW(w25qxx_Handle);
+// w25qxx_Handle->CMD = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
+// w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+// CS_HIGH(w25qxx_Handle);
+
+// switch (statusRegisterx)
+// {
+// case 1:
+//     CS_LOW(w25qxx_Handle);
+//     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER1;
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) status, sizeof(*status), W25QXX_TX_TIMEOUT);
+//     CS_HIGH(w25qxx_Handle);
+//     break;
+
+// case 2:
+//     CS_LOW(w25qxx_Handle);
+//     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER2;
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) status, sizeof(*status), W25QXX_TX_TIMEOUT);
+//     CS_HIGH(w25qxx_Handle);
+//     break;
+
+// case 3:
+//     CS_LOW(w25qxx_Handle);
+//     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER3;
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) status, sizeof(*status), W25QXX_TX_TIMEOUT);
+//     CS_HIGH(w25qxx_Handle);
+//     break;
+
+// default:
+//     return w25qxx_Handle->status;
+// }
+
+// return w25qxx_Handle->status = SUCCESS;
+// }
+
+static void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, uint8_t *status)
 {
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, 100) != SUCCESS)
-        return ERROR;
-
-    uint8_t dummyByte = NULL;
-    w25qxx_Handle->cmd = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
-    CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &dummyByte, 1);
-    w25qxx_SPI_Receive(w25qxx_Handle->SPIx, w25qxx_Handle->ID, 2);
-    CS_HIGH(w25qxx_Handle);
-
-    return SUCCESS;
-}
-
-ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
-{
-    while (true)
+    switch (statusRegisterx)
     {
-        if (w25qxx_Busy(w25qxx_Handle))
-        {
-            timeout--;
-            w25qxx_Delay(1);
-        }
-        else
-            return SUCCESS;
+    case 1:
+        CS_LOW(w25qxx_Handle);
+        w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER1;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        w25qxx_SPI_Receive(w25qxx_Handle->hspix, status, sizeof(*status), W25QXX_RX_TIMEOUT);
+        CS_HIGH(w25qxx_Handle);
+        break;
 
-        if (timeout <= 0)
-            return ERROR;
+    case 2:
+        CS_LOW(w25qxx_Handle);
+        w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER2;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        w25qxx_SPI_Receive(w25qxx_Handle->hspix, status, sizeof(*status), W25QXX_RX_TIMEOUT);
+        CS_HIGH(w25qxx_Handle);
+        break;
+
+    case 3:
+        CS_LOW(w25qxx_Handle);
+        w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER2;
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        w25qxx_SPI_Receive(w25qxx_Handle->hspix, status, sizeof(*status), W25QXX_RX_TIMEOUT);
+        CS_HIGH(w25qxx_Handle);
+        break;
     }
 }
 
-void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
+static ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
-    w25qxx_Handle->cmd = W25QXX_CMD_WRITE_ENABLE;
+    w25qxx_Handle->status = ERROR;
+
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+        return w25qxx_Handle->status;
+
+    /* Command */
     CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
+    w25qxx_Handle->CMD = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+
+    /* 24-bit address (A23-A0) of 000000h */
+    ADDRESS_BYTES_SWAP(w25qxx_Handle, (uint32_t) 0);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                        W25QXX_TX_TIMEOUT);
+
+    /* Get Manufacturer ID and Device ID */
+    w25qxx_SPI_Receive(w25qxx_Handle->hspix, w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
+    CS_HIGH(w25qxx_Handle);
+
+    return w25qxx_Handle->status = SUCCESS;
+}
+
+static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
+{
+    w25qxx_Handle->status = ERROR;
+    uint32_t tickStart = uwTick;
+
+    while ((uwTick - tickStart) < timeout)
+    {
+        if (!w25qxx_Busy(w25qxx_Handle))
+            return w25qxx_Handle->status = SUCCESS;
+    }
+    return w25qxx_Handle->status;
+}
+
+static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
+{
+    CS_LOW(w25qxx_Handle);
+    w25qxx_Handle->CMD = W25QXX_CMD_WRITE_ENABLE;
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
 }
 
-void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
+// static void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
+// {
+//     CS_LOW(w25qxx_Handle);
+//     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_DISABLE;
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+//     CS_HIGH(w25qxx_Handle);
+// }
+
+static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)
 {
-    w25qxx_Handle->cmd = W25QXX_CMD_WRITE_DISABLE;
-    CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->SPIx, &w25qxx_Handle->cmd, 1);
-    CS_HIGH(w25qxx_Handle);
+    uint16_t CRC16 = 0xffff;
+    uint16_t i, j;
+    for (i = 0; i < bufSize; i++)
+    {
+        CRC16 ^= pBuffer[i];
+        for (j = 0; j < 8; j++)
+        {
+            if (CRC16 & 1)
+                CRC16 = (CRC16 >> 1) ^ 0xA001;
+            else
+                CRC16 = (CRC16 >> 1);
+        }
+    }
+    return CRC16;
 }
