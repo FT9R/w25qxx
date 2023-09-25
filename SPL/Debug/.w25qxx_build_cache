@@ -1,12 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<BuildDb>
-    <Tool>
-        <Name>linker</Name>
-        <Parent>
-            <Path>E:\IAR projects\STM32F4xx\w25qxx\SPL\Debug\Exe\w25qxx.out</Path>
-            <Output>
-                <Path>E:\IAR projects\STM32F4xx\w25qxx\SPL\Debug\List\w25qxx.map</Path>
-            </Output>
-        </Parent>
-    </Tool>
-</BuildDb>
+<BuildDb />

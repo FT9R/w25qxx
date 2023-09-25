@@ -52,23 +52,23 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
     /* Determine number of pages */
     switch (w25qxx_Handle->ID[1])
     {
-    case w25q80:
+    case W25Q80:
         w25qxx_Handle->numberOfPages = 8 * (KB_TO_BYTE(1) * KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
         break;
 
-    case w25q16:
+    case W25Q16:
         w25qxx_Handle->numberOfPages = 16 * (KB_TO_BYTE(1) * KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
         break;
 
-    case w25q32:
+    case W25Q32:
         w25qxx_Handle->numberOfPages = 32 * (KB_TO_BYTE(1) * KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
         break;
 
-    case w25q64:
+    case W25Q64:
         w25qxx_Handle->numberOfPages = 64 * (KB_TO_BYTE(1) * KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
         break;
 
-    case w25q128:
+    case W25Q128:
         w25qxx_Handle->numberOfPages = 128 * (KB_TO_BYTE(1) * KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
         break;
 
