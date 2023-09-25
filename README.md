@@ -1,5 +1,5 @@
 # Description
-A simple library designed to perform basic write/read operations with serial flash memory devices of the w25qxx family. 
+A simple library designed to perform basic write/read and erase operations with serial flash memory devices of the w25qxx family. 
 ## Features
 * Many devices on the same bus are supported with its dedicated handles:
 ```C
@@ -16,6 +16,7 @@ w25qxx_Init(&w25qxx_Handle2, &hspi1, CS2_GPIO_Port, CS2_Pin);
 * Based on the device ID this library can calculate the number of pages to eliminate some address issues for write/read and erase operations.
 * There are several options for waiting for the end of page program/erase instruction with dedicated timeouts.
 * The built-in ModBus CRC can be used to ensure data integrity.
+* Fast read option is implemented in case if SPIclk > 50MHz.
 ## Note
 To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
 (e.g., for the first page the address should be 0, for the second page - 256, etc.).   
