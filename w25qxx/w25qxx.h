@@ -55,7 +55,7 @@
 /* Device constants */
 #define W25QXX_MANUFACTURER_ID 0xEF
 #define W25QXX_PAGE_SIZE       256
-typedef enum { w25q80 = 0x13, w25q16, w25q32, w25q64, w25q128 } w25qxx_Def;
+enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
 #define KB_TO_BYTE(KB)         (KB * 1024)
