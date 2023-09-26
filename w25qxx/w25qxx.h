@@ -66,16 +66,16 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
     DEVICE_HANDLE->addressBytes[1] = (uint8_t) (ADDRESS >> 8);  \
     DEVICE_HANDLE->addressBytes[2] = (uint8_t) (ADDRESS >> 0)
 
-typedef enum {
+typedef enum eraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,
     W25QXX_BLOCK_ERASE_32KB,
     W25QXX_BLOCK_ERASE_64KB,
     W25QXX_CHIP_ERASE
 } eraseInstruction_t;
 
-typedef enum { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } waitForTask_t;
+typedef enum waitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } waitForTask_t;
 
-typedef struct
+typedef struct w25qxx_HandleTypeDef_s
 {
     uint8_t ID[2];
     uint8_t statusRegister;
