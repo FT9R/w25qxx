@@ -24,11 +24,11 @@
         <CStepIntDis>_ 0</CStepIntDis>
     </StLinkDriver>
     <ArmDriver>
-        <EnableCache>0</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
+        <EnableCache>0</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>1814530540</Checksum>
+        <Checksum>3434405619</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -38,10 +38,6 @@
         <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
     </Disassembly>
-    <Trace1>
-        <Enabled>0</Enabled>
-        <ShowSource>1</ShowSource>
-    </Trace1>
     <CallStack>
         <ShowArgs>0</ShowArgs>
     </CallStack>
@@ -74,23 +70,6 @@
         <LogFile>_ "$PROJ_DIR$\LogFile1.log"</LogFile>
         <Category2>_ 2</Category2>
     </LogFile>
-    <struct_types>
-        <Fmt0>SPI_TypeDef-SR	1	0</Fmt0>
-    </struct_types>
-    <Trace2>
-        <Enabled>0</Enabled>
-        <ShowSource>0</ShowSource>
-    </Trace2>
-    <SWOTraceWindow>
-        <PcSampling>0</PcSampling>
-        <InterruptLogs>0</InterruptLogs>
-        <ForcedTimeStamps>0</ForcedTimeStamps>
-        <EventCPI>0</EventCPI>
-        <EventEXC>0</EventEXC>
-        <EventFOLD>0</EventFOLD>
-        <EventLSU>0</EventLSU>
-        <EventSLEEP>0</EventSLEEP>
-    </SWOTraceWindow>
     <DataLog>
         <GraphEnabled>0</GraphEnabled>
         <LogEnabled>0</LogEnabled>
@@ -122,10 +101,6 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
@@ -133,14 +108,72 @@
         <Symbiont>0</Symbiont>
         <Exclusions />
     </DriverProfiling>
+    <Jet>
+        <JetConnSerialNo>CMSIS-DAP_LU:LU_2022_8888</JetConnSerialNo>
+        <JetConnFoundProbes />
+        <PrevWtdReset>Connect during reset</PrevWtdReset>
+        <DisableInterrupts>0</DisableInterrupts>
+        <LeaveRunning>0</LeaveRunning>
+        <MultiCoreRunAll>0</MultiCoreRunAll>
+        <OnlineReset>System</OnlineReset>
+    </Jet>
+    <SWOManager>
+        <SamplingDivider>8192</SamplingDivider>
+        <OverrideClock>0</OverrideClock>
+        <CpuClock>1953721961</CpuClock>
+        <SwoClock>1376416626</SwoClock>
+        <DataLogMode>0</DataLogMode>
+        <ItmPortsEnabled>63</ItmPortsEnabled>
+        <ItmTermIOPorts>1</ItmTermIOPorts>
+        <ItmLogPorts>0</ItmLogPorts>
+        <ItmLogFile>$PROJ_DIR$\ITM.log</ItmLogFile>
+        <PowerForcePC>1</PowerForcePC>
+        <PowerConnectPC>1</PowerConnectPC>
+    </SWOManager>
+    <struct_types>
+        <Fmt0>SPI_TypeDef-SR	1	0</Fmt0>
+    </struct_types>
+    <Trace1>
+        <Enabled>0</Enabled>
+        <ShowSource>1</ShowSource>
+    </Trace1>
+    <ETMTraceWindow>
+        <PortWidth>4</PortWidth>
+        <PortMode>0</PortMode>
+        <CaptureDataValues>0</CaptureDataValues>
+        <CaptureDataAddresses>0</CaptureDataAddresses>
+        <CaptureDataRange>0</CaptureDataRange>
+        <DataFirst>0</DataFirst>
+        <DataLast>4294967295</DataLast>
+        <StopWhen>0</StopWhen>
+        <StallCPU>0</StallCPU>
+        <NoPCCapture>0</NoPCCapture>
+    </ETMTraceWindow>
+    <Trace2>
+        <Enabled>0</Enabled>
+        <ShowSource>0</ShowSource>
+    </Trace2>
+    <SWOTraceWindow>
+        <ForcedPcSampling>0</ForcedPcSampling>
+        <ForcedInterruptLogs>0</ForcedInterruptLogs>
+        <ForcedItmLogs>0</ForcedItmLogs>
+        <EventCPI>0</EventCPI>
+        <EventEXC>0</EventEXC>
+        <EventFOLD>0</EventFOLD>
+        <EventLSU>0</EventLSU>
+        <EventSLEEP>0</EventSLEEP>
+    </SWOTraceWindow>
     <DisassembleMode>
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.135.5" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.200.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Count>2</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.200.5" 0 0 1 "" 0 "" 0</Bp0>
+        <Count>1</Count>
     </Breakpoints2>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>

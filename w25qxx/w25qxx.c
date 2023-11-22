@@ -21,8 +21,8 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
     w25qxx_Handle->status = ERROR;
 
     /* Check for SPI1-3 match */
-    if ((w25qxx_Handle->hspix->Instance != SPI1) && (w25qxx_Handle->hspix->Instance != SPI2)
-        && (w25qxx_Handle->hspix->Instance != SPI3))
+    if ((w25qxx_Handle->hspix->Instance != SPI1) && (w25qxx_Handle->hspix->Instance != SPI2) &&
+        (w25qxx_Handle->hspix->Instance != SPI3))
         return w25qxx_Handle->status;
 
     /* Release from power-down */
@@ -76,6 +76,8 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
         return w25qxx_Handle->status; // Unsupported device
     }
 
+    w25qxx_Delay(10);
+
     return w25qxx_Handle->status = SUCCESS;
 }
 
@@ -83,38 +85,27 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
                          bool trailingCRC, waitForTask_t waitForTask)
 {
     w25qxx_Handle->status = ERROR;
+    uint16_t frameLength = dataLength;
     uint16_t CRC16 = 0x0000;
 
     /* Argument guards */
     if ((dataLength == 0) || (buf == NULL))
         return w25qxx_Handle->status;
     if (trailingCRC)
-        dataLength += sizeof(uint16_t);
-    if (dataLength > W25QXX_PAGE_SIZE)
+        frameLength += sizeof(CRC16);
+    if (frameLength > W25QXX_PAGE_SIZE)
         return w25qxx_Handle->status;
     if ((address % W25QXX_PAGE_SIZE) != 0)
         return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
     if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
         return w25qxx_Handle->status; // The boundaries of write operation beyond memory
 
+    /* Checksum calculate */
+    if (trailingCRC)
+        CRC16 = ModBus_CRC(buf, dataLength);
+
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
         return w25qxx_Handle->status;
-
-    /* Middle buffer operations */
-    uint8_t *midBuf = malloc(sizeof(*midBuf) * dataLength);
-    if (midBuf == NULL)
-        return w25qxx_Handle->status; // Insufficient heap memory available
-    if (trailingCRC)
-    {
-        /* Data + checksum */
-        memcpy(midBuf, buf, dataLength - sizeof(uint16_t));
-        CRC16 = ModBus_CRC(buf, dataLength - sizeof(uint16_t));
-        midBuf[dataLength - 2] = ((CRC16 >> 8) & 0xFF);
-        midBuf[dataLength - 1] = (CRC16 & 0xFF);
-    }
-    else
-        /* Pure data */
-        memcpy(midBuf, buf, dataLength);
 
     /* Command */
     w25qxx_WriteEnable(w25qxx_Handle);
@@ -127,9 +118,12 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
                         W25QXX_TX_TIMEOUT);
 
-    /* Data write */
-    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, midBuf, dataLength, W25QXX_TX_TIMEOUT);
-    free(midBuf);
+    /* Data send */
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) buf, dataLength, W25QXX_TX_TIMEOUT);
+
+    /* Checksum send */
+    if (trailingCRC)
+        w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) &CRC16, sizeof(CRC16), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
 
     /* Wait options */
@@ -148,34 +142,35 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
                         bool trailingCRC, bool fastRead)
 {
     w25qxx_Handle->status = ERROR;
+    uint16_t frameLength = dataLength;
     uint16_t CRC16 = 0x0000;
 
     /* Argument guards */
     if ((dataLength == 0) || (buf == NULL))
         return w25qxx_Handle->status;
     if (trailingCRC)
-        dataLength += sizeof(uint16_t);
-    if (dataLength > W25QXX_PAGE_SIZE)
+        frameLength += sizeof(CRC16);
+    if (frameLength > W25QXX_PAGE_SIZE)
         return w25qxx_Handle->status;
     if ((address % W25QXX_PAGE_SIZE) != 0)
         return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
     if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
         return w25qxx_Handle->status; // The boundaries of read operation beyond memory
 
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-        return w25qxx_Handle->status;
-
-    /* Middle buffer operations */
-    uint8_t *midBuf = malloc(sizeof(*midBuf) * dataLength);
-    if (midBuf == NULL)
+    /* Frame buffer operations */
+    uint8_t *frameBuf = malloc(sizeof(*frameBuf) * frameLength);
+    if (frameBuf == NULL)
         return w25qxx_Handle->status; // Insufficient heap memory available
+
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+    {
+        free(frameBuf);
+        return w25qxx_Handle->status; // Timeout error
+    }
 
     /* Command */
     CS_LOW(w25qxx_Handle);
-    if (fastRead)
-        w25qxx_Handle->CMD = W25QXX_CMD_FAST_READ;
-    else
-        w25qxx_Handle->CMD = W25QXX_CMD_READ_DATA;
+    w25qxx_Handle->CMD = fastRead ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* A23-A0 - Start address of the desired page */
@@ -183,29 +178,26 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
                         W25QXX_TX_TIMEOUT);
 
-    /* Data read */
+    /* Data receive */
     if (fastRead)
         w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
-    w25qxx_SPI_Receive(w25qxx_Handle->hspix, midBuf, dataLength, W25QXX_RX_TIMEOUT);
+    w25qxx_SPI_Receive(w25qxx_Handle->hspix, frameBuf, frameLength, W25QXX_RX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
 
     /* Checksum compare */
     if (trailingCRC)
     {
-        CRC16 = ModBus_CRC(midBuf, dataLength - sizeof(uint16_t));
-        if ((midBuf[dataLength - 2] != ((CRC16 >> 8) & 0xFF)) || (midBuf[dataLength - 1] != (CRC16 & 0xFF)))
+        CRC16 = ModBus_CRC(frameBuf, dataLength);
+        if (memcmp(&frameBuf[dataLength], &CRC16, sizeof(CRC16)) != 0)
         {
-            free(midBuf);
+            free(frameBuf);
             return w25qxx_Handle->status; // CRC error
         }
     }
 
-    /* Copy middle buffer content to the destination buffer */
-    if (trailingCRC)
-        memcpy(buf, midBuf, dataLength - sizeof(uint16_t));
-    else
-        memcpy(buf, midBuf, dataLength);
-    free(midBuf);
+    /* Copy received data without checksum to the destination buffer */
+    memcpy(buf, frameBuf, dataLength);
+    free(frameBuf);
 
     return w25qxx_Handle->status = SUCCESS;
 }
