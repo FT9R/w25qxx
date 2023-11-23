@@ -50,7 +50,7 @@
 
 /* USER CODE BEGIN PV */
 w25qxx_HandleTypeDef w25qxx_Handle;
-const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C'};
 uint8_t bufferRead[sizeof(bufferWrite)] = {0};
 /* USER CODE END PV */
 
@@ -98,7 +98,7 @@ int main(void)
     w25qxx_Init(&w25qxx_Handle, &hspi1, CS0_GPIO_Port, CS0_Pin);
     if (w25qxx_Handle.status == SUCCESS)
     {
-         w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, NULL, W25QXX_WAIT_BUSY);
+        // w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, NULL, W25QXX_WAIT_BUSY);
         printf("\r\n First approach to read \r\n");
         w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
         if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)

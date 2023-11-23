@@ -156,16 +156,13 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
     if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
         return w25qxx_Handle->status; // The boundaries of read operation beyond memory
 
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
+        return w25qxx_Handle->status; // Timeout error
+
     /* Frame buffer operations */
     uint8_t *frameBuf = malloc(sizeof(*frameBuf) * frameLength);
     if (frameBuf == NULL)
         return w25qxx_Handle->status; // Insufficient heap memory available
-
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-    {
-        free(frameBuf);
-        return w25qxx_Handle->status; // Timeout error
-    }
 
     /* Command */
     w25qxx_Handle->CMD = fastRead ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
@@ -443,11 +440,24 @@ static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, u
     w25qxx_Handle->status = ERROR;
     uint32_t tickStart = uwTick;
 
+    /* Command */
+    w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER1;
+    CS_LOW(w25qxx_Handle);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+
     while ((uwTick - tickStart) < timeout)
     {
-        if (!w25qxx_Busy(w25qxx_Handle))
-            return w25qxx_Handle->status = SUCCESS;
+        /* Get busy bit state within status register 1 */
+        w25qxx_SPI_Receive(w25qxx_Handle->hspix, &w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister),
+                           W25QXX_RX_TIMEOUT);
+        if (!READ_BIT(w25qxx_Handle->statusRegister, 1u << 0))
+        {
+            w25qxx_Handle->status = SUCCESS;
+            break;
+        }
     }
+    CS_HIGH(w25qxx_Handle);
+
     return w25qxx_Handle->status;
 }
 
@@ -471,6 +481,7 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)
 {
     uint16_t CRC16 = 0xffff;
     uint16_t i, j;
+
     for (i = 0; i < bufSize; i++)
     {
         CRC16 ^= pBuffer[i];
@@ -482,5 +493,6 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)
                 CRC16 = (CRC16 >> 1);
         }
     }
+
     return CRC16;
 }

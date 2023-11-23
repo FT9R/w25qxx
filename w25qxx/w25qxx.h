@@ -58,13 +58,13 @@
 enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
-#define KB_TO_BYTE(KB)         (KB * 1024)
+#define KB_TO_BYTE(KB)         ((KB) * 1024)
 #define CS_HIGH(DEVICE_HANDLE) SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin)
 #define CS_LOW(DEVICE_HANDLE)  SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin << 16)
 #define ADDRESS_BYTES_SWAP(DEVICE_HANDLE, ADDRESS)              \
-    DEVICE_HANDLE->addressBytes[0] = (uint8_t) (ADDRESS >> 16); \
-    DEVICE_HANDLE->addressBytes[1] = (uint8_t) (ADDRESS >> 8);  \
-    DEVICE_HANDLE->addressBytes[2] = (uint8_t) (ADDRESS >> 0)
+    (DEVICE_HANDLE)->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
+    (DEVICE_HANDLE)->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
+    (DEVICE_HANDLE)->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
 
 typedef enum eraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,

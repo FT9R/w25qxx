@@ -1,7 +1,7 @@
 #include "main.h"
 
 w25qxx_HandleTypeDef w25qxx_Handle;
-const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C'};
 uint8_t bufferRead[sizeof(bufferWrite)] = {0};
 
 void main(void)
