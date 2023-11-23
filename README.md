@@ -24,7 +24,7 @@ w25qxx_Init(&w25qxx_Handle2, &hspi1, CS2_GPIO_Port, CS2_Pin);
 * The built-in ModBus CRC can be used to ensure data integrity.
 * Fast read option is implemented in case if SPIclk > 50MHz.  
 
-# Supported devices
+## Supported devices
 * w25q80
 * w25q16
 * w25q32
