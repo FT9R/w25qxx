@@ -34,6 +34,8 @@
 
 "--drv_interface=SWD" 
 
+"--drv_interface_speed=30000" 
+
 "--drv_catch_exceptions=0xff0" 
 
 
