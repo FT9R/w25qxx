@@ -1,29 +1,39 @@
 #include "w25qxx.h"
 
 /* Private function prototypes */
-// static ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
+static void w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
+// static void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
 static void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
-static ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
 static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
 static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
 // static void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
 static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 
-ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
-                        uint16_t CS_Pin)
+w25qxx_Status_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
+                            uint16_t CS_Pin)
 {
+    /* Argument guards */
+    if (w25qxx_Handle == NULL)
+        return W25QXX_STATUS_ERROR_ARGUMENT;
+    if (hspix == NULL)
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+    if (CS_Port == NULL)
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+    if (CS_Pin == 0x0000)
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+
     w25qxx_Delay(100);
 
     /* SPI device specific info retrieve */
     w25qxx_Handle->hspix = hspix;
     w25qxx_Handle->CS_Port = CS_Port;
     w25qxx_Handle->CS_Pin = CS_Pin;
-    w25qxx_Handle->status = ERROR;
+    w25qxx_Handle->status = W25QXX_STATUS_RESET;
 
     /* Check for SPI1-3 match */
     if ((w25qxx_Handle->hspix->Instance != SPI1) && (w25qxx_Handle->hspix->Instance != SPI2) &&
         (w25qxx_Handle->hspix->Instance != SPI3))
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_INITIALIZATION;
 
     /* Release from power-down */
     w25qxx_Handle->CMD = W25QXX_CMD_RELEASE_POWER_DOWN;
@@ -46,7 +56,7 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
     /* Get the Manufacturer ID and Device ID */
     w25qxx_ReadID(w25qxx_Handle);
     if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_INITIALIZATION;
 
     /* Determine number of pages */
     switch (w25qxx_Handle->ID[1])
@@ -72,39 +82,39 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
         break;
 
     default:
-        return w25qxx_Handle->status; // Unsupported device
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_INITIALIZATION;
     }
 
     w25qxx_Delay(10);
 
-    return w25qxx_Handle->status = SUCCESS;
+    return w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
-ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                         bool trailingCRC, waitForTask_t waitForTask)
+w25qxx_Status_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
+                             uint32_t address, bool trailingCRC, w25qxx_WaitForTask_t waitForTask)
 {
-    w25qxx_Handle->status = ERROR;
+    w25qxx_Handle->status = W25QXX_STATUS_BUSY_WRITE;
     uint16_t frameLength = dataLength;
     uint16_t CRC16 = 0x0000;
 
     /* Argument guards */
     if ((dataLength == 0) || (buf == NULL))
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if (trailingCRC)
         frameLength += sizeof(CRC16);
     if (frameLength > W25QXX_PAGE_SIZE)
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if ((address % W25QXX_PAGE_SIZE) != 0)
-        return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
-        return w25qxx_Handle->status; // The boundaries of write operation beyond memory
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
     /* Checksum calculate */
     if (trailingCRC)
         CRC16 = ModBus_CRC(buf, dataLength);
 
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
 
     /* Command */
     w25qxx_WriteEnable(w25qxx_Handle);
@@ -117,10 +127,10 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
                         W25QXX_TX_TIMEOUT);
 
-    /* Data send */
+    /* Data */
     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) buf, dataLength, W25QXX_TX_TIMEOUT);
 
-    /* Checksum send */
+    /* Checksum */
     if (trailingCRC)
         w25qxx_SPI_Transmit(w25qxx_Handle->hspix, (uint8_t *) &CRC16, sizeof(CRC16), W25QXX_TX_TIMEOUT);
     CS_HIGH(w25qxx_Handle);
@@ -131,38 +141,38 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
     else if (waitForTask == W25QXX_WAIT_BUSY)
     {
         if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_PAGE_PROGRAM_TIME) != SUCCESS)
-            return w25qxx_Handle->status;
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
     }
 
-    return w25qxx_Handle->status = SUCCESS;
+    return w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                        bool trailingCRC, bool fastRead)
+w25qxx_Status_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                            bool trailingCRC, bool fastRead)
 {
-    w25qxx_Handle->status = ERROR;
+    w25qxx_Handle->status = W25QXX_STATUS_BUSY_READ;
     uint16_t frameLength = dataLength;
     uint16_t CRC16 = 0x0000;
 
     /* Argument guards */
     if ((dataLength == 0) || (buf == NULL))
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if (trailingCRC)
         frameLength += sizeof(CRC16);
     if (frameLength > W25QXX_PAGE_SIZE)
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if ((address % W25QXX_PAGE_SIZE) != 0)
-        return w25qxx_Handle->status; // Only first byte of the page can be pointed as the start byte
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
     if (address > (W25QXX_PAGE_SIZE * (w25qxx_Handle->numberOfPages - 1)))
-        return w25qxx_Handle->status; // The boundaries of read operation beyond memory
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-        return w25qxx_Handle->status; // Timeout error
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
 
     /* Frame buffer operations */
     uint8_t *frameBuf = malloc(sizeof(*frameBuf) * frameLength);
     if (frameBuf == NULL)
-        return w25qxx_Handle->status; // Insufficient heap memory available
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_MEM_MANAGE;
 
     /* Command */
     w25qxx_Handle->CMD = fastRead ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
@@ -187,7 +197,7 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
         if (memcmp(&frameBuf[dataLength], &CRC16, sizeof(CRC16)) != 0)
         {
             free(frameBuf);
-            return w25qxx_Handle->status; // CRC error
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_CHECKSUM;
         }
     }
 
@@ -195,24 +205,24 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
     memcpy(buf, frameBuf, dataLength);
     free(frameBuf);
 
-    return w25qxx_Handle->status = SUCCESS;
+    return w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
-ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
-                         waitForTask_t waitForTask)
+w25qxx_Status_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
+                             uint32_t address, w25qxx_WaitForTask_t waitForTask)
 {
-    w25qxx_Handle->status = ERROR;
+    w25qxx_Handle->status = W25QXX_STATUS_BUSY_ERASE;
 
     if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-        return w25qxx_Handle->status;
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
 
     switch (eraseInstruction)
     {
     case W25QXX_SECTOR_ERASE_4KB:
-        if ((address % KB_TO_BYTE(4)) != 0)
-            return w25qxx_Handle->status; // Incorrect start address for sector
-        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(4)))
-            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
+        if ((address % W25QXX_SECTOR_SIZE_4KB) != 0)
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - W25QXX_SECTOR_SIZE_4KB))
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
@@ -232,15 +242,15 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t
         else if (waitForTask == W25QXX_WAIT_BUSY)
         {
             if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_SECTOR_ERASE_TIME_4KB) != SUCCESS)
-                return w25qxx_Handle->status;
+                return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
         }
         break;
 
     case W25QXX_BLOCK_ERASE_32KB:
-        if ((address % KB_TO_BYTE(32)) != 0)
-            return w25qxx_Handle->status; // Incorrect start address for block
-        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(32)))
-            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
+        if ((address % W25QXX_BLOCK_SIZE_32KB) != 0)
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - W25QXX_BLOCK_SIZE_32KB))
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
@@ -260,15 +270,15 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t
         else if (waitForTask == W25QXX_WAIT_BUSY)
         {
             if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_32KB) != SUCCESS)
-                return w25qxx_Handle->status;
+                return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
         }
         break;
 
     case W25QXX_BLOCK_ERASE_64KB:
-        if ((address % KB_TO_BYTE(64)) != 0)
-            return w25qxx_Handle->status; // Incorrect start address for block
-        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - KB_TO_BYTE(64)))
-            return w25qxx_Handle->status; // The boundaries of erase operation beyond memory
+        if ((address % W25QXX_BLOCK_SIZE_64KB) != 0)
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
+        if (address > ((W25QXX_PAGE_SIZE * w25qxx_Handle->numberOfPages) - W25QXX_BLOCK_SIZE_64KB))
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
@@ -288,13 +298,13 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t
         else if (waitForTask == W25QXX_WAIT_BUSY)
         {
             if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_64KB) != SUCCESS)
-                return w25qxx_Handle->status;
+                return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
         }
         break;
 
     case W25QXX_CHIP_ERASE:
-        if (address != NULL)
-            return w25qxx_Handle->status;
+        if (address != 0)
+            return w25qxx_Handle->status = W25QXX_STATUS_ERROR_ARGUMENT;
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
@@ -309,15 +319,15 @@ ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t
         else if (waitForTask == W25QXX_WAIT_BUSY)
         {
             if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_CHIP_ERASE_TIME) != SUCCESS)
-                return w25qxx_Handle->status;
+                return w25qxx_Handle->status = W25QXX_STATUS_ERROR_TIMEOUT;
         }
         break;
 
     default:
-        return w25qxx_Handle->status; // Invalid erase instruction
+        return w25qxx_Handle->status = W25QXX_STATUS_ERROR_INSTRUCTION;
     }
 
-    return w25qxx_Handle->status = SUCCESS;
+    return w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
 bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
@@ -330,17 +340,29 @@ bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
 /**
  * @section Private functions
  */
-// static ErrorStatus w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
+static void w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
+{
+    /* Command */
+    w25qxx_Handle->CMD = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
+    CS_LOW(w25qxx_Handle);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+
+    /* 24-bit address (A23-A0) of 000000h */
+    ADDRESS_BYTES_SWAP(w25qxx_Handle, (uint32_t) 0);
+    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
+                        W25QXX_TX_TIMEOUT);
+
+    /* Get Manufacturer ID and Device ID */
+    w25qxx_SPI_Receive(w25qxx_Handle->hspix, w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
+    CS_HIGH(w25qxx_Handle);
+}
+
+// static void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
 // {
-//     w25qxx_Handle->status = ERROR;
-
-// if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-//     return w25qxx_Handle->status;
-
-// w25qxx_Handle->CMD = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
-// CS_LOW(w25qxx_Handle);
-// w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
-// CS_HIGH(w25qxx_Handle);
+//     w25qxx_Handle->CMD = W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE;
+//     CS_LOW(w25qxx_Handle);
+//     w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+//     CS_HIGH(w25qxx_Handle);
 
 // switch (statusRegisterx)
 // {
@@ -372,10 +394,8 @@ bool w25qxx_Busy(w25qxx_HandleTypeDef *w25qxx_Handle)
 //     break;
 
 // default:
-//     return w25qxx_Handle->status;
+//     break;
 // }
-
-// return w25qxx_Handle->status = SUCCESS;
 // }
 
 static void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
@@ -411,33 +431,8 @@ static void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statu
     }
 }
 
-static ErrorStatus w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
-{
-    w25qxx_Handle->status = ERROR;
-
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != SUCCESS)
-        return w25qxx_Handle->status;
-
-    /* Command */
-    w25qxx_Handle->CMD = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
-    CS_LOW(w25qxx_Handle);
-    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, &w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
-
-    /* 24-bit address (A23-A0) of 000000h */
-    ADDRESS_BYTES_SWAP(w25qxx_Handle, (uint32_t) 0);
-    w25qxx_SPI_Transmit(w25qxx_Handle->hspix, w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes),
-                        W25QXX_TX_TIMEOUT);
-
-    /* Get Manufacturer ID and Device ID */
-    w25qxx_SPI_Receive(w25qxx_Handle->hspix, w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
-    CS_HIGH(w25qxx_Handle);
-
-    return w25qxx_Handle->status = SUCCESS;
-}
-
 static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
-    w25qxx_Handle->status = ERROR;
     uint32_t tickStart = uwTick;
 
     /* Command */
@@ -447,18 +442,18 @@ static ErrorStatus w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, u
 
     while ((uwTick - tickStart) < timeout)
     {
-        /* Get busy bit state within status register 1 */
+        /* Get busy bit state */
         w25qxx_SPI_Receive(w25qxx_Handle->hspix, &w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister),
                            W25QXX_RX_TIMEOUT);
         if (!READ_BIT(w25qxx_Handle->statusRegister, 1u << 0))
         {
-            w25qxx_Handle->status = SUCCESS;
-            break;
+            CS_HIGH(w25qxx_Handle);
+            return SUCCESS;
         }
     }
     CS_HIGH(w25qxx_Handle);
 
-    return w25qxx_Handle->status;
+    return ERROR;
 }
 
 static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)

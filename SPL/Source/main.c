@@ -10,7 +10,7 @@ void main(void)
     IO_Init();
     SPIx_Init(&hspi1, SPI_Mode_Master, SPI_BaudRatePrescaler_256);
     w25qxx_Init(&w25qxx_Handle, &hspi1, CS0_GPIO_Port, CS0_Pin);
-    if (w25qxx_Handle.status == SUCCESS)
+    if (w25qxx_Handle.status == W25QXX_STATUS_READY)
     {
         // w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, NULL, W25QXX_WAIT_BUSY);
         printf("\r\n First approach to read \r\n");

@@ -40,8 +40,8 @@
 #define W25QXX_CMD_RESET_DEVICE              0x99
 
 /* Timings [ms] */
-#define W25QXX_WRITE_STATUS_REGISTER_TIME 15
 #define W25QXX_PAGE_PROGRAM_TIME          3
+#define W25QXX_WRITE_STATUS_REGISTER_TIME 15
 #define W25QXX_SECTOR_ERASE_TIME_4KB      400
 #define W25QXX_BLOCK_ERASE_TIME_32KB      1600
 #define W25QXX_BLOCK_ERASE_TIME_64KB      2000
@@ -55,37 +55,56 @@
 /* Device constants */
 #define W25QXX_MANUFACTURER_ID 0xEF
 #define W25QXX_PAGE_SIZE       256
+#define W25QXX_SECTOR_SIZE_4KB ((W25QXX_PAGE_SIZE) * 16)
+#define W25QXX_BLOCK_SIZE_32KB ((W25QXX_PAGE_SIZE) * 128)
+#define W25QXX_BLOCK_SIZE_64KB ((W25QXX_PAGE_SIZE) * 256)
+
 enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
 #define KB_TO_BYTE(KB)         ((KB) * 1024)
 #define CS_HIGH(DEVICE_HANDLE) SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin)
 #define CS_LOW(DEVICE_HANDLE)  SET_BIT((DEVICE_HANDLE)->CS_Port->BSRR, (DEVICE_HANDLE)->CS_Pin << 16)
-#define ADDRESS_BYTES_SWAP(DEVICE_HANDLE, ADDRESS)              \
+#define ADDRESS_BYTES_SWAP(DEVICE_HANDLE, ADDRESS)                  \
     (DEVICE_HANDLE)->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
     (DEVICE_HANDLE)->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
     (DEVICE_HANDLE)->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
 
-typedef enum eraseInstruction_e {
+/* Data types */
+typedef enum w25qxx_EraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,
     W25QXX_BLOCK_ERASE_32KB,
     W25QXX_BLOCK_ERASE_64KB,
     W25QXX_CHIP_ERASE
-} eraseInstruction_t;
+} w25qxx_EraseInstruction_t;
 
-typedef enum waitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } waitForTask_t;
+typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
+
+typedef enum w25qxx_Status_e {
+    W25QXX_STATUS_RESET,
+    W25QXX_STATUS_READY,
+    W25QXX_STATUS_BUSY_WRITE,
+    W25QXX_STATUS_BUSY_READ,
+    W25QXX_STATUS_BUSY_ERASE,
+    W25QXX_STATUS_ERROR_INITIALIZATION,
+    W25QXX_STATUS_ERROR_ARGUMENT,
+    W25QXX_STATUS_ERROR_TIMEOUT,
+    W25QXX_STATUS_ERROR_MEM_MANAGE,
+    W25QXX_STATUS_ERROR_CHECKSUM,
+    W25QXX_STATUS_ERROR_INSTRUCTION
+} w25qxx_Status_t;
 
 typedef struct w25qxx_HandleTypeDef_s
 {
+    SPI_HandleTypeDef *hspix;
+    GPIO_TypeDef *CS_Port;
+    uint16_t CS_Pin;
     uint8_t ID[2];
     uint8_t statusRegister;
     uint8_t addressBytes[3];
     uint8_t CMD;
-    SPI_HandleTypeDef *hspix;
-    GPIO_TypeDef *CS_Port;
-    uint16_t CS_Pin;
     uint32_t numberOfPages;
-    ErrorStatus status;
+    w25qxx_Status_t status;
 } w25qxx_HandleTypeDef;
 
 /**
@@ -94,10 +113,10 @@ typedef struct w25qxx_HandleTypeDef_s
  * @param hspix: pointer to target SPI handle
  * @param CS_Port: GPIOx
  * @param CS_Pin: GPIO_Pin_x
- * @return Operation status
+ * @return Device status
  */
-ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
-                        uint16_t CS_Pin);
+w25qxx_Status_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *hspix, GPIO_TypeDef *CS_Port,
+                            uint16_t CS_Pin);
 
 /**
  * @brief Writes data to w25qxx from external buffer
@@ -107,10 +126,10 @@ ErrorStatus w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle, SPI_HandleTypeDef *
  * @param address: page address to write (multiple of 256 bytes)
  * @param trailingCRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
- * @return Operation status
+ * @return Device status
  */
-ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                         bool trailingCRC, waitForTask_t waitForTask);
+w25qxx_Status_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
+                             uint32_t address, bool trailingCRC, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -120,10 +139,10 @@ ErrorStatus w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf
  * @param address: page address to read (multiple of 256 bytes)
  * @param trailingCRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
- * @return Operation status
+ * @return Device status
  */
-ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                        bool trailingCRC, bool fastRead);
+w25qxx_Status_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                            bool trailingCRC, bool fastRead);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
@@ -131,10 +150,11 @@ ErrorStatus w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint1
  * @param eraseInstruction: pages groups to be erased
  * @param address: start address of page, block or sector to be erased
  * @param waitForTask: the way to ensure that operation is completed
- * @return Operation status
+ * @return Device status
+ * @note Address has to be 0 in case of chip erase
  */
-ErrorStatus w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, eraseInstruction_t eraseInstruction, uint32_t address,
-                         waitForTask_t waitForTask);
+w25qxx_Status_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
+                             uint32_t address, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Checks if the device is busy or not
