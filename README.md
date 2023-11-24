@@ -1,5 +1,11 @@
 # Description
 A simple library designed to perform basic write/read and erase operations with serial flash memory devices of the w25qxx family. 
+
+## Notes
+1. You should erase target page before data write (minimal erase operation is 1 sector or 16 pages)
+2. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
+(e.g., for the first page the address should be 0, for the second page - 256, etc.)
+
 ## Features
 * Many devices on the same bus are supported with its dedicated handles:
 ```C
@@ -16,12 +22,9 @@ w25qxx_Init(&w25qxx_Handle2, &hspi1, CS2_GPIO_Port, CS2_Pin);
 * Based on the device ID this library can calculate the number of pages to eliminate some address issues for write/read and erase operations.
 * There are several options for waiting for the end of page program/erase instruction with dedicated timeouts.
 * The built-in ModBus CRC can be used to ensure data integrity.
-* Fast read option is implemented in case if SPIclk > 50MHz.
-## Note
-To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
-(e.g., for the first page the address should be 0, for the second page - 256, etc.).   
+* Fast read option is implemented in case if SPIclk > 50MHz.  
 
-# Supported devices
+## Supported devices
 * w25q80
 * w25q16
 * w25q32
@@ -63,7 +66,8 @@ Delay(ms);
 Or just use existing SPL SPI driver, which are oversimplificated but still in manner of HAL driver
 # Example
 ## Conditions
-`Toolchain - IAR EWARM v9.40.1`  
-`Target MCU - STM32F407VGT6 (STM32F4XX_M devboard)`
+`Toolchain: IAR EWARM v9.40.1`  
+`Target MCU: STM32F407VGT6 (STM32F4XX_M devboard)`  
+`Debugger: ST-LINK/V2 or DAPLink`
 ## References
 For application use refer to [`HAL/../main.c`](./HAL/Core/Src/main.c) or [`SPL/../main.c`](./SPL/Source/main.c) 
