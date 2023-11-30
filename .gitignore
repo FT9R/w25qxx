@@ -1,2 +1,6 @@
-# Ignore EWARM debug info
-**/Debug
+# Hidden
+.*
+!/.gitignore
+
+# EWARM debug info
+**/debug
