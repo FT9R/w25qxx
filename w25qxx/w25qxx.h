@@ -123,13 +123,13 @@ typedef struct w25qxx_HandleTypeDef_s
 } w25qxx_HandleTypeDef;
 
 /**
- * @brief
- * @param w25qxx_Handle
- * @param fpReceive
- * @param fpTransmit
- * @param fpCS_Set
- * @param fpDelay
- * @return
+ * @brief Links user-defined interface functions to a device handle
+ * @param w25qxx_Handle: pointer to the device handle structure
+ * @param fpReceive: pointer to the user-defined SPI receive function
+ * @param fpTransmit: pointer to the user-defined SPI transmit function
+ * @param fpCS_Set: pointer to the user-defined chip select set function
+ * @param fpDelay: pointer to the user-defined delay[ms] function
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, ErrorStatus (*fpReceive)(uint8_t *, uint16_t, uint32_t),
                            ErrorStatus (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
@@ -138,15 +138,9 @@ w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, ErrorStatus (*fp
 /**
  * @brief Checks if the device is available and determines the number of pages
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device status
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
-
-/**
- * @brief
- * @param w25qxx_Handle
- */
-w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Writes data to w25qxx from external buffer
@@ -156,7 +150,7 @@ w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @param address: page address to write (multiple of 256 bytes)
  * @param trailingCRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
- * @return Device status
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
                             uint32_t address, bool trailingCRC, w25qxx_WaitForTask_t waitForTask);
@@ -169,7 +163,7 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
  * @param address: page address to read (multiple of 256 bytes)
  * @param trailingCRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
- * @return Device status
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
                            bool trailingCRC, bool fastRead);
@@ -180,25 +174,32 @@ w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, ui
  * @param eraseInstruction: pages groups to be erased
  * @param address: start address of page, block or sector to be erased
  * @param waitForTask: the way to ensure that operation is completed
- * @return Device status
+ * @return Device error state
  * @note Address has to be 0 in case of chip erase
  */
 w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
                             uint32_t address, w25qxx_WaitForTask_t waitForTask);
 
 /**
- * @brief Checks if the device is busy or not
+ * @brief Reads status register 1 and updates device status based on busy bit once
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return True - device is busy
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
- * @brief
- * @param w25qxx_Handle
- * @param timeout
- * @return
+ * @brief Reads status register 1 and updates device status based on busy bit continuously with timeout
+ * @param w25qxx_Handle: pointer to the device handle structure
+ * @param timeout: timeout for this operation
+ * @return Device error state
  */
 w25qxx_Error_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
+
+/**
+ * @brief Resets any device errors
+ * @param w25qxx_Handle: pointer to the device handle structure
+ * @return Device error state
+ */
+w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 #endif

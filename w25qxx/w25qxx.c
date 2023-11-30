@@ -144,29 +144,6 @@ w25qxx_ErrorHandler:
     return w25qxx_Handle->error;
 }
 
-w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
-{
-    /* Argument guards */
-    if (w25qxx_Handle == NULL)
-        goto w25qxx_ErrorHandler;
-
-    /* Existing errors check */
-    if (w25qxx_Handle->error == W25QXX_ERROR_NONE)
-        goto w25qxx_ErrorHandler;
-
-    /* Reset error */
-    w25qxx_Handle->error = W25QXX_ERROR_NONE;
-
-    /* Try to get response from device */
-    w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT);
-
-w25qxx_ErrorHandler:
-    if (w25qxx_Handle == NULL)
-        return W25QXX_ERROR_REFERENCE_HANDLE;
-
-    return w25qxx_Handle->error;
-}
-
 w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
                             uint32_t address, bool trailingCRC, w25qxx_WaitForTask_t waitForTask)
 {
@@ -811,6 +788,29 @@ w25qxx_ErrorHandler:
         return W25QXX_ERROR_REFERENCE_HANDLE;
 
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+    return w25qxx_Handle->error;
+}
+
+w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
+{
+    /* Argument guards */
+    if (w25qxx_Handle == NULL)
+        goto w25qxx_ErrorHandler;
+
+    /* Existing errors check */
+    if (w25qxx_Handle->error == W25QXX_ERROR_NONE)
+        goto w25qxx_ErrorHandler;
+
+    /* Reset error */
+    w25qxx_Handle->error = W25QXX_ERROR_NONE;
+
+    /* Try to get response from device */
+    w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT);
+
+w25qxx_ErrorHandler:
+    if (w25qxx_Handle == NULL)
+        return W25QXX_ERROR_REFERENCE_HANDLE;
+
     return w25qxx_Handle->error;
 }
 
