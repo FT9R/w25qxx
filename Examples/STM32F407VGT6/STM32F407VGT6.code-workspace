@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Doc"
+		},
+		{
+			"path": "../../w25qxx"
+		}
+	],
+	"settings": {}
+}

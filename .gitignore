@@ -1,0 +1,6 @@
+# Hidden
+.*
+!/.gitignore
+
+# EWARM debug info
+**/debug
