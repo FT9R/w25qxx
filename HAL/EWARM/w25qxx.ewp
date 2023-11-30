@@ -2,7 +2,7 @@
 <project>
     <fileVersion>4</fileVersion>
     <configuration>
-        <name>w25qxx</name>
+        <name>Debug</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -16,19 +16,19 @@
                 <debug>1</debug>
                 <option>
                     <name>BrowseInfoPath</name>
-                    <state>w25qxx\BrowseInfo</state>
+                    <state>Debug\BrowseInfo</state>
                 </option>
                 <option>
                     <name>ExePath</name>
-                    <state>w25qxx/Exe</state>
+                    <state>Debug\Exe</state>
                 </option>
                 <option>
                     <name>ObjPath</name>
-                    <state>w25qxx/Obj</state>
+                    <state>Debug\Obj</state>
                 </option>
                 <option>
                     <name>ListPath</name>
-                    <state>w25qxx/List</state>
+                    <state>Debug\List</state>
                 </option>
                 <option>
                     <name>GEndianMode</name>
@@ -201,7 +201,7 @@
                 </option>
                 <option>
                     <name>BuildFilesPath</name>
-                    <state>w25qxx</state>
+                    <state>Debug\</state>
                 </option>
                 <option>
                     <name>PointerAuthentication</name>
@@ -686,7 +686,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>0</hasPrio>
+                <hasPrio>1</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>

@@ -5,7 +5,7 @@
   "workspaces": {
     "${workspaceFolder}\\HAL\\EWARM\\Project.eww": {
       "configs": {
-        "${workspaceFolder}\\HAL\\EWARM\\w25qxx.ewp": "w25qxx"
+        "${workspaceFolder}\\HAL\\EWARM\\w25qxx.ewp": "Debug"
       },
       "selected": {
         "path": "${workspaceFolder}\\HAL\\EWARM\\w25qxx.ewp"

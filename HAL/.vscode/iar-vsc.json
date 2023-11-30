@@ -8,7 +8,7 @@
   "workspaces": {
     "${workspaceFolder}\\EWARM\\Project.eww": {
       "configs": {
-        "${workspaceFolder}\\EWARM\\w25qxx.ewp": "w25qxx"
+        "${workspaceFolder}\\EWARM\\w25qxx.ewp": "Debug"
       },
       "selected": {
         "path": "${workspaceFolder}\\EWARM\\w25qxx.ewp"

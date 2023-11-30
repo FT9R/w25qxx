@@ -1,7 +1,7 @@
 #include "main.h"
 
 w25qxx_HandleTypeDef w25qxx_Handle;
-const uint8_t bufferWrite[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C'};
+const uint8_t bufferWrite[] = "Hello World!";
 uint8_t bufferRead[sizeof(bufferWrite)] = {0};
 
 void main(void)
@@ -12,7 +12,7 @@ void main(void)
     w25qxx_Init(&w25qxx_Handle, &hspi1, CS0_GPIO_Port, CS0_Pin);
     if (w25qxx_Handle.status == W25QXX_STATUS_READY)
     {
-        // w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, NULL, W25QXX_WAIT_BUSY);
+        // w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
         printf("\r\n First approach to read \r\n");
         w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
         if (strncmp((const char *) bufferRead, (const char *) bufferWrite, sizeof(bufferRead)) == 0)
