@@ -25,11 +25,11 @@
         <MultiCoreRunAll>0</MultiCoreRunAll>
     </Jet>
     <ArmDriver>
-        <EnableCache>1</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
+        <EnableCache>1</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>304166248</Checksum>
+        <Checksum>2769754378</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -44,8 +44,8 @@
     <SWOManager>
         <SamplingDivider>8192</SamplingDivider>
         <OverrideClock>0</OverrideClock>
-        <CpuClock>3804909280</CpuClock>
-        <SwoClock>497</SwoClock>
+        <CpuClock>0</CpuClock>
+        <SwoClock>1076625408</SwoClock>
         <DataLogMode>0</DataLogMode>
         <ItmPortsEnabled>63</ItmPortsEnabled>
         <ItmTermIOPorts>1</ItmTermIOPorts>
@@ -94,8 +94,7 @@
     <Breakpoints2>
         <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.204.5" 0 0 1 "" 0 "" 0</Bp0>
         <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.138.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.109.9" 0 0 1 "" 0 "" 0</Bp2>
-        <Count>3</Count>
+        <Count>2</Count>
     </Breakpoints2>
     <Aliases>
         <Count>0</Count>

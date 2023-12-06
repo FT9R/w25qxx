@@ -95,13 +95,20 @@ int main(void)
     MX_GPIO_Init();
     MX_SPI1_Init();
     /* USER CODE BEGIN 2 */
-    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_CS0_Set, w25qxx_Delay);
+    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_CS0_Set);
     w25qxx_Init(&w25qxx_Handle);
     w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
     printf("\n First approach to read \n");
     w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
     switch (w25qxx_Handle.error)
     {
+    case W25QXX_ERROR_NONE:
+        if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
+        {
+            printf("Data already exist at page %i boundaries \n", PAGE);
+        }
+        break;
+
     case W25QXX_ERROR_CHECKSUM:
         printf("Page %i probably contains corrupted data or erased \n", PAGE);
         w25qxx_ResetError(&w25qxx_Handle);
@@ -117,13 +124,6 @@ int main(void)
         {
             printf("Writing process failure \n");
             Error_Handler();
-        }
-        break;
-
-    case W25QXX_STATUS_READY:
-        if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
-        {
-            printf("Data already exist at page %i boundaries \n", PAGE);
         }
         break;
 

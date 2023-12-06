@@ -151,12 +151,11 @@ typedef struct w25qxx_HandleTypeDef_s
  * @param fpReceive: pointer to the user-defined SPI receive function
  * @param fpTransmit: pointer to the user-defined SPI transmit function
  * @param fpCS_Set: pointer to the user-defined chip select set function
- * @param fpDelay: pointer to the user-defined delay[ms] function
  */
 void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                  w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
                  w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
-                 void (*fpCS_Set)(w25qxx_CS_State_t), void (*fpDelay)(uint32_t));
+                 void (*fpCS_Set)(w25qxx_CS_State_t));
 
 /**
  * @brief Checks if the device is available and determines the number of pages
@@ -167,7 +166,7 @@ void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
 /**
  * @brief Writes data to w25qxx from external buffer
  * @param w25qxx_Handle: pointer to the device handle structure
- * @param buf: pointer to external buffer, that contains the data to write
+ * @param buf: pointer to external buffer, that contains the data to send
  * @param dataLength: number of bytes to write
  * @param address: page address to write (multiple of 256 bytes)
  * @param trailingCRC: insert or not insert CRC at the end of frame

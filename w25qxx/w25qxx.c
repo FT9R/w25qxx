@@ -14,7 +14,7 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                  w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
                  w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
-                 void (*fpCS_Set)(w25qxx_CS_State_t), void (*fpDelay)(uint32_t))
+                 void (*fpCS_Set)(w25qxx_CS_State_t))
 {
     /* Argument guards */
     if (w25qxx_Handle == NULL)
@@ -25,8 +25,6 @@ void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
     if (fpCS_Set == NULL)
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
-    if (fpDelay == NULL)
-        W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
 
     /* Set up handle fields to its default state */
     memset(w25qxx_Handle, 0, sizeof(w25qxx_HandleTypeDef));
@@ -35,7 +33,7 @@ void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
     w25qxx_Handle->interface.Receive = fpReceive;
     w25qxx_Handle->interface.Transmit = fpTransmit;
     w25qxx_Handle->interface.CS_Set = fpCS_Set;
-    w25qxx_Handle->interface.Delay = fpDelay;
+    w25qxx_Handle->interface.Delay = w25qxx_Delay;
 
     /* Operation succeed */
     w25qxx_Handle->status = W25QXX_STATUS_RESET;
