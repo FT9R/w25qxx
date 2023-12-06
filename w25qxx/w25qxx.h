@@ -62,13 +62,37 @@
 enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
-#define KB_TO_BYTE(KB) ((KB) * 1024)
-#define ADDRESS_BYTES_SWAP(DEVICE_HANDLE, ADDRESS)                  \
-    (DEVICE_HANDLE)->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
-    (DEVICE_HANDLE)->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
-    (DEVICE_HANDLE)->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
+#define W25QXX_KB_TO_BYTE(KB) ((KB) * 1024)
+#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                        \
+    w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
+    w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
+    w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
+#define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
+    {                                                        \
+        w25qxx_Handle->error = (W25QXX_ERROR);               \
+        if (w25qxx_Handle->interface.CS_Set != NULL)         \
+            w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
+        return;                                              \
+    }
+#define W25QXX_ERROR_CHECK(W25QXX_ERROR)               \
+    {                                                  \
+        if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
+            W25QXX_ERROR_SET((W25QXX_ERROR));          \
+    }
+#define W25QXX_BEGIN_TRASMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
+    {                                                                                                       \
+        if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
+    }
+#define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
+    {                                                                                                           \
+        if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                                 \
+    }
 
 /* Data types */
+typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
+
 typedef enum w25qxx_EraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,
     W25QXX_BLOCK_ERASE_32KB,
@@ -76,28 +100,26 @@ typedef enum w25qxx_EraseInstruction_e {
     W25QXX_CHIP_ERASE
 } w25qxx_EraseInstruction_t;
 
-typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
-
 typedef enum w25qxx_Status_e {
     W25QXX_STATUS_NOLINK,
     W25QXX_STATUS_RESET,
     W25QXX_STATUS_READY,
+    W25QXX_STATUS_BUSY,
     W25QXX_STATUS_BUSY_INIT,
     W25QXX_STATUS_BUSY_WRITE,
     W25QXX_STATUS_BUSY_READ,
     W25QXX_STATUS_BUSY_ERASE,
+    W25QXX_STATUS_UNDEFINED
 } w25qxx_Status_t;
 
 typedef enum w25qxx_Error_e {
     W25QXX_ERROR_NONE,
-    W25QXX_ERROR_REFERENCE_HANDLE,
     W25QXX_ERROR_STATUS_MATCH,
     W25QXX_ERROR_INITIALIZATION,
     W25QXX_ERROR_ARGUMENT,
     W25QXX_ERROR_ADDRESS,
     W25QXX_ERROR_SPI,
     W25QXX_ERROR_TIMEOUT,
-    W25QXX_ERROR_MEM_MANAGE,
     W25QXX_ERROR_CHECKSUM,
     W25QXX_ERROR_INSTRUCTION
 } w25qxx_Error_t;
@@ -110,13 +132,14 @@ typedef struct w25qxx_HandleTypeDef_s
     uint8_t CMD;
     uint8_t addressBytes[3];
     uint16_t frameLength;
+    uint8_t frameBuf[W25QXX_PAGE_SIZE];
     uint16_t CRC16;
     w25qxx_Status_t status;
     w25qxx_Error_t error;
     struct
     {
-        ErrorStatus (*Receive)(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
-        ErrorStatus (*Transmit)(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
+        w25qxx_Transfer_Status_t (*Receive)(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
+        w25qxx_Transfer_Status_t (*Transmit)(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
         void (*CS_Set)(w25qxx_CS_State_t newState);
         void (*Delay)(uint32_t ms);
     } interface;
@@ -129,18 +152,17 @@ typedef struct w25qxx_HandleTypeDef_s
  * @param fpTransmit: pointer to the user-defined SPI transmit function
  * @param fpCS_Set: pointer to the user-defined chip select set function
  * @param fpDelay: pointer to the user-defined delay[ms] function
- * @return Device error state
  */
-w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, ErrorStatus (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                           ErrorStatus (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
-                           void (*fpCS_Set)(w25qxx_CS_State_t), void (*fpDelay)(uint32_t));
+void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
+                 w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
+                 w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                 void (*fpCS_Set)(w25qxx_CS_State_t), void (*fpDelay)(uint32_t));
 
 /**
  * @brief Checks if the device is available and determines the number of pages
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device error state
  */
-w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
+void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Writes data to w25qxx from external buffer
@@ -150,10 +172,9 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @param address: page address to write (multiple of 256 bytes)
  * @param trailingCRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
- * @return Device error state
  */
-w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
-                            uint32_t address, bool trailingCRC, w25qxx_WaitForTask_t waitForTask);
+void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
+                  bool trailingCRC, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -163,10 +184,9 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
  * @param address: page address to read (multiple of 256 bytes)
  * @param trailingCRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
- * @return Device error state
  */
-w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                           bool trailingCRC, bool fastRead);
+void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                 bool trailingCRC, bool fastRead);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
@@ -174,32 +194,30 @@ w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, ui
  * @param eraseInstruction: pages groups to be erased
  * @param address: start address of page, block or sector to be erased
  * @param waitForTask: the way to ensure that operation is completed
- * @return Device error state
  * @note Address has to be 0 in case of chip erase
  */
-w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
-                            uint32_t address, w25qxx_WaitForTask_t waitForTask);
+void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction, uint32_t address,
+                  w25qxx_WaitForTask_t waitForTask);
 
 /**
- * @brief Reads status register 1 and updates device status based on busy bit once
+ * @brief Reads status register 1 once and returns state of busy bit
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device error state
+ * @return Device busy status
  */
-w25qxx_Error_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
+w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
- * @brief Reads status register 1 and updates device status based on busy bit continuously with timeout
+ * @brief Reads status register 1 continuously with timeout and returns state of busy bit
  * @param w25qxx_Handle: pointer to the device handle structure
- * @param timeout: timeout for this operation
- * @return Device error state
+ * @param timeout: timeout duration
+ * @return Device busy status
  */
-w25qxx_Error_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
+w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
 
 /**
  * @brief Resets any device errors
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device error state
  */
-w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
+void w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 #endif

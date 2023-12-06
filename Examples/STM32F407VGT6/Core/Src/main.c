@@ -35,7 +35,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 // #define USE_IO_TERMINAL
-#define PAGE         1000
+#define PAGE         1712
 #define PAGE_ADDRESS (PAGE * W25QXX_PAGE_SIZE)
 /* USER CODE END PD */
 
@@ -95,7 +95,7 @@ int main(void)
     MX_GPIO_Init();
     MX_SPI1_Init();
     /* USER CODE BEGIN 2 */
-    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_CS1_Set, w25qxx_Delay);
+    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_CS0_Set, w25qxx_Delay);
     w25qxx_Init(&w25qxx_Handle);
     w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
     printf("\n First approach to read \n");

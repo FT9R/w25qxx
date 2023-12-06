@@ -359,6 +359,7 @@
                     <state>$PROJ_DIR$/../Drivers/CMSIS/Device/ST/STM32F4xx/Include</state>
                     <state>$PROJ_DIR$/../Drivers/CMSIS/Include</state>
                     <state>$PROJ_DIR$/../../../w25qxx</state>
+                    <state>$PROJ_DIR$/../w25qxx_Interface</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1194,11 +1195,14 @@
         <file>
             <name>$PROJ_DIR$\..\..\..\w25qxx\w25qxx.h</name>
         </file>
+    </group>
+    <group>
+        <name>w25qxx_Interface</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\w25qxx\w25qxx_Interface.c</name>
+            <name>$PROJ_DIR$\..\w25qxx_Interface\w25qxx_Interface.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\w25qxx\w25qxx_Interface.h</name>
+            <name>$PROJ_DIR$\..\w25qxx_Interface\w25qxx_Interface.h</name>
         </file>
     </group>
 </project>
