@@ -69,4 +69,4 @@ Or just use existing SPL SPI driver, which are oversimplificated but still in ma
 `Target MCU: STM32F407VGT6 (STM32F4XX_M devboard)`  
 `Debugger: ST-LINK/V2 or DAPLink`
 ## References
-For application use refer to [`HAL/../main.c`](./HAL/Core/Src/main.c) or [`SPL/../main.c`](./SPL/Source/main.c) 
+For application use refer to [`STM32F407VGT6/../main.c`](./Examples/STM32F407VGT6/Core/Src/main.c)
