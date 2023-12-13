@@ -35,8 +35,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 // #define USE_IO_TERMINAL
-#define PAGE         1712
-#define PAGE_ADDRESS (PAGE * W25QXX_PAGE_SIZE)
+#define PAGE 1712
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -99,7 +98,7 @@ int main(void)
     w25qxx_Init(&w25qxx_Handle);
     w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
     printf("\n First approach to read \n");
-    w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
+    w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_ADDRESS(PAGE), true, false);
     switch (w25qxx_Handle.error)
     {
     case W25QXX_ERROR_NONE:
@@ -113,9 +112,10 @@ int main(void)
         printf("Page %i probably contains corrupted data or erased \n", PAGE);
         w25qxx_ResetError(&w25qxx_Handle);
         printf("Page programming... \n");
-        w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), PAGE_ADDRESS, true, W25QXX_WAIT_BUSY);
+        w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), W25QXX_PAGE_ADDRESS(PAGE), true,
+                     W25QXX_WAIT_BUSY);
         printf("\n Second approach to read \n");
-        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), PAGE_ADDRESS, true, false);
+        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_ADDRESS(PAGE), true, false);
         if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
         {
             printf("Writing process success \n");

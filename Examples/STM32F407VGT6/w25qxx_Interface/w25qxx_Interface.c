@@ -7,7 +7,8 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, ui
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    return (HAL_SPI_Receive(&hspi1, pDataRx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS : W25QXX_TRANSFER_ERROR;
+    return (HAL_SPI_Receive(&hspi1, pDataRx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
+                                                                       : W25QXX_TRANSFER_ERROR;
 }
 
 w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout)
@@ -17,7 +18,8 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, u
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    return (HAL_SPI_Transmit(&hspi1, pDataTx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS : W25QXX_TRANSFER_ERROR;
+    return (HAL_SPI_Transmit(&hspi1, pDataTx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
+                                                                        : W25QXX_TRANSFER_ERROR;
 }
 
 void w25qxx_CS0_Set(w25qxx_CS_State_t newState)
