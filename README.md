@@ -91,3 +91,4 @@ w25qxx_Init(&w25qxx_Handle);
 `Debugger: ST-LINK/V2 or DAPLink`
 ## References
 For application use refer to [`STM32F407VGT6/../main.c`](./Examples/STM32F407VGT6/Core/Src/main.c)
+or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
