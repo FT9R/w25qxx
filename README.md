@@ -1,12 +1,13 @@
 # Description
 A simple platform-independent library designed to perform basic operations with serial flash memory devices of the w25qxx family.
 ## Notes
-1. You should erase target page before data write (minimal erase operation is 1 sector or 16 pages).
-2. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
+1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
+2. An external variable `volatile uint32_t uwTick` is used for local delay function and timeouts calculation. It has to be incremented within any timer interrupt routine with t = 1ms or f = 1kHz.
+3. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
 (e.g., for the first page the address should be 0, for the second page - 256, etc.).
-3. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
+4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
 This approach helps to track down the cause of the error and, by checking the actual status in `w25qxx_Handle.status`, take the right actions to restore the device to working order.   
-For example, when user tries to read a previously erased page with `trailingCRC = true`, the error `W25QXX_ERROR_CHECKSUM` occurs and other operations will not be available.  
+For example, when user tries to read a previously erased page with `trailingCRC == true`, the error `W25QXX_ERROR_CHECKSUM` occurs and other operations will not be available.  
 To reset the error there is need to call the `w25qxx_ResetError` function.
 So user should handle errors by himself e.g:
 ```C
@@ -65,6 +66,16 @@ w25qxx_Init(&w25qxx_Handle3);
 ```C
 w25qxx_HandleTypeDef w25qxx_Handle;
 ```
+* Declare variable for delay and timeouts: (skip in case of STM32 HAL usage)
+```C
+volatile uint32_t uwTick;
+```
+* Increment it within any 1kHz timer routine, e.g.: (skip in case of STM32 HAL usage)
+```C
+ISR(Timer1kHz_vect) {
+  ++uwTick;
+}
+```
 * Provide platform depended implementations for functions below in the `w25qxx_Interface.c`:
 ```C
 w25qxx_Transfer_Status_t w25qxx_SPIx_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
@@ -85,10 +96,6 @@ w25qxx_Link(&w25qxx_Handle, w25qxx_SPIx_Receive, w25qxx_SPIx_Transmit, w25qxx_CS
 w25qxx_Init(&w25qxx_Handle);
 ```
 # Example
-## Conditions
-`Toolchain: IAR EWARM v9.40.1`  
-`Target MCU: STM32F407VGT6 (STM32F4XX_M devboard)`  
-`Debugger: ST-LINK/V2 or DAPLink`
 ## References
 For application use refer to [`STM32F407VGT6/../main.c`](./Examples/STM32F407VGT6/Core/Src/main.c)
 or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
