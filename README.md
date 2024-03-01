@@ -4,7 +4,11 @@ A simple platform-independent library designed to perform basic operations with 
 1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
 2. An external variable `volatile uint32_t uwTick` is used for local delay function and timeouts calculation. It has to be incremented within any timer interrupt routine with t = 1ms or f = 1kHz.
 3. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
+1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
+2. An external variable `volatile uint32_t uwTick` is used for local delay function and timeouts calculation. It has to be incremented within any timer interrupt routine with t = 1ms or f = 1kHz.
+3. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
 (e.g., for the first page the address should be 0, for the second page - 256, etc.).
+4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
 4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
 This approach helps to track down the cause of the error and, by checking the actual status in `w25qxx_Handle.status`, take the right actions to restore the device to working order.   
 For example, when user tries to read a previously erased page with parameter `trailingCRC == W25QXX_CRC`, the error `W25QXX_ERROR_CHECKSUM` occurs and other operations will not be available.  
@@ -98,4 +102,5 @@ w25qxx_Init(&w25qxx_Handle);
 # Example
 ## References
 For application use refer to [`STM32F407VGT6/../main.c`](./Examples/STM32F407VGT6/Core/Src/main.c)
+or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
 or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
