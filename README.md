@@ -101,6 +101,5 @@ w25qxx_Init(&w25qxx_Handle);
 ```
 # Example
 ## References
-For application use refer to [`STM32F407VGT6/../main.c`](./Examples/STM32F407VGT6/Core/Src/main.c)
-or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
-or [`ArduinoNano/../ArduinoNano.ino`](./Examples/ArduinoNano/ArduinoNano.ino)
+For application use refer to [`STM32 example`](./Examples/STM32F401CDU6/Core/Src/main.c)
+or [`Arduino example`](./Examples/ArduinoNano/ArduinoNano.ino)
