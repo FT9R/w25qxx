@@ -112,7 +112,7 @@ void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
 }
 
 void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                  bool trailingCRC, w25qxx_WaitForTask_t waitForTask)
+                  w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
@@ -190,7 +190,7 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
 }
 
 void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                 bool trailingCRC, bool fastRead)
+                 w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
@@ -429,7 +429,8 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
     w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
-void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, bool volatileStatus)
+void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+                        w25qxx_SR_Behaviour_t statusRegisterBehaviour)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
@@ -445,11 +446,12 @@ void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegis
     w25qxx_Handle->status = W25QXX_STATUS_BUSY_WRITE;
 
     /* Argument guards */
-    if ((statusRegisterx < 1) || (statusRegisterx > 3))
+    if ((statusRegisterx < 1u) || (statusRegisterx > 3u))
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
 
     /* Command 1 */
-    w25qxx_Handle->CMD = volatileStatus ? W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE : W25QXX_CMD_WRITE_ENABLE;
+    w25qxx_Handle->CMD =
+        (statusRegisterBehaviour == W25QXX_SR_VOLATILE) ? W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE : W25QXX_CMD_WRITE_ENABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
@@ -457,15 +459,15 @@ void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegis
     /* Command 2 */
     switch (statusRegisterx)
     {
-    case 1:
+    case 1u:
         w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER1;
         break;
 
-    case 2:
+    case 2u:
         w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER2;
         break;
 
-    case 3:
+    case 3u:
         w25qxx_Handle->CMD = W25QXX_CMD_WRITE_STATUS_REGISTER3;
         break;
     }
@@ -477,7 +479,7 @@ void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegis
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Task wait */
-    if (!volatileStatus)
+    if (statusRegisterBehaviour == W25QXX_SR_NONVOLATILE)
     {
         if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_WRITE_STATUS_REGISTER_TIME) != W25QXX_STATUS_READY)
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
@@ -503,21 +505,21 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
     w25qxx_Handle->status = W25QXX_STATUS_BUSY_READ;
 
     /* Argument guards */
-    if ((statusRegisterx < 1) || (statusRegisterx > 3))
+    if ((statusRegisterx < 1u) || (statusRegisterx > 3u))
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
 
     /* Command */
     switch (statusRegisterx)
     {
-    case 1:
+    case 1u:
         w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER1;
         break;
 
-    case 2:
+    case 2u:
         w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER2;
         break;
 
-    case 3:
+    case 3u:
         w25qxx_Handle->CMD = W25QXX_CMD_READ_STATUS_REGISTER3;
         break;
     }
