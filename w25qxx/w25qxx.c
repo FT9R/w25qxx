@@ -133,7 +133,7 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
     if (dataLength == 0)
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
     w25qxx_Handle->frameLength = dataLength;
-    if (trailingCRC)
+    if (trailingCRC == W25QXX_CRC)
         w25qxx_Handle->frameLength += sizeof(w25qxx_Handle->CRC16);
     if (w25qxx_Handle->frameLength > W25QXX_PAGE_SIZE)
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
@@ -143,7 +143,7 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
         W25QXX_ERROR_SET(W25QXX_ERROR_ADDRESS);
 
     /* Checksum calculate */
-    if (trailingCRC)
+    if (trailingCRC == W25QXX_CRC)
         w25qxx_Handle->CRC16 = ModBus_CRC(buf, dataLength);
 
     /* Command */
@@ -161,7 +161,7 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
     W25QXX_BEGIN_TRASMIT((uint8_t *) buf, dataLength, W25QXX_TX_TIMEOUT);
 
     /* Checksum */
-    if (trailingCRC)
+    if (trailingCRC == W25QXX_CRC)
         W25QXX_BEGIN_TRASMIT((uint8_t *) &w25qxx_Handle->CRC16, sizeof(w25qxx_Handle->CRC16), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
@@ -211,7 +211,7 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
     if (dataLength == 0)
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
     w25qxx_Handle->frameLength = dataLength;
-    if (trailingCRC)
+    if (trailingCRC == W25QXX_CRC)
         w25qxx_Handle->frameLength += sizeof(w25qxx_Handle->CRC16);
     if (w25qxx_Handle->frameLength > W25QXX_PAGE_SIZE)
         W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
@@ -238,7 +238,7 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Checksum compare */
-    if (trailingCRC)
+    if (trailingCRC == W25QXX_CRC)
     {
         w25qxx_Handle->CRC16 = ModBus_CRC(w25qxx_Handle->frameBuf, dataLength);
         if (memcmp(&w25qxx_Handle->frameBuf[dataLength], &w25qxx_Handle->CRC16, sizeof(w25qxx_Handle->CRC16)) != 0)
@@ -555,6 +555,7 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
+    extern volatile uint32_t uwTick;
     uint32_t tickStart = uwTick;
 
     /* Avoid dereferencing the null handle */

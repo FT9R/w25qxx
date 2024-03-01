@@ -7,5 +7,12 @@
 			"path": "../../w25qxx"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"w25qxx_demo.h": "c",
+			"w25qxx.h": "c",
+			"w25qxx_interface.h": "c",
+			"usart.h": "c"
+		}
+	}
 }

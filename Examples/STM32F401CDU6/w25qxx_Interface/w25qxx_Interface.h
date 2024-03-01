@@ -1,16 +1,20 @@
 #pragma once
 
-#include "SPI.h"
+#include "spi.h"
+#include "usart.h"
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define W25QXX_MIN_DELAY 2
-
-extern volatile uint32_t uwTick;
+#define W25QXX_MIN_DELAY      2
+#define UART_TRANSMIT_TIMEOUT 1000
+#define SPI1_CS0_PIN          SPI1_CS0_Pin
+#define SPI1_CS0_PORT         SPI1_CS0_GPIO_Port
 
 /* Macro */
 #define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))
@@ -64,6 +68,12 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
  * volatile uint32_t uwTick has to be declared with user source file
  */
 void w25qxx_Delay(uint32_t ms);
+
+/**
+ * @brief Function to print any debug messages
+ * @param message: message to print
+ */
+void w25qxx_Print(const uint8_t *message);
 
 #ifdef __cplusplus
 }

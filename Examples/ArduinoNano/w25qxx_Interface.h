@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SPI.h"
+#include "HardwareSerial.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -9,9 +10,7 @@ extern "C" {
 #endif
 
 #define W25QXX_MIN_DELAY 2
-#define CS0_PIN 10
-
-  extern volatile uint32_t uwTick;
+#define SPI1_CS0_PIN 10
 
 /* Macro */
 #define TOGGLE_BIT(REG, BIT) ((REG) ^= (BIT))
@@ -33,7 +32,7 @@ extern "C" {
                                    W25QXX_CS_HIGH } w25qxx_CS_State_t;
 
   /**
- * @brief The one of SPIx receive function template
+ * @brief The one of SPIx receive function templates
  * @param pDataRx: pointer to data buffer
  * @param size: amount of data to be received
  * @param timeout: timeout duration
@@ -43,7 +42,7 @@ extern "C" {
   w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
 
   /**
- * @brief The one of SPIx transmit function template
+ * @brief The one of SPIx transmit function templates
  * @param pDataTx: pointer to data buffer
  * @param size: amount of data to be sent
  * @param timeout: timeout duration
@@ -53,10 +52,10 @@ extern "C" {
   w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 
   /**
- * @brief The one of chip select function template
+ * @brief The one of chip select function templates
  * @param newState: new CS pin state
  */
-  void w25qxx_CS0_Set(w25qxx_CS_State_t newState);
+  void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 
   /**
  * @brief Provides minimum delay (in milliseconds) based on incremented variable
@@ -66,6 +65,12 @@ extern "C" {
  * volatile uint32_t uwTick has to be declared with user source file
  */
   void w25qxx_Delay(uint32_t ms);
+
+  /**
+ * @brief Function used to print any debug messages
+ * @param message: the message to print
+ */
+  void w25qxx_Print(const uint8_t *message);
 
 #ifdef __cplusplus
 }

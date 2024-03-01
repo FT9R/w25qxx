@@ -27,11 +27,11 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState)
     switch (newState)
     {
     case W25QXX_CS_HIGH:
-        HAL_GPIO_WritePin(SPI1_CS0_GPIO_Port, SPI1_CS0_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(SPI1_CS0_PORT, SPI1_CS0_PIN, GPIO_PIN_SET);
         break;
 
     case W25QXX_CS_LOW:
-        HAL_GPIO_WritePin(SPI1_CS0_GPIO_Port, SPI1_CS0_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(SPI1_CS0_PORT, SPI1_CS0_PIN, GPIO_PIN_RESET);
         break;
 
     default:
@@ -41,6 +41,7 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState)
 
 void w25qxx_Delay(uint32_t ms)
 {
+    extern volatile uint32_t uwTick;
     uint32_t tickStart = uwTick;
 
     /* Add a freq to guarantee minimum wait */
@@ -48,4 +49,9 @@ void w25qxx_Delay(uint32_t ms)
         ++ms;
 
     while ((uwTick - tickStart) < ms) {}
+}
+
+void w25qxx_Print(const uint8_t *message)
+{
+    HAL_UART_Transmit(&huart1, message, strlen((const char *) message), UART_TRANSMIT_TIMEOUT);
 }

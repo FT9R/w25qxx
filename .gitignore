@@ -2,5 +2,5 @@
 .*
 !/.gitignore
 
-# EWARM debug info
-**/debug
+# EWARM build
+**/EWARM/STM32F401CDU6

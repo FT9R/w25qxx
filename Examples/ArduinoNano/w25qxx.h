@@ -97,6 +97,12 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 /* Data types */
 typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
 
+typedef enum w25qxx_CRC_e { W25QXX_CRC, W25QXX_CRC_NO } w25qxx_CRC_t;
+
+typedef enum w25qxx_FastRead_e { W25QXX_FASTREAD, W25QXX_FASTREAD_NO } w25qxx_FastRead_t;
+
+typedef enum w25qxx_SR_Behaviour_e { W25QXX_SR_VOLATILE, W25QXX_SR_NONVOLATILE } w25qxx_SR_Behaviour_t;
+
 typedef enum w25qxx_EraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,
     W25QXX_BLOCK_ERASE_32KB,
@@ -173,11 +179,11 @@ void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @param buf: pointer to external buffer, that contains the data to send
  * @param dataLength: number of bytes to write
  * @param address: page address to write (multiple of 256 bytes)
- * @param trailingCRC: insert or not insert CRC at the end of frame
+ * @param CRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
  */
 void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                  bool trailingCRC, w25qxx_WaitForTask_t waitForTask);
+                  w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -185,11 +191,11 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
  * @param buf: pointer to external buffer, that will contain the received data
  * @param dataLength: number of bytes to read
  * @param address: page address to read (multiple of 256 bytes)
- * @param trailingCRC: compare or not compare CRC at the end of frame
+ * @param CRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
  */
 void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                 bool trailingCRC, bool fastRead);
+                 w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
@@ -206,9 +212,10 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
  * @brief Writes a status byte from handle to device itself
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param statusRegisterx: device target status register(1-3)
- * @param volatileStatus: 'true' - don't keep status register bits after device reset
+ * @param statusRegisterBehaviour: keep or not the status register content after device reset
  */
-void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx, bool volatileStatus);
+void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+                        w25qxx_SR_Behaviour_t statusRegisterBehaviour);
 
 /**
  * @brief Reads a status byte from device to its handle
