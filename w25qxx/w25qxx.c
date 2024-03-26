@@ -578,6 +578,7 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
     {
         w25qxx_Handle->error = W25QXX_ERROR_SPI;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
         return W25QXX_STATUS_UNDEFINED;
     }
 
@@ -590,6 +591,7 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         {
             w25qxx_Handle->error = W25QXX_ERROR_SPI;
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
             return W25QXX_STATUS_UNDEFINED;
         }
 
@@ -597,6 +599,7 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         if (!READ_BIT(w25qxx_Handle->statusRegister, 1u << 0))
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
             return W25QXX_STATUS_READY;
         }
 
@@ -604,6 +607,7 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         if ((uwTick - tickStart) > timeout)
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
             return W25QXX_STATUS_BUSY;
         }
     }
@@ -759,6 +763,7 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)
     for (i = 0; i < bufSize; i++)
     {
         CRC16 ^= pBuffer[i];
+
         for (j = 0; j < 8; j++)
         {
             if (CRC16 & 1)

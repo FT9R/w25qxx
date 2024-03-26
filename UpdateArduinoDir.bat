@@ -1,7 +1,5 @@
-del ".\Examples\ArduinoNano\w25qxx.h"
-del ".\Examples\ArduinoNano\w25qxx.cpp"
-del ".\Examples\ArduinoNano\w25qxx_Demo.h"
-del ".\Examples\ArduinoNano\w25qxx_Demo.cpp"
+del ".\Examples\ArduinoNano\w25qxx.*"
+del ".\Examples\ArduinoNano\w25qxx_Demo.*"
 
 xcopy ".\w25qxx\w25qxx.h" ".\Examples\ArduinoNano"
 xcopy ".\w25qxx\w25qxx.c" ".\Examples\ArduinoNano"
