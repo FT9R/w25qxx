@@ -255,6 +255,8 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
 void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction, uint32_t address,
                   w25qxx_WaitForTask_t waitForTask)
 {
+    uint32_t chipEraseTimeout = 0;
+
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
         return;
@@ -391,6 +393,30 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
         if (address != 0)
             W25QXX_ERROR_SET(W25QXX_ERROR_ADDRESS);
 
+        /* Choose the right timeout */
+        switch (w25qxx_Handle->ID[1])
+        {
+        case W25Q80:
+            chipEraseTimeout = CETIME_W25Q80;
+            break;
+
+        case W25Q16:
+            chipEraseTimeout = CETIME_W25Q16;
+            break;
+
+        case W25Q32:
+            chipEraseTimeout = CETIME_W25Q32;
+            break;
+
+        case W25Q64:
+            chipEraseTimeout = CETIME_W25Q64;
+            break;
+
+        case W25Q128:
+            chipEraseTimeout = CETIME_W25Q128;
+            break;
+        }
+
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
         W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
@@ -406,11 +432,11 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
             break;
 
         case W25QXX_WAIT_DELAY:
-            w25qxx_Handle->interface.Delay(W25QXX_CHIP_ERASE_TIME);
+            w25qxx_Handle->interface.Delay(chipEraseTimeout);
             break;
 
         case W25QXX_WAIT_BUSY:
-            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_CHIP_ERASE_TIME) != W25QXX_STATUS_READY)
+            if (w25qxx_WaitWithTimeout(w25qxx_Handle, chipEraseTimeout) != W25QXX_STATUS_READY)
                 W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
             break;
 

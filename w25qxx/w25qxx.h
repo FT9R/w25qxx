@@ -48,7 +48,13 @@ extern "C" {
 #define W25QXX_SECTOR_ERASE_TIME_4KB      400
 #define W25QXX_BLOCK_ERASE_TIME_32KB      1600
 #define W25QXX_BLOCK_ERASE_TIME_64KB      2000
-#define W25QXX_CHIP_ERASE_TIME            25000
+enum w25qxx_ChipEraseTime {
+    CETIME_W25Q80 = 12000,
+    CETIME_W25Q16 = 25000,
+    CETIME_W25Q32 = 50000,
+    CETIME_W25Q64 = 100000,
+    CETIME_W25Q128 = 200000
+};
 
 /* Timeouts [ms] */
 #define W25QXX_TX_TIMEOUT       100
