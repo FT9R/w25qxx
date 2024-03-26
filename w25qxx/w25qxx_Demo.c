@@ -46,23 +46,23 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
     switch (w25qxx_Handle.ID[1])
     {
     case W25Q80:
-        fpPrint("W25Q80(8Mbit in ");
+        fpPrint("W25Q80");
         break;
 
     case W25Q16:
-        fpPrint("W25Q16(16Mbit in ");
+        fpPrint("W25Q16");
         break;
 
     case W25Q32:
-        fpPrint("W25Q32(32Mbit in ");
+        fpPrint("W25Q32");
         break;
 
     case W25Q64:
-        fpPrint("W25Q64(64Mbit in ");
+        fpPrint("W25Q64");
         break;
 
     case W25Q128:
-        fpPrint("W25Q128(128Mbit in ");
+        fpPrint("W25Q128");
         break;
 
     default:
@@ -72,10 +72,12 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
         return 1;
         break;
     }
-    uint8_t numOfPages[7];
-    snprintf((char *) numOfPages, sizeof(numOfPages), "%i", w25qxx_Handle.numberOfPages);
-    fpPrint(numOfPages);
-    fpPrint(" pages)\n");
+
+    /* Memory array capacity */
+    char capacityString[30];
+    snprintf(capacityString, sizeof(capacityString), "(%iMbit in %i pages)\n",
+             w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024, w25qxx_Handle.numberOfPages);
+    fpPrint((uint8_t const *) capacityString);
 
     fpPrint("Forcing status registers to its default state\n");
     w25qxx_Handle.statusRegister = 0x00;

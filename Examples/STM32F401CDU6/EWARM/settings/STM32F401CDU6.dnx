@@ -29,10 +29,10 @@
         <JetConnSerialNo>CMSIS-DAP v2:00000080003000433900000E4E54514AA5A5A5A597969908</JetConnSerialNo>
         <JetConnFoundProbes>CMSIS-DAP v1:00000080003000433900000e4e54514aa5a5a5a597969908:CMSIS-DAP v2:00000080003000433900000E4E54514AA5A5A5A597969908:</JetConnFoundProbes>
         <PrevWtdReset>Connect during reset</PrevWtdReset>
+        <OnlineReset>Software</OnlineReset>
         <DisableInterrupts>0</DisableInterrupts>
         <LeaveRunning>0</LeaveRunning>
         <MultiCoreRunAll>0</MultiCoreRunAll>
-        <OnlineReset>Software</OnlineReset>
     </Jet>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
