@@ -22,7 +22,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
         return 1;
 
     fpPrint("\nInterface link\n");
-    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS0_Set);
+    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS1_Set);
 
     fpPrint("Device initialization\n");
     w25qxx_Init(&w25qxx_Handle);

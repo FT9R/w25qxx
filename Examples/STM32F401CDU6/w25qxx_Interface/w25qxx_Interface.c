@@ -39,6 +39,57 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState)
     }
 }
 
+void w25qxx_SPI1_CS1_Set(w25qxx_CS_State_t newState)
+{
+    switch (newState)
+    {
+    case W25QXX_CS_HIGH:
+        HAL_GPIO_WritePin(SPI1_CS1_PORT, SPI1_CS1_PIN, GPIO_PIN_SET);
+        break;
+
+    case W25QXX_CS_LOW:
+        HAL_GPIO_WritePin(SPI1_CS1_PORT, SPI1_CS1_PIN, GPIO_PIN_RESET);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void w25qxx_SPI1_CS2_Set(w25qxx_CS_State_t newState)
+{
+    switch (newState)
+    {
+    case W25QXX_CS_HIGH:
+        HAL_GPIO_WritePin(SPI1_CS2_PORT, SPI1_CS2_PIN, GPIO_PIN_SET);
+        break;
+
+    case W25QXX_CS_LOW:
+        HAL_GPIO_WritePin(SPI1_CS2_PORT, SPI1_CS2_PIN, GPIO_PIN_RESET);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void w25qxx_SPI1_CS3_Set(w25qxx_CS_State_t newState)
+{
+    switch (newState)
+    {
+    case W25QXX_CS_HIGH:
+        HAL_GPIO_WritePin(SPI1_CS3_PORT, SPI1_CS3_PIN, GPIO_PIN_SET);
+        break;
+
+    case W25QXX_CS_LOW:
+        HAL_GPIO_WritePin(SPI1_CS3_PORT, SPI1_CS3_PIN, GPIO_PIN_RESET);
+        break;
+
+    default:
+        break;
+    }
+}
+
 void w25qxx_Delay(uint32_t ms)
 {
     extern volatile uint32_t uwTick;

@@ -15,6 +15,12 @@ extern "C" {
 #define UART_TRANSMIT_TIMEOUT 1000
 #define SPI1_CS0_PIN          SPI1_CS0_Pin
 #define SPI1_CS0_PORT         SPI1_CS0_GPIO_Port
+#define SPI1_CS1_PIN          SPI1_CS1_Pin
+#define SPI1_CS1_PORT         SPI1_CS1_GPIO_Port
+#define SPI1_CS2_PIN          SPI1_CS2_Pin
+#define SPI1_CS2_PORT         SPI1_CS2_GPIO_Port
+#define SPI1_CS3_PIN          SPI1_CS3_Pin
+#define SPI1_CS3_PORT         SPI1_CS3_GPIO_Port
 
 /* Macro */
 #define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))
@@ -55,10 +61,28 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, ui
 w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 
 /**
- * @brief The one of chip select function templates
+ * @brief 1st device chip select function template
  * @param newState: new CS pin state
  */
 void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
+
+/**
+ * @brief 2nd device chip select function template
+ * @param newState: new CS pin state
+ */
+void w25qxx_SPI1_CS1_Set(w25qxx_CS_State_t newState);
+
+/**
+ * @brief 3rd device chip select function template
+ * @param newState: new CS pin state
+ */
+void w25qxx_SPI1_CS2_Set(w25qxx_CS_State_t newState);
+
+/**
+ * @brief 4th device chip select function template
+ * @param newState: new CS pin state
+ */
+void w25qxx_SPI1_CS3_Set(w25qxx_CS_State_t newState);
 
 /**
  * @brief Provides minimum delay (in milliseconds) based on incremented variable
