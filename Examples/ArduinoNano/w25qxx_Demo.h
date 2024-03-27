@@ -2,7 +2,7 @@
 
 #include "w25qxx.h"
 
-#define TARGET_PAGE 1725
+#define DEMO_TARGET_PAGE 15
 
 #ifdef __cplusplus
 extern "C" {

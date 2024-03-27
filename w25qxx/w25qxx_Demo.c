@@ -22,7 +22,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
         return 1;
 
     fpPrint("\nInterface link\n");
-    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS1_Set);
+    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS0_Set);
 
     fpPrint("Device initialization\n");
     w25qxx_Init(&w25qxx_Handle);
@@ -75,8 +75,8 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
 
     /* Memory array capacity */
     char capacityString[30];
-    snprintf(capacityString, sizeof(capacityString), "(%iMbit in %i pages)\n",
-             w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024, w25qxx_Handle.numberOfPages);
+    snprintf(capacityString, sizeof(capacityString), "(%luMbit in %lu pages)\n",
+             (w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle.numberOfPages);
     fpPrint((uint8_t const *) capacityString);
 
     fpPrint("Forcing status registers to its default state\n");
@@ -86,7 +86,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
     w25qxx_WriteStatus(&w25qxx_Handle, 3u, W25QXX_SR_VOLATILE);
 
     fpPrint("First approach to read\n");
-    w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_ADDRESS(TARGET_PAGE), W25QXX_CRC,
+    w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE), W25QXX_CRC,
                 W25QXX_FASTREAD_NO);
     switch (w25qxx_Handle.error)
     {
@@ -105,16 +105,18 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
         fpPrint("Checksum error reset\n");
         w25qxx_ResetError(&w25qxx_Handle);
 
-        fpPrint("Whole chip erase\n");
-        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
+        fpPrint("Sector erase\n");
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_SECTOR_ERASE_4KB,
+                     W25QXX_SECTOR_TO_ADDRESS(W25QXX_PAGE_TO_SECTOR(DEMO_TARGET_PAGE)),
+                     W25QXX_WAIT_BUSY); // Minimal erase operation
 
         fpPrint("Target page programming\n");
-        w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), W25QXX_PAGE_ADDRESS(TARGET_PAGE), W25QXX_CRC,
-                     W25QXX_WAIT_BUSY);
+        w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE),
+                     W25QXX_CRC, W25QXX_WAIT_BUSY);
 
         fpPrint("Second approach to read\n");
-        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_ADDRESS(TARGET_PAGE), W25QXX_CRC,
-                    W25QXX_FASTREAD_NO);
+        w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE),
+                    W25QXX_CRC, W25QXX_FASTREAD_NO);
         if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
         {
             fpPrint("Writing process success\n");
