@@ -89,7 +89,7 @@ void w25qxx_SPI1_CS3_Set(w25qxx_CS_State_t newState);
  * @param ms: specifies the delay time length, in milliseconds
  * @note In the default implementation, timer with 1kHz freq is the source of time base.
  * It is used to generate interrupts at regular time intervals where uwTick is incremented.
- * volatile uint32_t uwTick has to be declared with user source file
+ * `volatile uint32_t uwTick` has to be declared with user source file
  */
 void w25qxx_Delay(uint32_t ms);
 
