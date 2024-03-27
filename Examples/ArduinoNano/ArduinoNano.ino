@@ -8,6 +8,8 @@ void setup() {
   IO_Init();
   Timer2_Init();
   Serial.begin(9600);
+  if (!Serial)
+    Error_Handler();
   SPI.begin();
   SPI.beginTransaction(SPISettings(1e5, MSBFIRST, SPI_MODE0));
   sei();
@@ -46,6 +48,11 @@ ISR(TIMER2_COMPA_vect) {
 void Error_Handler(void) {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+  digitalWrite(USER_LED_PIN, HIGH);
+  Serial.flush();
+  Serial.end();
+  SPI.end();
+  cli();
 
   while (1) {}
   /* USER CODE END Error_Handler_Debug */

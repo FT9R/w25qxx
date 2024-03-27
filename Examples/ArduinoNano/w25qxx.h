@@ -71,12 +71,20 @@ enum w25qxx_ChipEraseTime {
 enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
-#define W25QXX_PAGE_ADDRESS(PAGE) ((uint32_t) (PAGE) * (W25QXX_PAGE_SIZE))
-#define W25QXX_KB_TO_BYTE(KB)     ((KB) * 1024)
+#define W25QXX_PAGE_TO_ADDRESS(PAGE)        ((uint32_t) (PAGE) * (W25QXX_PAGE_SIZE))
+#define W25QXX_PAGE_TO_SECTOR(PAGE)         ((PAGE) / (W25QXX_SECTOR_SIZE_4KB / W25QXX_PAGE_SIZE))
+#define W25QXX_SECTOR_TO_ADDRESS(SECTOR)    ((uint32_t) (SECTOR) * W25QXX_SECTOR_SIZE_4KB)
+#define W25QXX_PAGE_TO_BLOCK_32KB(PAGE)     ((PAGE) / (W25QXX_BLOCK_SIZE_32KB / W25QXX_PAGE_SIZE))
+#define W25QXX_BLOCK_32KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_32KB)
+#define W25QXX_PAGE_TO_BLOCK_64KB(PAGE)     ((PAGE) / (W25QXX_BLOCK_SIZE_64KB / W25QXX_PAGE_SIZE))
+#define W25QXX_BLOCK_64KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_64KB)
+#define W25QXX_KB_TO_BYTE(KB)               ((uint32_t) (KB) * 1024)
+
 #define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                        \
     w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
     w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
     w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
+
 #define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
     {                                                        \
         w25qxx_Handle->error = (W25QXX_ERROR);               \
@@ -84,16 +92,19 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
         return;                                              \
     }
+
 #define W25QXX_ERROR_CHECK(W25QXX_ERROR)               \
     {                                                  \
         if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
             W25QXX_ERROR_SET((W25QXX_ERROR));          \
     }
+
 #define W25QXX_BEGIN_TRASMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
     {                                                                                                       \
         if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
             W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
     }
+
 #define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
     {                                                                                                           \
         if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
@@ -207,7 +218,7 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
  * @brief Begins erase operation of sector, block or whole memory array
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param eraseInstruction: pages groups to be erased
- * @param address: start address of page, block or sector to be erased
+ * @param address: start address of page, sector or block to be erased
  * @param waitForTask: the way to ensure that operation is completed
  * @note Address has to be 0 in case of chip erase
  */

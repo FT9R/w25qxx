@@ -1,5 +1,5 @@
-#include "HardwareSerial.h"
 #include "w25qxx_Interface.h"
+#include "HardwareSerial.h"
 
 w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout)
 {
@@ -60,5 +60,5 @@ void w25qxx_Delay(uint32_t ms)
 
 void w25qxx_Print(const uint8_t *message)
 {
-    Serial.print((const char *)message);
+    Serial.print((const char *) message);
 }
