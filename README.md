@@ -91,7 +91,7 @@ w25qxx_Transfer_Status_t w25qxx_SPIx_Receive(uint8_t *pDataRx, uint16_t size, ui
 w25qxx_Transfer_Status_t w25qxx_SPIx_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 void w25qxx_SPIx_CSx_Set(w25qxx_CS_State_t newState);
 ```
-* Link your functions to a device handle:
+* Link the functions above to a device handle:
 ```C
 w25qxx_Link(&w25qxx_Handle, w25qxx_SPIx_Receive, w25qxx_SPIx_Transmit, w25qxx_SPIx_CSx_Set);
 ```
