@@ -114,11 +114,11 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 /* Data types */
 typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
 
-typedef enum w25qxx_CRC_e { W25QXX_CRC, W25QXX_CRC_NO } w25qxx_CRC_t;
+typedef enum w25qxx_CRC_e { W25QXX_CRC_NO, W25QXX_CRC } w25qxx_CRC_t;
 
-typedef enum w25qxx_FastRead_e { W25QXX_FASTREAD, W25QXX_FASTREAD_NO } w25qxx_FastRead_t;
+typedef enum w25qxx_FastRead_e { W25QXX_FASTREAD_NO, W25QXX_FASTREAD } w25qxx_FastRead_t;
 
-typedef enum w25qxx_SR_Behaviour_e { W25QXX_SR_VOLATILE, W25QXX_SR_NONVOLATILE } w25qxx_SR_Behaviour_t;
+typedef enum w25qxx_SR_Behaviour_e { W25QXX_SR_NONVOLATILE, W25QXX_SR_VOLATILE } w25qxx_SR_Behaviour_t;
 
 typedef enum w25qxx_EraseInstruction_e {
     W25QXX_SECTOR_ERASE_4KB,

@@ -8,11 +8,17 @@ void setup() {
   IO_Init();
   Timer2_Init();
   Serial.begin(9600);
-  if (!Serial)
-    Error_Handler();
   SPI.begin();
   SPI.beginTransaction(SPISettings(1e5, MSBFIRST, SPI_MODE0));
   sei();
+
+  Serial.println("Type \"begin\" for demo");
+  while (true) {
+    String response = Serial.readString();
+
+    if (response == "begin\n")
+      break;
+  }
 }
 
 void loop() {

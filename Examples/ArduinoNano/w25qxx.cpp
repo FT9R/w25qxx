@@ -221,7 +221,7 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
         W25QXX_ERROR_SET(W25QXX_ERROR_ADDRESS);
 
     /* Command */
-    w25qxx_Handle->CMD = fastRead ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
+    w25qxx_Handle->CMD = (fastRead == W25QXX_FASTREAD) ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
@@ -230,7 +230,7 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
     W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
 
     /* 8 dummy clocks */
-    if (fastRead)
+    if (fastRead == W25QXX_FASTREAD)
         W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* Data receive */
@@ -505,7 +505,7 @@ void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegis
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Task wait */
-    if (statusRegisterBehaviour == W25QXX_SR_NONVOLATILE)
+    if (statusRegisterBehaviour != W25QXX_SR_VOLATILE)
     {
         if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_WRITE_STATUS_REGISTER_TIME) != W25QXX_STATUS_READY)
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
