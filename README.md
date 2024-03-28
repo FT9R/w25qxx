@@ -4,18 +4,14 @@ A simple platform-independent library designed to perform basic operations with 
 1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
 2. An external variable `volatile uint32_t uwTick` is used for local delay function and timeouts calculation. It has to be incremented within any timer interrupt routine with t = 1ms or f = 1kHz.
 3. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
-1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
-2. An external variable `volatile uint32_t uwTick` is used for local delay function and timeouts calculation. It has to be incremented within any timer interrupt routine with t = 1ms or f = 1kHz.
-3. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
 (e.g., for the first page the address should be 0, for the second page - 256, etc.).
-4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
-4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.  
+4. If any device error occurs, most of the driver functionality is blocked. And driver by itself won't try to reset the error.
 This approach helps to track down the cause of the error and, by checking the actual status in `w25qxx_Handle.status`, take the right actions to restore the device to working order.   
-For example, when user tries to read a previously erased page with parameter `trailingCRC == W25QXX_CRC`, the error `W25QXX_ERROR_CHECKSUM` occurs and other operations will not be available.  
-To reset the error there is need to call the `w25qxx_ResetError` function.
-So user should handle errors by himself e.g:
+For example, when trying to read a previously erased page with CRC request, the error `W25QXX_ERROR_CHECKSUM` occurs and other operations will not be available.  
+To reset the error there is need to call the `w25qxx_ResetError()` function like this:
 ```C
-w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_ADDRESS(PAGE), W25QXX_CRC, W25QXX_FASTREAD_NO);
+w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS
+            (TARGET_PAGE), W25QXX_CRC, W25QXX_FASTREAD_NO);
 switch (w25qxx_Handle.error)
 {
 case W25QXX_ERROR_NONE:
@@ -35,17 +31,20 @@ default:
 ```C
 /* First device */
 w25qxx_HandleTypeDef w25qxx_Handle1;
-w25qxx_Link(&w25qxx_Handle1, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS0_Set);
+w25qxx_Link(&w25qxx_Handle1, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
+            w25qxx_SPI1_CS0_Set);
 w25qxx_Init(&w25qxx_Handle1);
 
 /* Second device */
 w25qxx_HandleTypeDef w25qxx_Handle2;
-w25qxx_Link(&w25qxx_Handle2, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS1_Set);
+w25qxx_Link(&w25qxx_Handle2, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
+            w25qxx_SPI1_CS1_Set);
 w25qxx_Init(&w25qxx_Handle2);
 
 /* Third device */
 w25qxx_HandleTypeDef w25qxx_Handle3;
-w25qxx_Link(&w25qxx_Handle3, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS2_Set);
+w25qxx_Link(&w25qxx_Handle3, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
+            w25qxx_SPI1_CS2_Set);
 w25qxx_Init(&w25qxx_Handle3);
 ```
 * Data transfer is carried out by standard SPI instructions, using the CLK, /CS, DI, DO pins.  
