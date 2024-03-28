@@ -99,6 +99,9 @@ w25qxx_Link(&w25qxx_Handle, w25qxx_SPIx_Receive, w25qxx_SPIx_Transmit, w25qxx_SP
 w25qxx_Init(&w25qxx_Handle);
 ```
 # Example
+Regular demo output:
+
+![TraceOutput_SectorErase](Doc/TraceOutput_SectorErase.png)
 ## References
 For application use refer to [`STM32 example`](./Examples/STM32F401CDU6/Core/Src/main.c)
 or [`Arduino example`](./Examples/ArduinoNano/ArduinoNano.ino)
