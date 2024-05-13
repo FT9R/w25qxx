@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../w25qxx"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdlib.h": "c",
+			"uart.h": "c",
+			"spi.h": "c",
+			"w25qxx_interface.h": "c",
+			"stdio.h": "c",
+			"pico.h": "c"
+		}
+	}
+}
