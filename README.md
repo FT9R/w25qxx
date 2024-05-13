@@ -103,5 +103,4 @@ Regular demo output:
 
 ![TraceOutput_SectorErase](Doc/TraceOutput_SectorErase.png)
 ## References
-For application use refer to [`STM32 example`](./Examples/STM32F401CDU6/Core/Src/main.c)
-or [`Arduino example`](./Examples/ArduinoNano/ArduinoNano.ino)
+For application use refer to [`STM32`](./Examples/STM32F401CDU6/Core/Src/main.c), [`Arduino`](./Examples/ArduinoNano/ArduinoNano.ino) or [`RP2040`](./Examples/RP2040/rp2040_w25qxx.c) examples
