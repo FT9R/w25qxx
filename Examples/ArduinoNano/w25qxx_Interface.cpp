@@ -1,5 +1,4 @@
 #include "w25qxx_Interface.h"
-#include "HardwareSerial.h"
 
 w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout)
 {
