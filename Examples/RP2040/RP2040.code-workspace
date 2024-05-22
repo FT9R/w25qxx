@@ -14,7 +14,8 @@
 			"spi.h": "c",
 			"w25qxx_interface.h": "c",
 			"stdio.h": "c",
-			"pico.h": "c"
+			"pico.h": "c",
+			"cstdint": "c"
 		}
 	}
 }

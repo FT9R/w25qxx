@@ -33,6 +33,8 @@ w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
 
     /* Set up handle fields to its default state */
     memset(w25qxx_Handle, 0, sizeof(w25qxx_HandleTypeDef));
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_NOLINK, W25QXX_STATUS_LINK) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Link functions within handle with the user defined ones */
     w25qxx_Handle->interface.Receive = fpReceive;

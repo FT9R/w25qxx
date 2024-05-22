@@ -1286,16 +1286,16 @@ Discarded input sections
  .data          0x00000000        0x0 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .bss           0x00000000        0x0 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_ReadStatus
-                0x00000000      0x16a w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x00000000      0x188 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_BusyCheck
-                0x00000000       0x56 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x00000000       0x52 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_PowerDown
-                0x00000000       0x8e w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x00000000       0xac w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_WriteDisable
-                0x00000000       0x82 w25qxx/libw25qxx.a(w25qxx.c.obj)
- .text          0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
- .data          0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
- .bss           0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
+                0x00000000       0xa0 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .text          0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
+ .data          0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
+ .bss           0x00000000        0x0 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
  .data          0x00000000        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .bss           0x00000000        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .text          0x00000000        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-calloc.o)
@@ -1617,11 +1617,11 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
 .boot2          0x10000000      0x100
                 0x10000000                        __boot2_start__ = .
  *(.boot2)
- .boot2         0x10000000      0x100 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
+ .boot2         0x10000000      0x100 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
                 0x10000100                        __boot2_end__ = .
                 0x00000001                        ASSERT (((__boot2_end__ - __boot2_start__) == 0x100), ERROR: Pico second stage bootloader must be 256 bytes in size)
 
-.text           0x10000100     0x92a8
+.text           0x10000100     0x96c0
                 0x10000100                        __logical_binary_start = .
  *(.vectors)
  .vectors       0x10000100       0xd4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
@@ -2320,52 +2320,55 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
                 0x100073e0      0x148 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
                 0x100073e0                spi_set_baudrate
  .text.w25qxx_Demo
-                0x10007528      0x2c4 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+                0x10007528      0x2d8 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
                 0x10007528                w25qxx_Demo
  .text.w25qxx_DemoErrorHandler
-                0x100077ec      0x160 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+                0x10007800      0x160 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .text.w25qxx_Link
-                0x1000794c      0x124 w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x1000794c                w25qxx_Link
+                0x10007960      0x184 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x10007960                w25qxx_Link
  .text.w25qxx_Init
-                0x10007a70      0x1dc w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10007a70                w25qxx_Init
+                0x10007ae4      0x228 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x10007ae4                w25qxx_Init
  .text.w25qxx_Write
-                0x10007c4c      0x39e w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10007c4c                w25qxx_Write
+                0x10007d0c      0x412 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x10007d0c                w25qxx_Write
  .text.w25qxx_Read
-                0x10007fea      0x34a w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10007fea                w25qxx_Read
+                0x1000811e      0x3a2 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x1000811e                w25qxx_Read
  .text.w25qxx_Erase
-                0x10008334      0x83c w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10008334                w25qxx_Erase
+                0x100084c0      0x940 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x100084c0                w25qxx_Erase
  .text.w25qxx_WriteStatus
-                0x10008b70      0x218 w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10008b70                w25qxx_WriteStatus
- .text.w25qxx_WaitWithTimeout
-                0x10008d88       0xf0 w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10008d88                w25qxx_WaitWithTimeout
+                0x10008e00      0x24a w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x10008e00                w25qxx_WriteStatus
  .text.w25qxx_ResetError
-                0x10008e78       0x70 w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x10008e78                w25qxx_ResetError
+                0x1000904a       0x8a w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x1000904a                w25qxx_ResetError
+ .text.w25qxx_WaitWithTimeout
+                0x100090d4       0xfc w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x100090d4                w25qxx_WaitWithTimeout
  .text.w25qxx_ReleasePowerDown
-                0x10008ee8       0x8e w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x100091d0       0xac w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_ResetDevice
-                0x10008f76       0xe8 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x1000927c      0x114 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_ReadID
-                0x1000905e      0x10c w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x10009390      0x14a w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.w25qxx_WriteEnable
-                0x1000916a       0x82 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x100094da       0xa0 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .text.w25qxx_StatusUpdate
+                0x1000957a       0x86 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .text.ModBus_CRC
-                0x100091ec       0xb4 w25qxx/libw25qxx.a(w25qxx.c.obj)
- .text.memcmp   0x100092a0       0x48 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-memcmp.o)
-                0x100092a0                memcmp
- .text.strlen   0x100092e8       0x5c E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-strlen-stub.o)
-                0x100092e8                strlen
+                0x10009600       0xb4 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .text.memcmp   0x100096b4       0x48 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-memcmp.o)
+                0x100096b4                memcmp
+ .text.strlen   0x100096fc       0x5c E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-strlen-stub.o)
+                0x100096fc                strlen
  *(.fini)
- .fini          0x10009344        0x4 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crti.o
-                0x10009344                _fini
- .fini.__stub   0x10009348       0x60 linker stubs
+ .fini          0x10009758        0x4 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crti.o
+                0x10009758                _fini
+ *fill*         0x1000975c        0x4 
+ .fini.__stub   0x10009760       0x60 linker stubs
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -2377,213 +2380,214 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
  *(.eh_frame*)
- .eh_frame      0x100093a8        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
-                0x100093a8                        . = ALIGN (0x4)
+ .eh_frame      0x100097c0        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
+                0x100097c0                        . = ALIGN (0x4)
 
-.glue_7         0x100093a8        0x0
- .glue_7        0x100093a8        0x0 linker stubs
+.glue_7         0x100097c0        0x0
+ .glue_7        0x100097c0        0x0 linker stubs
 
-.glue_7t        0x100093a8        0x0
- .glue_7t       0x100093a8        0x0 linker stubs
+.glue_7t        0x100097c0        0x0
+ .glue_7t       0x100097c0        0x0 linker stubs
 
-.vfp11_veneer   0x100093a8        0x0
- .vfp11_veneer  0x100093a8        0x0 linker stubs
+.vfp11_veneer   0x100097c0        0x0
+ .vfp11_veneer  0x100097c0        0x0 linker stubs
 
-.v4_bx          0x100093a8        0x0
- .v4_bx         0x100093a8        0x0 linker stubs
+.v4_bx          0x100097c0        0x0
+ .v4_bx         0x100097c0        0x0 linker stubs
 
-.iplt           0x100093a8        0x0
- .iplt          0x100093a8        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
+.iplt           0x100097c0        0x0
+ .iplt          0x100097c0        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
 
-.rodata         0x100093a8     0x16c0
+.rodata         0x100097c0     0x16c0
  *(EXCLUDE_FILE(*libm.a: *libc.a:*lib_a-mem*.o *libgcc.a:) .rodata*)
- .rodata        0x100093a8        0x3 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
- *fill*         0x100093ab        0x1 
- .rodata        0x100093ac      0x243 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x100095ef        0x1 
+ .rodata        0x100097c0        0x3 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
+ *fill*         0x100097c3        0x1 
+ .rodata        0x100097c4      0x243 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a07        0x1 
  .rodata.__func__.6
-                0x100095f0       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x1000960a        0x2 
+                0x10009a08       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a22        0x2 
  .rodata.__func__.5
-                0x1000960c        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10009a24        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
  .rodata.__func__.4
-                0x10009618       0x17 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x1000962f        0x1 
+                0x10009a30       0x17 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a47        0x1 
  .rodata.__func__.2
-                0x10009630        0xf CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x1000963f        0x1 
+                0x10009a48        0xf CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a57        0x1 
  .rodata.__func__.1
-                0x10009640       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x10009653        0x1 
+                0x10009a58       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a6b        0x1 
  .rodata.__func__.0
-                0x10009654       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- *fill*         0x1000966e        0x2 
- .rodata        0x10009670       0xed CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
- *fill*         0x1000975d        0x3 
+                0x10009a6c       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ *fill*         0x10009a86        0x2 
+ .rodata        0x10009a88       0xed CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
+ *fill*         0x10009b75        0x3 
  .rodata.__func__.3
-                0x10009760       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
+                0x10009b78       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
  .rodata.__func__.1
-                0x10009778        0xb CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
- *fill*         0x10009783        0x1 
- .rodata        0x10009784      0x309 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009a8d        0x3 
+                0x10009b90        0xb CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
+ *fill*         0x10009b9b        0x1 
+ .rodata        0x10009b9c      0x309 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009ea5        0x3 
  .rodata.__func__.12
-                0x10009a90       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009aa2        0x2 
+                0x10009ea8       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009eba        0x2 
  .rodata.__func__.11
-                0x10009aa4        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+                0x10009ebc        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
  .rodata.__func__.10
-                0x10009ab0        0xa CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009aba        0x2 
+                0x10009ec8        0xa CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009ed2        0x2 
  .rodata.__func__.9
-                0x10009abc       0x17 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009ad3        0x1 
+                0x10009ed4       0x17 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009eeb        0x1 
  .rodata.__func__.8
-                0x10009ad4       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009ae9        0x3 
+                0x10009eec       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f01        0x3 
  .rodata.__func__.7
-                0x10009aec        0xf CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009afb        0x1 
+                0x10009f04        0xf CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f13        0x1 
  .rodata.__func__.6
-                0x10009afc       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009b16        0x2 
+                0x10009f14       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f2e        0x2 
  .rodata.__func__.5
-                0x10009b18       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009b2d        0x3 
+                0x10009f30       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f45        0x3 
  .rodata.__func__.4
-                0x10009b30        0xd CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009b3d        0x3 
+                0x10009f48        0xd CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f55        0x3 
  .rodata.__func__.3
-                0x10009b40       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009b52        0x2 
+                0x10009f58       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f6a        0x2 
  .rodata.__func__.1
-                0x10009b54       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+                0x10009f6c       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
  .rodata.__func__.0
-                0x10009b6c       0x19 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- *fill*         0x10009b85        0x3 
- .rodata        0x10009b88      0x101 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- *fill*         0x10009c89        0x3 
+                0x10009f84       0x19 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ *fill*         0x10009f9d        0x3 
+ .rodata        0x10009fa0      0x101 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+ *fill*         0x1000a0a1        0x3 
  .rodata.__func__.1
-                0x10009c8c       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- *fill*         0x10009ca1        0x3 
+                0x1000a0a4       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+ *fill*         0x1000a0b9        0x3 
  .rodata.__func__.0
-                0x10009ca4       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- *fill*         0x10009cbe        0x2 
- .rodata        0x10009cc0      0x187 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
- *fill*         0x10009e47        0x1 
+                0x1000a0bc       0x1a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+ *fill*         0x1000a0d6        0x2 
+ .rodata        0x1000a0d8      0x187 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+ *fill*         0x1000a25f        0x1 
  .rodata.__func__.3
-                0x10009e48       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
- *fill*         0x10009e5a        0x2 
+                0x1000a260       0x12 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+ *fill*         0x1000a272        0x2 
  .rodata.__func__.2
-                0x10009e5c        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x1000a274        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
  .rodata.__func__.1
-                0x10009e68       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
- *fill*         0x10009e7b        0x1 
+                0x1000a280       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+ *fill*         0x1000a293        0x1 
  .rodata.__func__.0
-                0x10009e7c       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
- .rodata        0x10009e94       0xfb CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
- *fill*         0x10009f8f        0x1 
+                0x1000a294       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+ .rodata        0x1000a2ac       0xfb CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
+ *fill*         0x1000a3a7        0x1 
  .rodata.__func__.1
-                0x10009f90       0x10 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
- .rodata        0x10009fa0      0x124 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
+                0x1000a3a8       0x10 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
+ .rodata        0x1000a3b8      0x124 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
  .rodata.__func__.0
-                0x1000a0c4        0x9 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
- *fill*         0x1000a0cd        0x3 
- .rodata        0x1000a0d0      0x13c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x1000a4dc        0x9 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
+ *fill*         0x1000a4e5        0x3 
+ .rodata        0x1000a4e8      0x13c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
  .rodata.__func__.2
-                0x1000a20c        0xd CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
- *fill*         0x1000a219        0x3 
- .rodata        0x1000a21c       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+                0x1000a624        0xd CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+ *fill*         0x1000a631        0x3 
+ .rodata        0x1000a634       0x18 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
  .rodata._vsnprintf
-                0x1000a234      0x19c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+                0x1000a64c      0x19c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
  .rodata.pow10.0
-                0x1000a3d0       0x50 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
- .rodata        0x1000a420       0x9c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
+                0x1000a7e8       0x50 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+ .rodata        0x1000a838       0x9c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
  .rodata.__func__.0
-                0x1000a4bc       0x14 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
- .rodata        0x1000a4d0       0x7e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
- *fill*         0x1000a54e        0x2 
+                0x1000a8d4       0x14 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
+ .rodata        0x1000a8e8       0x7e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
+ *fill*         0x1000a966        0x2 
  .rodata.__func__.0
-                0x1000a550       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
- *fill*         0x1000a563        0x1 
- .rodata        0x1000a564       0x5e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
- *fill*         0x1000a5c2        0x2 
+                0x1000a968       0x13 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
+ *fill*         0x1000a97b        0x1 
+ .rodata        0x1000a97c       0x5e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+ *fill*         0x1000a9da        0x2 
  .rodata.__bi_44
-                0x1000a5c4        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000a9dc        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_75
-                0x1000a5d0        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000a9e8        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_81
-                0x1000a5dc        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000a9f4        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_91
-                0x1000a5e8        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
- .rodata        0x1000a5f4       0xb3 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
- *fill*         0x1000a6a7        0x1 
+                0x1000aa00        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+ .rodata        0x1000aa0c       0xb3 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+ *fill*         0x1000aabf        0x1 
  .rodata.__func__.3
-                0x1000a6a8       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
- *fill*         0x1000a6bd        0x3 
+                0x1000aac0       0x15 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+ *fill*         0x1000aad5        0x3 
  .rodata.crlf_str.2
-                0x1000a6c0        0x2 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
- *fill*         0x1000a6c2        0x2 
+                0x1000aad8        0x2 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+ *fill*         0x1000aada        0x2 
  .rodata.__bi_34.11
-                0x1000a6c4        0x8 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
- .rodata        0x1000a6cc       0x2b CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
- *fill*         0x1000a6f7        0x1 
+                0x1000aadc        0x8 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+ .rodata        0x1000aae4       0x2b CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+ *fill*         0x1000ab0f        0x1 
  .rodata.__bi_33.9
-                0x1000a6f8        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x1000ab10        0xc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .rodata.bufferWrite
-                0x1000a704        0xd w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- *fill*         0x1000a711        0x3 
- .rodata        0x1000a714      0x2d0 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+                0x1000ab1c        0xd w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+ *fill*         0x1000ab29        0x3 
+ .rodata        0x1000ab2c      0x2cf w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+ *fill*         0x1000adfb        0x1 
  .rodata.w25qxx_Demo
-                0x1000a9e4       0x14 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+                0x1000adfc       0x14 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .rodata.w25qxx_DemoErrorHandler
-                0x1000a9f8       0x48 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+                0x1000ae10       0x48 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .rodata.w25qxx_Init
-                0x1000aa40       0x14 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x1000ae58       0x14 w25qxx/libw25qxx.a(w25qxx.c.obj)
  .rodata.w25qxx_Erase
-                0x1000aa54       0x14 w25qxx/libw25qxx.a(w25qxx.c.obj)
-                0x1000aa68                        . = ALIGN (0x4)
+                0x1000ae6c       0x14 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x1000ae80                        . = ALIGN (0x4)
  *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.flashdata*)))
-                0x1000aa68                        . = ALIGN (0x4)
+                0x1000ae80                        . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x1000aa68                        __exidx_start = .
+                0x1000ae80                        __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x1000aa68                        __exidx_end = .
-                0x1000aa68                        . = ALIGN (0x4)
-                0x1000aa68                        __binary_info_start = .
+                0x1000ae80                        __exidx_end = .
+                0x1000ae80                        . = ALIGN (0x4)
+                0x1000ae80                        __binary_info_start = .
 
-.binary_info    0x1000aa68       0x28
+.binary_info    0x1000ae80       0x28
  *(.binary_info.keep.*)
  .binary_info.keep.__bi_ptr22
-                0x1000aa68        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae80        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr30
-                0x1000aa6c        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae84        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr38
-                0x1000aa70        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae88        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr44
-                0x1000aa74        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae8c        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr50
-                0x1000aa78        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae90        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr75
-                0x1000aa7c        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae94        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr81
-                0x1000aa80        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae98        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr91
-                0x1000aa84        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x1000ae9c        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  *(.binary_info.*)
  .binary_info.__bi_ptr33
-                0x1000aa88        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x1000aea0        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .binary_info.__bi_ptr34
-                0x1000aa8c        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
-                0x1000aa90                        __binary_info_end = .
+                0x1000aea4        0x4 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x1000aea8                        __binary_info_end = .
 
-.rel.dyn        0x1000aa90        0x0
- .rel.iplt      0x1000aa90        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
-                0x1000aa90                        . = ALIGN (0x4)
+.rel.dyn        0x1000aea8        0x0
+ .rel.iplt      0x1000aea8        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
+                0x1000aea8                        . = ALIGN (0x4)
 
 .ram_vector_table
                 0x20000000       0xc0
@@ -2592,7 +2596,7 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
                 0x20000000       0xc0 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
                 0x20000000                ram_vector_table
 
-.data           0x200000c0      0x514 load address 0x1000aa90
+.data           0x200000c0      0x514 load address 0x1000aea8
                 0x200000c0                        __data_start__ = .
  *(vtable)
  *(.time_critical*)
@@ -2682,36 +2686,36 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
  *(.jcr)
                 0x200005d4                        . = ALIGN (0x4)
                 0x200005d4                        __data_end__ = .
-                0x1000aa90                        __etext = LOADADDR (.data)
+                0x1000aea8                        __etext = LOADADDR (.data)
 
 .tm_clone_table
-                0x200005d4        0x0 load address 0x1000afa4
+                0x200005d4        0x0 load address 0x1000b3bc
  .tm_clone_table
                 0x200005d4        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
  .tm_clone_table
                 0x200005d4        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtend.o
 
-.igot.plt       0x200005d4        0x0 load address 0x1000afa4
+.igot.plt       0x200005d4        0x0 load address 0x1000b3bc
  .igot.plt      0x200005d4        0x0 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp/crtbegin.o
 
 .uninitialized_data
-                0x200005d4        0x0 load address 0x1000afa4
+                0x200005d4        0x0 load address 0x1000b3bc
                 0x200005d4                        . = ALIGN (0x4)
  *(.uninitialized_data*)
 
-.scratch_x      0x20040000        0x0 load address 0x1000afa4
+.scratch_x      0x20040000        0x0 load address 0x1000b3bc
                 0x20040000                        __scratch_x_start__ = .
  *(.scratch_x.*)
                 0x20040000                        . = ALIGN (0x4)
                 0x20040000                        __scratch_x_end__ = .
-                0x1000afa4                        __scratch_x_source__ = LOADADDR (.scratch_x)
+                0x1000b3bc                        __scratch_x_source__ = LOADADDR (.scratch_x)
 
-.scratch_y      0x20041000        0x0 load address 0x1000afa4
+.scratch_y      0x20041000        0x0 load address 0x1000b3bc
                 0x20041000                        __scratch_y_start__ = .
  *(.scratch_y.*)
                 0x20041000                        . = ALIGN (0x4)
                 0x20041000                        __scratch_y_end__ = .
-                0x1000afa4                        __scratch_y_source__ = LOADADDR (.scratch_y)
+                0x1000b3bc                        __scratch_y_source__ = LOADADDR (.scratch_y)
 
 .bss            0x200005d8      0x510
                 0x200005d8                        . = ALIGN (0x4)
@@ -2785,8 +2789,8 @@ LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6
  *(.stack*)
  .stack         0x20041000      0x800 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
 
-.flash_end      0x1000afa4        0x0
-                0x1000afa4                        PROVIDE (__flash_binary_end = .)
+.flash_end      0x1000b3bc        0x0
+                0x1000b3bc                        PROVIDE (__flash_binary_end = .)
                 0x20040000                        __StackLimit = (ORIGIN (RAM) + LENGTH (RAM))
                 0x20041000                        __StackOneTop = (ORIGIN (SCRATCH_X) + LENGTH (SCRATCH_X))
                 0x20042000                        __StackTop = (ORIGIN (SCRATCH_Y) + LENGTH (SCRATCH_Y))
@@ -2844,7 +2848,7 @@ LOAD CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico
 LOAD CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
 LOAD CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
 LOAD w25qxx/libw25qxx.a
-LOAD C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
+LOAD C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
 LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libstdc++.a
 LOAD E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libm.a
 START GROUP
@@ -2945,7 +2949,7 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000642       0x2c w25qxx/libw25qxx.a(w25qxx.c.obj)
  .ARM.attributes
-                0x0000066e       0x22 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccC4mf33.o
+                0x0000066e       0x22 C:\Users\RE5FE~1.CHE\AppData\Local\Temp\ccINGzBi.o
  .ARM.attributes
                 0x00000690       0x1e E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
@@ -2986,7 +2990,7 @@ LOAD linker stubs
  .comment       0x00000044       0x45 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .comment       0x00000044       0x45 w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_info     0x00000000    0x10b2a
+.debug_info     0x00000000    0x10bdd
  .debug_info    0x00000000      0x86b CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_info    0x0000086b      0x69b CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
  .debug_info    0x00000f06     0x1308 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
@@ -3022,10 +3026,10 @@ LOAD linker stubs
  .debug_info    0x0000d145     0x118a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .debug_info    0x0000e2cf      0xbb5 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .debug_info    0x0000ee84      0xd07 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
- .debug_info    0x0000fb8b      0x6b8 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- .debug_info    0x00010243      0x8e7 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .debug_info    0x0000fb8b      0x6e1 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+ .debug_info    0x0001026c      0x971 w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_abbrev   0x00000000     0x4701
+.debug_abbrev   0x00000000     0x46e4
  .debug_abbrev  0x00000000      0x32e CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_abbrev  0x0000032e      0x217 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
  .debug_abbrev  0x00000545      0x35b CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
@@ -3061,10 +3065,10 @@ LOAD linker stubs
  .debug_abbrev  0x00003948      0x3a7 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .debug_abbrev  0x00003cef      0x376 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .debug_abbrev  0x00004065      0x26c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
- .debug_abbrev  0x000042d1      0x1d9 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- .debug_abbrev  0x000044aa      0x257 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .debug_abbrev  0x000042d1      0x1c3 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+ .debug_abbrev  0x00004494      0x250 w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_aranges  0x00000000     0x13a0
+.debug_aranges  0x00000000     0x13a8
  .debug_aranges
                 0x00000000       0x78 CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_aranges
@@ -3138,10 +3142,10 @@ LOAD linker stubs
  .debug_aranges
                 0x000012d8       0x28 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .debug_aranges
-                0x00001300       0xa0 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x00001300       0xa8 w25qxx/libw25qxx.a(w25qxx.c.obj)
 
 .debug_rnglists
-                0x00000000      0xe71
+                0x00000000      0xe79
  .debug_rnglists
                 0x00000000       0x55 CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_rnglists
@@ -3211,9 +3215,9 @@ LOAD linker stubs
  .debug_rnglists
                 0x00000dd4       0x1b w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
  .debug_rnglists
-                0x00000def       0x82 w25qxx/libw25qxx.a(w25qxx.c.obj)
+                0x00000def       0x8a w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_line     0x00000000     0xdd9e
+.debug_line     0x00000000     0xdf57
  .debug_line    0x00000000      0x560 CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_line    0x00000560      0x465 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
  .debug_line    0x000009c5      0xa7d CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
@@ -3250,49 +3254,49 @@ LOAD linker stubs
  .debug_line    0x0000b9e0      0x8d6 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .debug_line    0x0000c2b6      0xb66 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
  .debug_line    0x0000ce1c      0x2f3 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- .debug_line    0x0000d10f      0xc8f w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .debug_line    0x0000d10f      0xe48 w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_str      0x00000000     0x4364
- .debug_str     0x00000000     0x4364 CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
+.debug_str      0x00000000     0x4371
+ .debug_str     0x00000000     0x4371 CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
                                 0x68f (size before relaxing)
- .debug_str     0x00004364      0x565 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
- .debug_str     0x00004364      0xa0a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
- .debug_str     0x00004364      0x231 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_platform/platform.c.obj
- .debug_str     0x00004364      0x375 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
- .debug_str     0x00004364      0x35c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
- .debug_str     0x00004364      0x819 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
- .debug_str     0x00004364      0x212 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/lock_core.c.obj
- .debug_str     0x00004364      0x5f7 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
- .debug_str     0x00004364      0xc7a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
- .debug_str     0x00004364      0x72f CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- .debug_str     0x00004364      0x3f0 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
- .debug_str     0x00004364      0x627 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj
- .debug_str     0x00004364      0x6ba CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
- .debug_str     0x00004364      0x2df CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
- .debug_str     0x00004364      0x333 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj
- .debug_str     0x00004364      0x230 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj
- .debug_str     0x00004364      0x7ba CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
- .debug_str     0x00004364      0x391 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
- .debug_str     0x00004364       0x8c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj
- .debug_str     0x00004364      0x288 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
- .debug_str     0x00004364       0x86 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_divider/divider.S.obj
- .debug_str     0x00004364       0x8a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj
- .debug_str     0x00004364      0x2c0 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
- .debug_str     0x00004364       0x90 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj
- .debug_str     0x00004364       0x95 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
- .debug_str     0x00004364       0x88 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
- .debug_str     0x00004364      0x2bc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
- .debug_str     0x00004364       0x8e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
- .debug_str     0x00004364       0x8c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
- .debug_str     0x00004364       0x89 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
- .debug_str     0x00004364      0x42d CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
- .debug_str     0x00004364      0x9d1 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
- .debug_str     0x00004364      0x8fa CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
- .debug_str     0x00004364      0x593 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
- .debug_str     0x00004364      0x809 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- .debug_str     0x00004364      0x940 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .debug_str     0x00004371      0x565 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
+ .debug_str     0x00004371      0xa0a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
+ .debug_str     0x00004371      0x231 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_platform/platform.c.obj
+ .debug_str     0x00004371      0x375 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
+ .debug_str     0x00004371      0x35c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
+ .debug_str     0x00004371      0x819 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+ .debug_str     0x00004371      0x212 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/lock_core.c.obj
+ .debug_str     0x00004371      0x5f7 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_sync/mutex.c.obj
+ .debug_str     0x00004371      0xc7a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_time/time.c.obj
+ .debug_str     0x00004371      0x72f CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+ .debug_str     0x00004371      0x3f0 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/common/pico_util/pheap.c.obj
+ .debug_str     0x00004371      0x627 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj
+ .debug_str     0x00004371      0x6ba CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
+ .debug_str     0x00004371      0x2df CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
+ .debug_str     0x00004371      0x333 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj
+ .debug_str     0x00004371      0x230 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj
+ .debug_str     0x00004371      0x7ba CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+ .debug_str     0x00004371      0x391 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+ .debug_str     0x00004371       0x8c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj
+ .debug_str     0x00004371      0x288 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
+ .debug_str     0x00004371       0x86 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_divider/divider.S.obj
+ .debug_str     0x00004371       0x8a CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj
+ .debug_str     0x00004371      0x2c0 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
+ .debug_str     0x00004371       0x90 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj
+ .debug_str     0x00004371       0x95 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
+ .debug_str     0x00004371       0x88 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
+ .debug_str     0x00004371      0x2bc CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
+ .debug_str     0x00004371       0x8e CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
+ .debug_str     0x00004371       0x8c CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
+ .debug_str     0x00004371       0x89 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
+ .debug_str     0x00004371      0x42d CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+ .debug_str     0x00004371      0x9d1 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+ .debug_str     0x00004371      0x8fa CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+ .debug_str     0x00004371      0x593 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
+ .debug_str     0x00004371      0x7ec w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
+ .debug_str     0x00004371      0x94d w25qxx/libw25qxx.a(w25qxx.c.obj)
 
-.debug_frame    0x00000000     0x3380
+.debug_frame    0x00000000     0x33a0
  .debug_frame   0x00000000      0x18c CMakeFiles/rp2040_w25qxx.dir/rp2040_w25qxx.c.obj
  .debug_frame   0x0000018c      0x110 CMakeFiles/rp2040_w25qxx.dir/w25qxx_Interface.c.obj
  .debug_frame   0x0000029c      0x4ac CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
@@ -3319,9 +3323,9 @@ LOAD linker stubs
  .debug_frame   0x00002bd0      0x248 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .debug_frame   0x00002e18      0x294 CMakeFiles/rp2040_w25qxx.dir/E_/Raspberry/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.obj
  .debug_frame   0x000030ac       0x50 w25qxx/libw25qxx.a(w25qxx_Demo.c.obj)
- .debug_frame   0x000030fc      0x230 w25qxx/libw25qxx.a(w25qxx.c.obj)
- .debug_frame   0x0000332c       0x2c E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-memcmp.o)
- .debug_frame   0x00003358       0x28 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-strlen-stub.o)
+ .debug_frame   0x000030fc      0x250 w25qxx/libw25qxx.a(w25qxx.c.obj)
+ .debug_frame   0x0000334c       0x2c E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-memcmp.o)
+ .debug_frame   0x00003378       0x28 E:/Toolchain/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/13.2.1/thumb/v6-m/nofp\libg.a(libc_a-strlen-stub.o)
 
 .debug_line_str
                 0x00000000      0x314
