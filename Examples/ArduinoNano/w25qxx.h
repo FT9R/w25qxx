@@ -164,16 +164,7 @@ typedef enum w25qxx_Error_e {
 
 typedef struct w25qxx_HandleTypeDef_s
 {
-    uint8_t ID[2];
-    uint32_t numberOfPages;
-    uint8_t statusRegister;
-    uint8_t CMD;
-    uint8_t addressBytes[3];
-    uint16_t frameLength;
     uint8_t frameBuf[W25QXX_PAGE_SIZE];
-    uint16_t CRC16;
-    w25qxx_Status_t status;
-    w25qxx_Error_t error;
     struct
     {
         w25qxx_Transfer_Status_t (*Receive)(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
@@ -181,6 +172,15 @@ typedef struct w25qxx_HandleTypeDef_s
         void (*CS_Set)(w25qxx_CS_State_t newState);
         void (*Delay)(uint32_t ms);
     } interface;
+    w25qxx_Status_t status;
+    w25qxx_Error_t error;
+    uint32_t numberOfPages;
+    uint16_t frameLength;
+    uint16_t CRC16;
+    uint8_t ID[2];
+    uint8_t statusRegister;
+    uint8_t CMD;
+    uint8_t addressBytes[3];
 } w25qxx_HandleTypeDef;
 
 /**
@@ -189,6 +189,7 @@ typedef struct w25qxx_HandleTypeDef_s
  * @param fpReceive: pointer to the user-defined SPI receive function
  * @param fpTransmit: pointer to the user-defined SPI transmit function
  * @param fpCS_Set: pointer to the user-defined chip select set function
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                            w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
@@ -198,6 +199,7 @@ w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
 /**
  * @brief Checks if the device is available and determines the number of pages
  * @param w25qxx_Handle: pointer to the device handle structure
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
 
@@ -209,6 +211,7 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @param address: page address to write (multiple of 256 bytes)
  * @param CRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
                             uint32_t address, w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask);
@@ -221,6 +224,7 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
  * @param address: page address to read (multiple of 256 bytes)
  * @param CRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
                            w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead);
@@ -232,6 +236,7 @@ w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, ui
  * @param address: start address of page, sector or block to be erased
  * @param waitForTask: the way to ensure that operation is completed
  * @note Address has to be 0 in case of chip erase
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
                             uint32_t address, w25qxx_WaitForTask_t waitForTask);
@@ -241,6 +246,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param statusRegisterx: device target status register(1-3)
  * @param statusRegisterBehaviour: keep or not the status register content after device reset
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
                                   w25qxx_SR_Behaviour_t statusRegisterBehaviour);
@@ -249,27 +255,29 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
  * @brief Reads a status byte from device to its handle
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param statusRegisterx: device target status register(1-3)
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
 
 /**
- * @brief Resets any device errors
+ * @brief Resets any device errors within handle
  * @param w25qxx_Handle: pointer to the device handle structure
+ * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
- * @brief Reads status register 1 once and returns state of busy bit
+ * @brief Reads status register 1 once and returns device status
  * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device busy status
+ * @return Device status: W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
  */
 w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
- * @brief Reads status register 1 continuously with timeout and returns state of busy bit
+ * @brief Reads status register 1 continuously with timeout and returns device status
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param timeout: timeout duration
- * @return Device busy status
+ * @return Device status: W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
  */
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
 
