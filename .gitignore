@@ -2,5 +2,9 @@
 .*
 !/.gitignore
 
-# EWARM build
+# Build dirs
 **/EWARM/STM32F401CDU6
+**/RP2040/build
+
+# Settings
+**/EWARM/settings
