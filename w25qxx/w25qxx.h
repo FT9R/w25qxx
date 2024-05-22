@@ -98,11 +98,11 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
     }                                                        \
     while (0)
 
-#define W25QXX_ERROR_CHECK(W25QXX_ERROR)               \
+#define W25QXX_ERROR_CHECK                             \
     do                                                 \
     {                                                  \
         if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
-            W25QXX_ERROR_SET((W25QXX_ERROR));          \
+            W25QXX_ERROR_SET(w25qxx_Handle->error);    \
     }                                                  \
     while (0)
 
