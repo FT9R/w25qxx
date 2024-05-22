@@ -1,30 +1,27 @@
 #include "w25qxx.h"
 
 /* Private function prototypes */
-static void w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
-static void w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
-static void w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle);
-static void w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
-static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
-static void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
+static w25qxx_Error_t w25qxx_StatusUpdate(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_Status_t statusCheck,
+                                          w25qxx_Status_t statusSet);
 static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 
-void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
-                 w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                 w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
-                 void (*fpCS_Set)(w25qxx_CS_State_t))
+w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
+                           w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
+                           w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                           void (*fpCS_Set)(w25qxx_CS_State_t))
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check */
-    if (w25qxx_Handle->status != W25QXX_STATUS_NOLINK)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_NOLINK, W25QXX_STATUS_LINK) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
     if (fpReceive == NULL)
@@ -43,24 +40,17 @@ void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
     w25qxx_Handle->interface.CS_Set = fpCS_Set;
     w25qxx_Handle->interface.Delay = w25qxx_Delay;
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_RESET;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_LINK, W25QXX_STATUS_RESET);
 }
 
-void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
+w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_RESET)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_INIT;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_RESET, W25QXX_STATUS_INIT) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Start operation */
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
@@ -108,24 +98,18 @@ void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
 
     /* Operation succeed */
     w25qxx_Handle->interface.Delay(10);
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_INIT, W25QXX_STATUS_READY);
 }
 
-void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                  w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask)
+w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
+                            uint32_t address, w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_WRITE;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
     if (buf == NULL)
@@ -185,25 +169,18 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
         break;
     }
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE, W25QXX_STATUS_READY);
 }
 
-void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                 w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead)
+w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                           w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_READ;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
     if (buf == NULL)
@@ -248,27 +225,20 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
     /* Copy received data without checksum to the destination buffer */
     memcpy(buf, w25qxx_Handle->frameBuf, dataLength);
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ, W25QXX_STATUS_READY);
 }
 
-void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction, uint32_t address,
-                  w25qxx_WaitForTask_t waitForTask)
+w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
+                            uint32_t address, w25qxx_WaitForTask_t waitForTask)
 {
     uint32_t chipEraseTimeout = 0;
 
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_ERASE;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_ERASE) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     switch (eraseInstruction)
     {
@@ -451,25 +421,18 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
         break;
     }
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_ERASE, W25QXX_STATUS_READY);
 }
 
-void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
-                        w25qxx_SR_Behaviour_t statusRegisterBehaviour)
+w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+                                  w25qxx_SR_Behaviour_t statusRegisterBehaviour)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_WRITE;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
     if ((statusRegisterx < 1u) || (statusRegisterx > 3u))
@@ -511,24 +474,17 @@ void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegis
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
     }
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE, W25QXX_STATUS_READY);
 }
 
-void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
+w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
-
-    /* Actual status check and update */
-    if (w25qxx_Handle->status != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS_MISMATCH);
-    w25qxx_Handle->status = W25QXX_STATUS_BUSY_READ;
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ) != W25QXX_ERROR_NONE)
+        W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
     if ((statusRegisterx < 1u) || (statusRegisterx > 3u))
@@ -556,8 +512,27 @@ void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegist
     W25QXX_BEGIN_RECEIVE(&w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister), W25QXX_RX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
-    /* Operation succeed */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ, W25QXX_STATUS_READY);
+}
+
+w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
+{
+    /* Avoid dereferencing the null handle */
+    if (w25qxx_Handle == NULL)
+        return W25QXX_ERROR_ARGUMENT;
+
+    /* Existing errors check */
+    if (w25qxx_Handle->error == W25QXX_ERROR_NONE)
+        return w25qxx_Handle->error;
+
+    /* Reset error */
+    w25qxx_Handle->error = W25QXX_ERROR_NONE;
+
+    /* Try to get response from device */
+    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != W25QXX_STATUS_READY)
+        W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
+
+    return w25qxx_StatusUpdate(w25qxx_Handle, w25qxx_Handle->status, W25QXX_STATUS_READY);
 }
 
 w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
@@ -571,12 +546,11 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
         return W25QXX_STATUS_UNDEFINED;
 
     /* Get busy bit state */
-    w25qxx_ReadStatus(w25qxx_Handle, 1u);
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
+    if (w25qxx_ReadStatus(w25qxx_Handle, 1u) != W25QXX_ERROR_NONE)
         return W25QXX_STATUS_UNDEFINED;
 
     /* Return device busy status */
-    return READ_BIT(w25qxx_Handle->statusRegister, 1u << 0) ? W25QXX_STATUS_BUSY : W25QXX_STATUS_READY;
+    return READ_BIT(w25qxx_Handle->statusRegister, 1u << 0) ? W25QXX_STATUS_UNDEFINED : W25QXX_STATUS_READY;
 }
 
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
@@ -634,44 +608,23 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
-            return W25QXX_STATUS_BUSY;
+            return W25QXX_STATUS_UNDEFINED;
         }
     }
-}
-
-void w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
-{
-    /* Avoid dereferencing the null handle */
-    if (w25qxx_Handle == NULL)
-        return;
-
-    /* Existing errors check */
-    if (w25qxx_Handle->error == W25QXX_ERROR_NONE)
-        return;
-
-    /* Reset error */
-    w25qxx_Handle->error = W25QXX_ERROR_NONE;
-
-    /* Try to get response from device */
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != W25QXX_STATUS_READY)
-        W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
-
-    /* Refresh device status */
-    w25qxx_Handle->status = W25QXX_STATUS_READY;
 }
 
 /**
  * @section Private functions
  */
-static void w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_POWER_DOWN;
@@ -679,17 +632,19 @@ static void w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
+
+    return w25qxx_Handle->error;
 }
 
-static void w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_RELEASE_POWER_DOWN;
@@ -697,17 +652,19 @@ static void w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
+
+    return w25qxx_Handle->error;
 }
 
-static void w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command 1 */
     w25qxx_Handle->CMD = W25QXX_CMD_ENABLE_RESET;
@@ -721,17 +678,19 @@ static void w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
+
+    return w25qxx_Handle->error;
 }
 
-static void w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
@@ -745,40 +704,63 @@ static void w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Get Manufacturer ID and Device ID */
     W25QXX_BEGIN_RECEIVE(w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
+    return w25qxx_Handle->error;
 }
 
-static void w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_ENABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
+    return w25qxx_Handle->error;
 }
 
-static void w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
+static w25qxx_Error_t w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
-        return;
+        return W25QXX_ERROR_ARGUMENT;
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return;
+        return w25qxx_Handle->error;
 
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_DISABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
+
+    return w25qxx_Handle->error;
+}
+
+static w25qxx_Error_t w25qxx_StatusUpdate(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_Status_t statusCheck,
+                                          w25qxx_Status_t statusSet)
+{
+    /* Existing errors check */
+    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
+        return w25qxx_Handle->error;
+
+    /* Actual status check */
+    if (w25qxx_Handle->status != statusCheck)
+        W25QXX_ERROR_SET(W25QXX_ERROR_STATUS);
+
+    /* Status update */
+    w25qxx_Handle->status = statusSet;
+
+    return w25qxx_Handle->error;
 }
 
 static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)

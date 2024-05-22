@@ -153,7 +153,7 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
     case W25QXX_ERROR_NONE:
         break;
 
-    case W25QXX_ERROR_STATUS_MISMATCH:
+    case W25QXX_ERROR_STATUS:
         fpPrint("status match\n");
         break;
 
@@ -193,32 +193,32 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
         fpPrint("no link\n");
         break;
 
+    case W25QXX_STATUS_LINK:
+        fpPrint("link\n");
+        break;
+
+    case W25QXX_STATUS_INIT:
+        fpPrint("busy init\n");
+        break;
+
+    case W25QXX_STATUS_WRITE:
+        fpPrint("busy write\n");
+        break;
+
+    case W25QXX_STATUS_READ:
+        fpPrint("busy read\n");
+        break;
+
+    case W25QXX_STATUS_ERASE:
+        fpPrint("busy erase\n");
+        break;
+
     case W25QXX_STATUS_RESET:
         fpPrint("reset\n");
         break;
 
     case W25QXX_STATUS_READY:
         fpPrint("ready\n");
-        break;
-
-    case W25QXX_STATUS_BUSY:
-        fpPrint("busy\n");
-        break;
-
-    case W25QXX_STATUS_BUSY_INIT:
-        fpPrint("busy init\n");
-        break;
-
-    case W25QXX_STATUS_BUSY_WRITE:
-        fpPrint("busy write\n");
-        break;
-
-    case W25QXX_STATUS_BUSY_READ:
-        fpPrint("busy read\n");
-        break;
-
-    case W25QXX_STATUS_BUSY_ERASE:
-        fpPrint("busy erase\n");
         break;
 
     case W25QXX_STATUS_UNDEFINED:

@@ -92,10 +92,9 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 #define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
     do                                                       \
     {                                                        \
-        w25qxx_Handle->error = (W25QXX_ERROR);               \
         if (w25qxx_Handle->interface.CS_Set != NULL)         \
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
-        return;                                              \
+        return w25qxx_Handle->error = (W25QXX_ERROR);        \
     }                                                        \
     while (0)
 
@@ -141,19 +140,19 @@ typedef enum w25qxx_EraseInstruction_e {
 
 typedef enum w25qxx_Status_e {
     W25QXX_STATUS_NOLINK,
+    W25QXX_STATUS_LINK,
+    W25QXX_STATUS_INIT,
+    W25QXX_STATUS_WRITE,
+    W25QXX_STATUS_READ,
+    W25QXX_STATUS_ERASE,
     W25QXX_STATUS_RESET,
     W25QXX_STATUS_READY,
-    W25QXX_STATUS_BUSY,
-    W25QXX_STATUS_BUSY_INIT,
-    W25QXX_STATUS_BUSY_WRITE,
-    W25QXX_STATUS_BUSY_READ,
-    W25QXX_STATUS_BUSY_ERASE,
     W25QXX_STATUS_UNDEFINED
 } w25qxx_Status_t;
 
 typedef enum w25qxx_Error_e {
     W25QXX_ERROR_NONE,
-    W25QXX_ERROR_STATUS_MISMATCH,
+    W25QXX_ERROR_STATUS,
     W25QXX_ERROR_INITIALIZATION,
     W25QXX_ERROR_ARGUMENT,
     W25QXX_ERROR_ADDRESS,
@@ -191,16 +190,16 @@ typedef struct w25qxx_HandleTypeDef_s
  * @param fpTransmit: pointer to the user-defined SPI transmit function
  * @param fpCS_Set: pointer to the user-defined chip select set function
  */
-void w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
-                 w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                 w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
-                 void (*fpCS_Set)(w25qxx_CS_State_t));
+w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
+                           w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
+                           w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                           void (*fpCS_Set)(w25qxx_CS_State_t));
 
 /**
  * @brief Checks if the device is available and determines the number of pages
  * @param w25qxx_Handle: pointer to the device handle structure
  */
-void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
+w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Writes data to w25qxx from external buffer
@@ -211,8 +210,8 @@ void w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @param CRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
  */
-void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength, uint32_t address,
-                  w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask);
+w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
+                            uint32_t address, w25qxx_CRC_t trailingCRC, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Reads data from w25qxx to external buffer
@@ -223,8 +222,8 @@ void w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint1
  * @param CRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
  */
-void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
-                 w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead);
+w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
+                           w25qxx_CRC_t trailingCRC, w25qxx_FastRead_t fastRead);
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
@@ -234,8 +233,8 @@ void w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dat
  * @param waitForTask: the way to ensure that operation is completed
  * @note Address has to be 0 in case of chip erase
  */
-void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction, uint32_t address,
-                  w25qxx_WaitForTask_t waitForTask);
+w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t eraseInstruction,
+                            uint32_t address, w25qxx_WaitForTask_t waitForTask);
 
 /**
  * @brief Writes a status byte from handle to device itself
@@ -243,15 +242,21 @@ void w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseInstruction_t
  * @param statusRegisterx: device target status register(1-3)
  * @param statusRegisterBehaviour: keep or not the status register content after device reset
  */
-void w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
-                        w25qxx_SR_Behaviour_t statusRegisterBehaviour);
+w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
+                                  w25qxx_SR_Behaviour_t statusRegisterBehaviour);
 
 /**
  * @brief Reads a status byte from device to its handle
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param statusRegisterx: device target status register(1-3)
  */
-void w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
+w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
+
+/**
+ * @brief Resets any device errors
+ * @param w25qxx_Handle: pointer to the device handle structure
+ */
+w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Reads status register 1 once and returns state of busy bit
@@ -267,12 +272,6 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @return Device busy status
  */
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
-
-/**
- * @brief Resets any device errors
- * @param w25qxx_Handle: pointer to the device handle structure
- */
-void w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 #ifdef __cplusplus
 }
