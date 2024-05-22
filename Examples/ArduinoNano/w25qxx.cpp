@@ -57,14 +57,14 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
     w25qxx_Handle->interface.Delay(100);
 
     w25qxx_ReleasePowerDown(w25qxx_Handle);
-    W25QXX_ERROR_CHECK(W25QXX_ERROR_INITIALIZATION);
+    W25QXX_ERROR_CHECK;
 
     w25qxx_ResetDevice(w25qxx_Handle);
-    W25QXX_ERROR_CHECK(W25QXX_ERROR_INITIALIZATION);
+    W25QXX_ERROR_CHECK;
 
     /* Get the Manufacturer ID and Device ID */
     w25qxx_ReadID(w25qxx_Handle);
-    W25QXX_ERROR_CHECK(W25QXX_ERROR_INITIALIZATION);
+    W25QXX_ERROR_CHECK;
     if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
         W25QXX_ERROR_SET(W25QXX_ERROR_INITIALIZATION);
 
@@ -132,7 +132,7 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
 
     /* Command */
     w25qxx_WriteEnable(w25qxx_Handle);
-    W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
+    W25QXX_ERROR_CHECK;
     w25qxx_Handle->CMD = W25QXX_CMD_PAGE_PROGRAM;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
@@ -250,7 +250,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
+        W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_SECTOR_ERASE_4KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
         W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
@@ -289,7 +289,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
+        W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_32KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
         W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
@@ -328,7 +328,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
+        W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_64KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
         W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
@@ -389,7 +389,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
 
         /* Command */
         w25qxx_WriteEnable(w25qxx_Handle);
-        W25QXX_ERROR_CHECK(W25QXX_ERROR_SPI);
+        W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_CHIP_ERASE;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
         W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
