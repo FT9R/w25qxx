@@ -80,36 +80,48 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 #define W25QXX_BLOCK_64KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_64KB)
 #define W25QXX_KB_TO_BYTE(KB)               ((uint32_t) (KB) * 1024)
 
-#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                        \
-    w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
-    w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
-    w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0)
+#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                            \
+    do                                                                \
+    {                                                                 \
+        w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
+        w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
+        w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0);  \
+    }                                                                 \
+    while (0)
 
 #define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
+    do                                                       \
     {                                                        \
         w25qxx_Handle->error = (W25QXX_ERROR);               \
         if (w25qxx_Handle->interface.CS_Set != NULL)         \
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
         return;                                              \
-    }
+    }                                                        \
+    while (0)
 
 #define W25QXX_ERROR_CHECK(W25QXX_ERROR)               \
+    do                                                 \
     {                                                  \
         if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
             W25QXX_ERROR_SET((W25QXX_ERROR));          \
-    }
+    }                                                  \
+    while (0)
 
 #define W25QXX_BEGIN_TRASMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
+    do                                                                                                      \
     {                                                                                                       \
         if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
             W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
-    }
+    }                                                                                                       \
+    while (0)
 
 #define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
+    do                                                                                                          \
     {                                                                                                           \
         if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
             W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                                 \
-    }
+    }                                                                                                           \
+    while (0)
 
 /* Data types */
 typedef enum w25qxx_WaitForTask_e { W25QXX_WAIT_NO, W25QXX_WAIT_DELAY, W25QXX_WAIT_BUSY } w25qxx_WaitForTask_t;
