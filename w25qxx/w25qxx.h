@@ -181,6 +181,15 @@ typedef struct w25qxx_HandleTypeDef_s
         void (*CS_Set)(w25qxx_CS_State_t newState);
         void (*Delay)(uint32_t ms);
     } interface;
+    w25qxx_Status_t status;
+    w25qxx_Error_t error;
+    uint32_t numberOfPages;
+    uint16_t frameLength;
+    uint16_t CRC16;
+    uint8_t ID[2];
+    uint8_t statusRegister;
+    uint8_t CMD;
+    uint8_t addressBytes[3];
 } w25qxx_HandleTypeDef;
 
 /**
