@@ -106,7 +106,7 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
     }                                                  \
     while (0)
 
-#define W25QXX_BEGIN_TRASMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
+#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
     do                                                                                                      \
     {                                                                                                       \
         if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
