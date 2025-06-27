@@ -11,9 +11,9 @@ static struct DemoFlags_s
 } demoFlags;
 
 /* Private function prototypes */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message));
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
 
-uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
+uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
 {
     /* Check the flags */
     if (demoFlags.success)
@@ -75,9 +75,15 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
 
     /* Memory array capacity */
     char capacityString[30];
-    snprintf(capacityString, sizeof(capacityString), "(%luMbit in %lu pages)\n",
+    snprintf(capacityString, sizeof(capacityString), " (%uMbit in %u pages)\n",
              (w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle.numberOfPages);
-    fpPrint((uint8_t const *) capacityString);
+    fpPrint(capacityString);
+
+    if (forceChipErase)
+    {
+        fpPrint("Chip erase...\n");
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
+    }
 
     fpPrint("Forcing status registers to its default state\n");
     w25qxx_Handle.statusRegister = 0x00;
@@ -143,7 +149,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
     return 1;
 }
 
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message))
 {
     demoFlags.error = 1u;
 
@@ -211,6 +217,14 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
 
     case W25QXX_STATUS_ERASE:
         fpPrint("busy erase\n");
+        break;
+
+    case W25QXX_STATUS_WRITE_SR:
+        fpPrint("busy write status register\n");
+        break;
+
+    case W25QXX_STATUS_READ_SR:
+        fpPrint("busy read status register\n");
         break;
 
     case W25QXX_STATUS_RESET:

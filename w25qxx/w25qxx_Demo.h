@@ -13,7 +13,7 @@ extern "C" {
  * @param fpPrint: a pointer to function that prints debug messages
  * @return 0 - success
  */
-uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message));
+uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase);
 
 #ifdef __cplusplus
 }

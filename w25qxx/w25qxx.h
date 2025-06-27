@@ -106,7 +106,7 @@ enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
     }                                                  \
     while (0)
 
-#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                    \
+#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                   \
     do                                                                                                      \
     {                                                                                                       \
         if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
@@ -145,6 +145,8 @@ typedef enum w25qxx_Status_e {
     W25QXX_STATUS_WRITE,
     W25QXX_STATUS_READ,
     W25QXX_STATUS_ERASE,
+    W25QXX_STATUS_WRITE_SR,
+    W25QXX_STATUS_READ_SR,
     W25QXX_STATUS_RESET,
     W25QXX_STATUS_READY,
     W25QXX_STATUS_UNDEFINED
@@ -276,7 +278,7 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
 /**
  * @brief Reads status register 1 continuously with timeout and returns device status
  * @param w25qxx_Handle: pointer to the device handle structure
- * @param timeout: timeout duration
+ * @param timeout: timeout duration [ms]
  * @return Device status: W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
  */
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);

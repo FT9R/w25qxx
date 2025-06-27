@@ -433,7 +433,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
     if (w25qxx_Handle == NULL)
         return W25QXX_ERROR_ARGUMENT;
 
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE) != W25QXX_ERROR_NONE)
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE_SR) != W25QXX_ERROR_NONE)
         W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
@@ -476,7 +476,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
     }
 
-    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE, W25QXX_STATUS_READY);
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE_SR, W25QXX_STATUS_READY);
 }
 
 w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
@@ -485,7 +485,7 @@ w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t st
     if (w25qxx_Handle == NULL)
         return W25QXX_ERROR_ARGUMENT;
 
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ) != W25QXX_ERROR_NONE)
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ_SR) != W25QXX_ERROR_NONE)
         W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
@@ -514,7 +514,7 @@ w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t st
     W25QXX_BEGIN_RECEIVE(&w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister), W25QXX_RX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
-    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ, W25QXX_STATUS_READY);
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ_SR, W25QXX_STATUS_READY);
 }
 
 w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
@@ -557,9 +557,6 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
-    extern volatile uint32_t uwTick;
-    uint32_t tickStart = uwTick;
-
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
         return W25QXX_STATUS_UNDEFINED;
@@ -605,8 +602,11 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
             return W25QXX_STATUS_READY;
         }
 
-        /* Timeout check */
-        if ((uwTick - tickStart) > timeout)
+        /* Timeout handling */
+        w25qxx_Handle->interface.Delay(1);
+        if (timeout)
+            --timeout;
+        else
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 

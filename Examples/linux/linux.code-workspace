@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../w25qxx"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"w25q64.h": "c",
+			"gpio.h": "c",
+			"w25qxx.h": "c",
+			"w25qxx_demo.h": "c",
+			"w25qxx_interface.h": "c",
+			"stdint.h": "c",
+			"assert.h": "c"
+		},
+		"files.eol": "\r\n"
+	}
+}
