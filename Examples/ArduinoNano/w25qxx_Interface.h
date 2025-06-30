@@ -31,6 +31,10 @@ typedef enum w25qxx_Transfer_Status_e {
 typedef enum w25qxx_CS_State_e { W25QXX_CS_LOW, W25QXX_CS_HIGH } w25qxx_CS_State_t;
 
 /**
+ * @section Handle related functions
+ */
+
+/**
  * @brief The one of SPIx receive function templates
  * @param pDataRx: pointer to data buffer
  * @param size: amount of data to be received
@@ -57,13 +61,17 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, u
 void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 
 /**
+ * @section General functions
+ */
+
+/**
  * @brief Provides minimum delay (in milliseconds) based on incremented variable
  * @param ms: specifies the delay time length, in milliseconds
  * @note In the default implementation, timer with 1kHz freq is the source of time base.
  * It is used to generate interrupts at regular time intervals where uwTick is incremented.
  * `volatile uint32_t uwTick` has to be declared with user source file
  */
-void w25qxx_Delay(uint32_t ms);
+void w25qxx_Delay(uint32_t ms); // FIXME: do not use external var
 
 /**
  * @brief Function used to print any debug messages
