@@ -71,12 +71,12 @@ enum w25qxx_ChipEraseTime {
 enum w25qxx_Device_e { W25Q80 = 0x13, W25Q16, W25Q32, W25Q64, W25Q128 };
 
 /* Macro */
-#define W25QXX_PAGE_TO_ADDRESS(PAGE)        ((uint32_t) (PAGE) * (W25QXX_PAGE_SIZE))
 #define W25QXX_PAGE_TO_SECTOR(PAGE)         ((PAGE) / (W25QXX_SECTOR_SIZE_4KB / W25QXX_PAGE_SIZE))
-#define W25QXX_SECTOR_TO_ADDRESS(SECTOR)    ((uint32_t) (SECTOR) * W25QXX_SECTOR_SIZE_4KB)
 #define W25QXX_PAGE_TO_BLOCK_32KB(PAGE)     ((PAGE) / (W25QXX_BLOCK_SIZE_32KB / W25QXX_PAGE_SIZE))
-#define W25QXX_BLOCK_32KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_32KB)
 #define W25QXX_PAGE_TO_BLOCK_64KB(PAGE)     ((PAGE) / (W25QXX_BLOCK_SIZE_64KB / W25QXX_PAGE_SIZE))
+#define W25QXX_PAGE_TO_ADDRESS(PAGE)        ((uint32_t) (PAGE) * (W25QXX_PAGE_SIZE))
+#define W25QXX_SECTOR_TO_ADDRESS(SECTOR)    ((uint32_t) (SECTOR) * W25QXX_SECTOR_SIZE_4KB)
+#define W25QXX_BLOCK_32KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_32KB)
 #define W25QXX_BLOCK_64KB_TO_ADDRESS(BLOCK) ((uint32_t) (BLOCK) * W25QXX_BLOCK_SIZE_64KB)
 #define W25QXX_KB_TO_BYTE(KB)               ((uint32_t) (KB) * 1024)
 
@@ -170,7 +170,7 @@ typedef struct w25qxx_HandleTypeDef_s
     struct
     {
         w25qxx_Transfer_Status_t (*Receive)(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
-        w25qxx_Transfer_Status_t (*Transmit)(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
+        w25qxx_Transfer_Status_t (*Transmit)(const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
         void (*CS_Set)(w25qxx_CS_State_t newState);
         void (*Delay)(uint32_t ms);
     } interface;
@@ -195,7 +195,7 @@ typedef struct w25qxx_HandleTypeDef_s
  */
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                            w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                           w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                           w25qxx_Transfer_Status_t (*fpTransmit)(const uint8_t *, uint16_t, uint32_t),
                            void (*fpCS_Set)(w25qxx_CS_State_t));
 
 /**

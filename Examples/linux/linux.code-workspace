@@ -15,7 +15,11 @@
 			"w25qxx_demo.h": "c",
 			"w25qxx_interface.h": "c",
 			"stdint.h": "c",
-			"assert.h": "c"
+			"assert.h": "c",
+			"malloc.h": "c",
+			"memory.h": "c",
+			"features.h": "c",
+			"string.h": "c"
 		},
 		"files.eol": "\r\n"
 	}

@@ -13,7 +13,7 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                            w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                           w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                           w25qxx_Transfer_Status_t (*fpTransmit)(const uint8_t *, uint16_t, uint32_t),
                            void (*fpCS_Set)(w25qxx_CS_State_t))
 {
     /* Avoid dereferencing the null handle */

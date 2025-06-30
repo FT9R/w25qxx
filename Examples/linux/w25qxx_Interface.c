@@ -1,4 +1,5 @@
 #include "w25qxx_Interface.h"
+#include "malloc.h"
 
 w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout)
 {
@@ -9,13 +10,24 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, ui
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    if (wiringPiSPIDataRW(SPI_DEV, pDataRx, size) != size)
+    /* Create intermediate buffer to ensure that 0x00 sent during receiving process */
+    uint8_t *intermediateBuf = calloc(size, sizeof(*intermediateBuf));
+    if (intermediateBuf == NULL)
+        return W25QXX_TRANSFER_ERROR; // No memory sufficient for passed size arg
+
+    /* Send/Receive data. Buffer filled back in-place by data on MISO line */
+    if (wiringPiSPIDataRW(SPI_DEV, intermediateBuf, size) != size)
+    {
+        free(intermediateBuf);
         return W25QXX_TRANSFER_ERROR;
+    }
+    memcpy(pDataRx, intermediateBuf, size);
+    free(intermediateBuf);
 
     return W25QXX_TRANSFER_SUCCESS;
 }
 
-w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout)
+w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(const uint8_t *pDataTx, uint16_t size, uint32_t timeout)
 {
     (void) timeout;
 
@@ -24,8 +36,19 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(uint8_t *pDataTx, uint16_t size, u
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    if (wiringPiSPIDataRW(SPI_DEV, pDataTx, size) != size)
+    /* Copy data to local buffer, because original content can't be changed */
+    uint8_t *intermediateBuf = calloc(size, sizeof(*intermediateBuf));
+    if (intermediateBuf == NULL)
+        return W25QXX_TRANSFER_ERROR; // No memory sufficient for passed size arg
+    memcpy(intermediateBuf, pDataTx, size);
+
+    /* Send/Receive data. Buffer filled back in-place by data on MISO line */
+    if (wiringPiSPIDataRW(SPI_DEV, intermediateBuf, size) != size)
+    {
+        free(intermediateBuf);
         return W25QXX_TRANSFER_ERROR;
+    }
+    free(intermediateBuf);
 
     return W25QXX_TRANSFER_SUCCESS;
 }

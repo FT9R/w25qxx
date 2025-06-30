@@ -79,17 +79,17 @@ uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
              (w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle.numberOfPages);
     fpPrint(capacityString);
 
-    if (forceChipErase)
-    {
-        fpPrint("Chip erase...\n");
-        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
-    }
-
     fpPrint("Forcing status registers to its default state\n");
     w25qxx_Handle.statusRegister = 0x00;
     w25qxx_WriteStatus(&w25qxx_Handle, 1u, W25QXX_SR_VOLATILE);
     w25qxx_WriteStatus(&w25qxx_Handle, 2u, W25QXX_SR_VOLATILE);
     w25qxx_WriteStatus(&w25qxx_Handle, 3u, W25QXX_SR_VOLATILE);
+
+    if (forceChipErase)
+    {
+        fpPrint("Chip erase...\n");
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
+    }
 
     fpPrint("First approach to read\n");
     w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE), W25QXX_CRC,
