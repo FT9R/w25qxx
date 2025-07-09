@@ -1,0 +1,15 @@
+#! /usr/bin/bash
+
+# stdbuf -oL ../linux_w25qxx | perl -nE '
+#   use Time::HiRes qw(gettimeofday); 
+#   my ($s, $us) = gettimeofday; 
+#   my @lt = localtime($s); 
+#   printf "[%02d:%02d:%02d.%03d] ", $lt[2], $lt[1], $lt[0], $us/1000; 
+#   print $_;
+# ' | tee demo.log
+
+stdbuf -oL ../linux_w25qxx | python3 -u -c '
+import sys, datetime
+for line in sys.stdin:
+    now = datetime.datetime.now().strftime("[%H:%M:%S.%f]")[:-4] + "] "
+    print(now + line, end="")' | tee demo.log

@@ -1,0 +1,17 @@
+[19:05:48.469] GPIO init...
+[19:05:48.469] SPI init...
+[19:05:48.469] Opening device /dev/spidev1.0
+[19:05:48.469] 
+[19:05:48.469] Interface link
+[19:05:48.469] Device initialization
+[19:05:48.537] Manufacturer: Winbond
+[19:05:48.538] Device: W25Q128 (128Mbit in 65536 pages)
+[19:05:48.538] Forcing status registers to its default state
+[19:05:48.538] Chip erase...
+[19:06:25.134] First approach to read
+[19:06:25.135] Target page is probably erased
+[19:06:25.135] Checksum error reset
+[19:06:25.135] Sector erase...
+[19:06:25.191] Target page programming
+[19:06:25.193] Second approach to read
+[19:06:25.194] Writing process success
