@@ -92,6 +92,6 @@ w25qxx_Init(&w25qxx_Handle);
 # Example
 Regular demo output:
 
-![TraceOutput_SectorErase](Doc/TraceOutput_SectorErase.png)
+![TraceOutput](Doc/TraceOutput.png)
 ## References
 For application use refer to [`STM32`](./Examples/STM32F401CDU6/Core/Src/main.c), [`Arduino`](./Examples/ArduinoNano/ArduinoNano.ino),  [`RP2040`](./Examples/RP2040/rp2040_w25qxx.c) or [`linux`](./Examples/linux/linux_w25qxx.c) examples
