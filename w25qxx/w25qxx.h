@@ -48,6 +48,7 @@ extern "C" {
 #define W25QXX_SECTOR_ERASE_TIME_4KB      400
 #define W25QXX_BLOCK_ERASE_TIME_32KB      1600
 #define W25QXX_BLOCK_ERASE_TIME_64KB      2000
+
 enum w25qxx_ChipEraseTime {
     CETIME_W25Q80 = 12000,
     CETIME_W25Q16 = 25000,
@@ -209,9 +210,9 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
  * @brief Writes data to w25qxx from external buffer
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param buf: pointer to external buffer, that contains the data to send
- * @param dataLength: number of bytes to write
+ * @param dataLength: number of bytes to write (<= 254 in case of trailingCRC)
  * @param address: page address to write (multiple of 256 bytes)
- * @param CRC: insert or not insert CRC at the end of frame
+ * @param trailingCRC: insert or not insert CRC at the end of frame
  * @param waitForTask: the way to ensure that operation is completed
  * @return w25qxx_Handle->error
  */
@@ -222,9 +223,9 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
  * @brief Reads data from w25qxx to external buffer
  * @param w25qxx_Handle: pointer to the device handle structure
  * @param buf: pointer to external buffer, that will contain the received data
- * @param dataLength: number of bytes to read
+ * @param dataLength: number of bytes to read (<= 254 in case of trailingCRC)
  * @param address: page address to read (multiple of 256 bytes)
- * @param CRC: compare or not compare CRC at the end of frame
+ * @param trailingCRC: compare or not compare CRC at the end of frame
  * @param fastRead: set true if SPIclk > 50MHz
  * @return w25qxx_Handle->error
  */
