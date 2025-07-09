@@ -4,6 +4,7 @@
 static w25qxx_HandleTypeDef w25qxx_Handle;
 static const uint8_t bufferWrite[] = "Hello World!";
 static uint8_t bufferRead[sizeof(bufferWrite)] = {0};
+static uint8_t erasedTemplate[sizeof(bufferWrite)];
 static struct DemoFlags_s
 {
     uint8_t success : 1;
@@ -15,6 +16,8 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
 
 uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
 {
+    memset(erasedTemplate, 0xff, sizeof(erasedTemplate));
+
     /* Check the flags */
     if (demoFlags.success)
         return 0;
@@ -107,11 +110,15 @@ uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
         break;
 
     case W25QXX_ERROR_CHECKSUM:
-        fpPrint("Target page probably contains corrupted data or erased\n");
+        if (memcmp(w25qxx_Handle.frameBuf, erasedTemplate, sizeof(bufferRead)) == 0)
+            fpPrint("Target page is probably erased\n");
+        else
+            fpPrint("Target page contains corrupted data\n");
+
         fpPrint("Checksum error reset\n");
         w25qxx_ResetError(&w25qxx_Handle);
 
-        fpPrint("Sector erase\n");
+        fpPrint("Sector erase...\n");
         w25qxx_Erase(&w25qxx_Handle, W25QXX_SECTOR_ERASE_4KB,
                      W25QXX_SECTOR_TO_ADDRESS(W25QXX_PAGE_TO_SECTOR(DEMO_TARGET_PAGE)),
                      W25QXX_WAIT_BUSY); // Minimal erase operation
