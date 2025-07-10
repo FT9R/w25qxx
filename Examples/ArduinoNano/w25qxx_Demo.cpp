@@ -4,6 +4,7 @@
 static w25qxx_HandleTypeDef w25qxx_Handle;
 static const uint8_t bufferWrite[] = "Hello World!";
 static uint8_t bufferRead[sizeof(bufferWrite)] = {0};
+static uint8_t erasedTemplate[sizeof(bufferWrite)];
 static struct DemoFlags_s
 {
     uint8_t success : 1;
@@ -11,9 +12,9 @@ static struct DemoFlags_s
 } demoFlags;
 
 /* Private function prototypes */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message));
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
 
-uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
+uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
 {
     /* Check the flags */
     if (demoFlags.success)
@@ -75,15 +76,21 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
 
     /* Memory array capacity */
     char capacityString[30];
-    snprintf(capacityString, sizeof(capacityString), "(%luMbit in %lu pages)\n",
+    snprintf(capacityString, sizeof(capacityString), " (%uMbit in %u pages)\n",
              (w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle.numberOfPages);
-    fpPrint((uint8_t const *) capacityString);
+    fpPrint(capacityString);
 
     fpPrint("Forcing status registers to its default state\n");
     w25qxx_Handle.statusRegister = 0x00;
     w25qxx_WriteStatus(&w25qxx_Handle, 1u, W25QXX_SR_VOLATILE);
     w25qxx_WriteStatus(&w25qxx_Handle, 2u, W25QXX_SR_VOLATILE);
     w25qxx_WriteStatus(&w25qxx_Handle, 3u, W25QXX_SR_VOLATILE);
+
+    if (forceChipErase)
+    {
+        fpPrint("Chip erase...\n");
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
+    }
 
     fpPrint("First approach to read\n");
     w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE), W25QXX_CRC,
@@ -101,11 +108,16 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
         break;
 
     case W25QXX_ERROR_CHECKSUM:
-        fpPrint("Target page probably contains corrupted data or erased\n");
+        memset(erasedTemplate, 0xff, sizeof(erasedTemplate));
+        if (memcmp(w25qxx_Handle.frameBuf, erasedTemplate, sizeof(bufferRead)) == 0)
+            fpPrint("Target page is probably erased\n");
+        else
+            fpPrint("Target page contains corrupted data\n");
+
         fpPrint("Checksum error reset\n");
         w25qxx_ResetError(&w25qxx_Handle);
 
-        fpPrint("Sector erase\n");
+        fpPrint("Sector erase...\n");
         w25qxx_Erase(&w25qxx_Handle, W25QXX_SECTOR_ERASE_4KB,
                      W25QXX_SECTOR_TO_ADDRESS(W25QXX_PAGE_TO_SECTOR(DEMO_TARGET_PAGE)),
                      W25QXX_WAIT_BUSY); // Minimal erase operation
@@ -143,7 +155,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message))
     return 1;
 }
 
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message))
 {
     demoFlags.error = 1u;
 
@@ -211,6 +223,14 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const uint8_t *message))
 
     case W25QXX_STATUS_ERASE:
         fpPrint("busy erase\n");
+        break;
+
+    case W25QXX_STATUS_WRITE_SR:
+        fpPrint("busy write status register\n");
+        break;
+
+    case W25QXX_STATUS_READ_SR:
+        fpPrint("busy read status register\n");
         break;
 
     case W25QXX_STATUS_RESET:

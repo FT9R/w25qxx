@@ -40,9 +40,9 @@ typedef enum w25qxx_CS_State_e { W25QXX_CS_LOW, W25QXX_CS_HIGH } w25qxx_CS_State
 
 /**
  * @brief The one of SPIx receive function templates
- * @param pDataRx: pointer to data buffer
- * @param size: amount of data to be received
- * @param timeout: timeout duration
+ * @param pDataRx pointer to data buffer
+ * @param size amount of data to be received
+ * @param timeout timeout duration
  * @return Status of the data transfer request operation
  * @note Timeout argument is not necessary, so the function return can be forced to success
  */
@@ -50,9 +50,9 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, ui
 
 /**
  * @brief The one of SPIx transmit function templates
- * @param pDataTx: pointer to data buffer
- * @param size: amount of data to be sent
- * @param timeout: timeout duration
+ * @param pDataTx pointer to data buffer
+ * @param size amount of data to be sent
+ * @param timeout timeout duration
  * @return Status of the data transfer request operation
  * @note Timeout argument is not necessary, so the function return can be forced to success
  */
@@ -60,7 +60,7 @@ w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(const uint8_t *pDataTx, uint16_t s
 
 /**
  * @brief The one of chip select function templates
- * @param newState: new CS pin state
+ * @param newState new CS pin state
  */
 void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 
@@ -70,13 +70,13 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 
 /**
  * @brief Provides minimum delay (in milliseconds)
- * @param ms: specifies the delay time length, in milliseconds
+ * @param ms specifies the delay time length, in milliseconds
  */
 void w25qxx_Delay(uint32_t ms);
 
 /**
  * @brief Function used to print any debug messages
- * @param message: the message to print
+ * @param message the message to print
  */
 void w25qxx_Print(char *message);
 

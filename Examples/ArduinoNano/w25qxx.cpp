@@ -13,7 +13,7 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
 
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
                            w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                           w25qxx_Transfer_Status_t (*fpTransmit)(uint8_t *, uint16_t, uint32_t),
+                           w25qxx_Transfer_Status_t (*fpTransmit)(const uint8_t *, uint16_t, uint32_t),
                            void (*fpCS_Set)(w25qxx_CS_State_t))
 {
     /* Avoid dereferencing the null handle */
@@ -137,18 +137,18 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
     W25QXX_ERROR_CHECK;
     w25qxx_Handle->CMD = W25QXX_CMD_PAGE_PROGRAM;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* A23-A0 - Start address of the desired page */
     W25QXX_ADDRESS_BYTES_SWAP(address);
-    W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
 
     /* Data */
-    W25QXX_BEGIN_TRASMIT((uint8_t *) buf, dataLength, W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT((uint8_t *) buf, dataLength, W25QXX_TX_TIMEOUT);
 
     /* Checksum */
     if (trailingCRC == W25QXX_CRC)
-        W25QXX_BEGIN_TRASMIT((uint8_t *) &w25qxx_Handle->CRC16, sizeof(w25qxx_Handle->CRC16), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT((uint8_t *) &w25qxx_Handle->CRC16, sizeof(w25qxx_Handle->CRC16), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Task wait */
@@ -202,15 +202,15 @@ w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, ui
     /* Command */
     w25qxx_Handle->CMD = (fastRead == W25QXX_FASTREAD) ? W25QXX_CMD_FAST_READ : W25QXX_CMD_READ_DATA;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* A23-A0 - Start address of the desired page */
     W25QXX_ADDRESS_BYTES_SWAP(address);
-    W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
 
     /* 8 dummy clocks */
     if (fastRead == W25QXX_FASTREAD)
-        W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* Data receive */
     W25QXX_BEGIN_RECEIVE(w25qxx_Handle->frameBuf, w25qxx_Handle->frameLength, W25QXX_RX_TIMEOUT);
@@ -255,11 +255,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
         W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_SECTOR_ERASE_4KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-        W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
         /* A23-A0 - Start address of the desired page */
         W25QXX_ADDRESS_BYTES_SWAP(address);
-        W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
         /* Task wait */
@@ -294,11 +294,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
         W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_32KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-        W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
         /* A23-A0 - Start address of the desired page */
         W25QXX_ADDRESS_BYTES_SWAP(address);
-        W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
         /* Task wait */
@@ -333,11 +333,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
         W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_BLOCK_ERASE_64KB;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-        W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
         /* A23-A0 - Start address of the desired page */
         W25QXX_ADDRESS_BYTES_SWAP(address);
-        W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
         /* Task wait */
@@ -394,7 +394,7 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
         W25QXX_ERROR_CHECK;
         w25qxx_Handle->CMD = W25QXX_CMD_CHIP_ERASE;
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-        W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+        W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
         w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
         /* Task wait */
@@ -433,7 +433,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
     if (w25qxx_Handle == NULL)
         return W25QXX_ERROR_ARGUMENT;
 
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE) != W25QXX_ERROR_NONE)
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_WRITE_SR) != W25QXX_ERROR_NONE)
         W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
@@ -444,7 +444,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
     w25qxx_Handle->CMD =
         (statusRegisterBehaviour == W25QXX_SR_VOLATILE) ? W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE : W25QXX_CMD_WRITE_ENABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Command 2 */
@@ -463,10 +463,10 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
         break;
     }
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* Status write */
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Task wait */
@@ -476,7 +476,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
     }
 
-    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE, W25QXX_STATUS_READY);
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_WRITE_SR, W25QXX_STATUS_READY);
 }
 
 w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx)
@@ -485,7 +485,7 @@ w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t st
     if (w25qxx_Handle == NULL)
         return W25QXX_ERROR_ARGUMENT;
 
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ) != W25QXX_ERROR_NONE)
+    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READY, W25QXX_STATUS_READ_SR) != W25QXX_ERROR_NONE)
         W25QXX_ERROR_SET(w25qxx_Handle->error);
 
     /* Argument guards */
@@ -508,13 +508,13 @@ w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t st
         break;
     }
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* Status read */
     W25QXX_BEGIN_RECEIVE(&w25qxx_Handle->statusRegister, sizeof(w25qxx_Handle->statusRegister), W25QXX_RX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
-    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ, W25QXX_STATUS_READY);
+    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_READ_SR, W25QXX_STATUS_READY);
 }
 
 w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
@@ -557,9 +557,6 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
-    extern volatile uint32_t uwTick;
-    uint32_t tickStart = uwTick;
-
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
         return W25QXX_STATUS_UNDEFINED;
@@ -605,8 +602,11 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
             return W25QXX_STATUS_READY;
         }
 
-        /* Timeout check */
-        if ((uwTick - tickStart) > timeout)
+        /* Timeout handling */
+        w25qxx_Handle->interface.Delay(1);
+        if (timeout)
+            --timeout;
+        else
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
@@ -631,7 +631,7 @@ static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_POWER_DOWN;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
 
@@ -651,7 +651,7 @@ static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handl
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_RELEASE_POWER_DOWN;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
 
@@ -671,13 +671,13 @@ static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Command 1 */
     w25qxx_Handle->CMD = W25QXX_CMD_ENABLE_RESET;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     /* Command 2 */
     w25qxx_Handle->CMD = W25QXX_CMD_RESET_DEVICE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
     w25qxx_Handle->interface.Delay(1);
 
@@ -697,11 +697,11 @@ static w25qxx_Error_t w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_MANUFACTURER_DEVICE_ID;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
 
     /* 24-bit address (A23-A0) of 000000h */
     W25QXX_ADDRESS_BYTES_SWAP((uint32_t) 0);
-    W25QXX_BEGIN_TRASMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(w25qxx_Handle->addressBytes, sizeof(w25qxx_Handle->addressBytes), W25QXX_TX_TIMEOUT);
 
     /* Get Manufacturer ID and Device ID */
     W25QXX_BEGIN_RECEIVE(w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
@@ -723,7 +723,7 @@ static w25qxx_Error_t w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_ENABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     return w25qxx_Handle->error;
@@ -742,7 +742,7 @@ static w25qxx_Error_t w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Command */
     w25qxx_Handle->CMD = W25QXX_CMD_WRITE_DISABLE;
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
-    W25QXX_BEGIN_TRASMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
+    W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
     return w25qxx_Handle->error;

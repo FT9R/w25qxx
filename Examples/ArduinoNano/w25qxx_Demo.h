@@ -10,10 +10,11 @@ extern "C" {
 
 /**
  * @brief w25qxx basic demonstration function
- * @param fpPrint: a pointer to function that prints debug messages
- * @return 0 - success
+ * @param fpPrint a pointer to function that prints debug messages
+ * @param forceChipErase pass `true` to initiate chip erase before target page read
+ * @return
  */
-uint8_t w25qxx_Demo(void (*fpPrint)(const uint8_t *message));
+uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase);
 
 #ifdef __cplusplus
 }

@@ -188,10 +188,10 @@ typedef struct w25qxx_HandleTypeDef_s
 
 /**
  * @brief Links user-defined interface functions to a device handle
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param fpReceive: pointer to the user-defined SPI receive function
- * @param fpTransmit: pointer to the user-defined SPI transmit function
- * @param fpCS_Set: pointer to the user-defined chip select set function
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param fpReceive pointer to the user-defined SPI receive function
+ * @param fpTransmit pointer to the user-defined SPI transmit function
+ * @param fpCS_Set pointer to the user-defined chip select set function
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
@@ -201,19 +201,19 @@ w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
 
 /**
  * @brief Checks if the device is available and determines the number of pages
- * @param w25qxx_Handle: pointer to the device handle structure
+ * @param w25qxx_Handle pointer to the device handle structure
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Writes data to w25qxx from external buffer
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param buf: pointer to external buffer, that contains the data to send
- * @param dataLength: number of bytes to write (<= 254 in case of trailingCRC)
- * @param address: page address to write (multiple of 256 bytes)
- * @param trailingCRC: insert or not insert CRC at the end of frame
- * @param waitForTask: the way to ensure that operation is completed
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param buf pointer to external buffer, that contains the data to send
+ * @param dataLength number of bytes to write (<= 254 in case of trailingCRC)
+ * @param address page address to write (multiple of 256 bytes)
+ * @param trailingCRC insert or not insert CRC at the end of frame
+ * @param waitForTask the way to ensure that operation is completed
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *buf, uint16_t dataLength,
@@ -221,12 +221,12 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
 
 /**
  * @brief Reads data from w25qxx to external buffer
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param buf: pointer to external buffer, that will contain the received data
- * @param dataLength: number of bytes to read (<= 254 in case of trailingCRC)
- * @param address: page address to read (multiple of 256 bytes)
- * @param trailingCRC: compare or not compare CRC at the end of frame
- * @param fastRead: set true if SPIclk > 50MHz
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param buf pointer to external buffer, that will contain the received data
+ * @param dataLength number of bytes to read (<= 254 in case of trailingCRC)
+ * @param address page address to read (multiple of 256 bytes)
+ * @param trailingCRC compare or not compare CRC at the end of frame
+ * @param fastRead set true if SPIclk > 50MHz
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, uint16_t dataLength, uint32_t address,
@@ -234,10 +234,10 @@ w25qxx_Error_t w25qxx_Read(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t *buf, ui
 
 /**
  * @brief Begins erase operation of sector, block or whole memory array
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param eraseInstruction: pages groups to be erased
- * @param address: start address of page, sector or block to be erased
- * @param waitForTask: the way to ensure that operation is completed
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param eraseInstruction pages groups to be erased
+ * @param address start address of page, sector or block to be erased
+ * @param waitForTask the way to ensure that operation is completed
  * @note Address has to be 0 in case of chip erase
  * @return w25qxx_Handle->error
  */
@@ -246,9 +246,9 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
 
 /**
  * @brief Writes a status byte from handle to device itself
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param statusRegisterx: device target status register(1-3)
- * @param statusRegisterBehaviour: keep or not the status register content after device reset
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param statusRegisterx device target status register(1-3)
+ * @param statusRegisterBehaviour keep or not the status register content after device reset
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx,
@@ -256,31 +256,31 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
 
 /**
  * @brief Reads a status byte from device to its handle
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param statusRegisterx: device target status register(1-3)
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param statusRegisterx device target status register(1-3)
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_ReadStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t statusRegisterx);
 
 /**
  * @brief Resets any device errors within handle
- * @param w25qxx_Handle: pointer to the device handle structure
+ * @param w25qxx_Handle pointer to the device handle structure
  * @return w25qxx_Handle->error
  */
 w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Reads status register 1 once and returns device status
- * @param w25qxx_Handle: pointer to the device handle structure
- * @return Device status: W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @return Device status W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
  */
 w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle);
 
 /**
  * @brief Reads status register 1 continuously with timeout and returns device status
- * @param w25qxx_Handle: pointer to the device handle structure
- * @param timeout: timeout duration [ms]
- * @return Device status: W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
+ * @param w25qxx_Handle pointer to the device handle structure
+ * @param timeout timeout duration [ms]
+ * @return Device status W25QXX_STATUS_UNDEFINED or W25QXX_STATUS_READY
  */
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout);
 
