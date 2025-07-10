@@ -48,7 +48,7 @@ void w25qxx_Delay(uint32_t ms)
     }
 }
 
-void w25qxx_Print(char *message)
+void w25qxx_Print(const char *message)
 {
     HAL_StatusTypeDef ret =
         HAL_UART_Transmit(&huart1, (const uint8_t *) message, strlen(message), UART_TRANSMIT_TIMEOUT);

@@ -1,6 +1,6 @@
 #include "trace.h"
 
-void Trace(char *message)
+void Trace(const char *message)
 {
     msg_t msg;
 
@@ -11,14 +11,12 @@ void Trace(char *message)
         return; // Avoid null pointer dereference
     }
 
-    if (strlen(message) > MSG_SIZE_MAX)
-    {
-        printf("Trace: message too long, truncating\n");
-        message[MSG_SIZE_MAX - 1] = '\n';
-        message[MSG_SIZE_MAX] = '\0'; // Ensure null termination
-    }
-
     msg.size = strlen(message);
+    if (msg.size > MSG_SIZE_MAX)
+        printf("Trace: message too long - %d chars, truncating\n", msg.size);
+
     strncpy(msg.data, message, MSG_SIZE_MAX);
+    msg.data[MSG_SIZE_MAX - 1] = '\n';
+    msg.data[MSG_SIZE_MAX] = '\0'; // Ensure null termination
     osMessageQueuePut(msgQueueHandle, &msg, 0, 0);
 }

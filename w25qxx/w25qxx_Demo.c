@@ -12,9 +12,9 @@ static struct DemoFlags_s
 } demoFlags;
 
 /* Private function prototypes */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message));
 
-uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
+uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
 {
     /* Check the flags */
     if (demoFlags.success)
@@ -155,7 +155,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
     return 1;
 }
 
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message))
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
 {
     demoFlags.error = 1u;
 

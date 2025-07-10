@@ -12,16 +12,16 @@ static struct DemoFlags_s
 } demoFlags;
 
 /* Private function prototypes */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message));
 
-uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
+uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
 {
     /* Check the flags */
     if (demoFlags.success)
         return 0;
     if (demoFlags.error)
         return 1;
-
+    fpPrint("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore!");
     fpPrint("\nInterface link\n");
     w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS0_Set);
 
@@ -155,7 +155,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
     return 1;
 }
 
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message))
+static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
 {
     demoFlags.error = 1u;
 

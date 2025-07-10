@@ -18,4 +18,4 @@ extern osMessageQueueId_t msgQueueHandle;
  * @brief Puts a trace message to the message queue
  * @param message: pointer to the message string to be traced
  */
-void Trace(char *message);
+void Trace(const char *message);

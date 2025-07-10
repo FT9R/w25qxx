@@ -78,7 +78,7 @@ void w25qxx_Delay(uint32_t ms);
  * @brief Function used to print any debug messages
  * @param message the message to print
  */
-void w25qxx_Print(char *message);
+void w25qxx_Print(const char *message);
 
 #ifdef __cplusplus
 }
