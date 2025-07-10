@@ -52,6 +52,7 @@ w25qxx_Init(&w25qxx_Handle3);
 * The built-in ModBus CRC can be used to ensure data integrity.
 * Fast read option is implemented in case if SPIclk > 50MHz.
 * Device status and error can be controlled within its handle. 
+* FreeRTOS compatible
 ## Supported devices
 * w25q80
 * w25q16
@@ -94,4 +95,6 @@ Regular demo output:
 
 ![TraceOutput](Doc/TraceOutput.png)
 ## References
-For application use refer to [`STM32`](./Examples/STM32F401CDU6/Core/Src/main.c), [`Arduino`](./Examples/ArduinoNano/ArduinoNano.ino),  [`RP2040`](./Examples/RP2040/rp2040_w25qxx.c) or [`linux`](./Examples/linux/linux_w25qxx.c) examples
+For basic application use refer to  [`Arduino`](./Examples/ArduinoNano/ArduinoNano.ino),  [`RP2040`](./Examples/RP2040/rp2040_w25qxx.c) or [`linux`](./Examples/linux/linux_w25qxx.c) examples.  
+For FreeRTOS application use refer to [`STM32`](./Examples/STM32F411CEU6/Core/Src/freertos.c) example.
+
