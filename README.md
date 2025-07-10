@@ -1,5 +1,5 @@
 # Description
-A simple platform-independent library designed to perform basic operations with serial flash memory devices of the w25qxx family.
+A simple platform-independent driver designed to perform basic operations with serial flash memory devices of the w25qxx family.
 ## Notes
 1. Target page should be erased before data write (minimal erase operation is 1 sector or 16 pages).
 2. To make the use of the library as safe and understandable as possible, any operations with data are performed only starting from the first byte of the page 
