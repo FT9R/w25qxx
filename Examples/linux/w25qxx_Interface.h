@@ -12,10 +12,9 @@
 extern "C" {
 #endif
 
-#define W25QXX_MIN_DELAY 2
-#define SPI_DEV          1
-#define SPI_SPEED        500000
-#define SPI1_CS0_PIN     5
+#define SPI_DEV      1
+#define SPI_SPEED    500000
+#define SPI1_CS0_PIN 5
 
 /* Macro */
 #define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))
