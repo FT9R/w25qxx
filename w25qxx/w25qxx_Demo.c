@@ -16,8 +16,6 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(char *message));
 
 uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
 {
-    memset(erasedTemplate, 0xff, sizeof(erasedTemplate));
-
     /* Check the flags */
     if (demoFlags.success)
         return 0;
@@ -110,6 +108,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(char *message), bool forceChipErase)
         break;
 
     case W25QXX_ERROR_CHECKSUM:
+        memset(erasedTemplate, 0xff, sizeof(erasedTemplate));
         if (memcmp(w25qxx_Handle.frameBuf, erasedTemplate, sizeof(bufferRead)) == 0)
             fpPrint("Target page is probably erased\n");
         else
