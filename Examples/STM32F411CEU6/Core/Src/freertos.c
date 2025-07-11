@@ -31,7 +31,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define W25QXX_FLAG_IDLE  (1 << 0)
+#define W25QXX_FLAG_BUSY  (1 << 1)
+#define W25QXX_FLAG_ERASE (1 << 2)
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -72,6 +74,12 @@ const osThreadAttr_t traceTask_attributes = {
 /* Definitions for msgQueue */
 osMessageQueueId_t msgQueueHandle;
 const osMessageQueueAttr_t msgQueue_attributes = {.name = "msgQueue"};
+/* Definitions for uartReadySem */
+osSemaphoreId_t uartReadySemHandle;
+const osSemaphoreAttr_t uartReadySem_attributes = {.name = "uartReadySem"};
+/* Definitions for w25qxxEvent */
+osEventFlagsId_t w25qxxEventHandle;
+const osEventFlagsAttr_t w25qxxEvent_attributes = {.name = "w25qxxEvent"};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -98,6 +106,10 @@ void MX_FREERTOS_Init(void)
     /* USER CODE BEGIN RTOS_MUTEX */
     /* add mutexes, ... */
     /* USER CODE END RTOS_MUTEX */
+
+    /* Create the semaphores(s) */
+    /* creation of uartReadySem */
+    uartReadySemHandle = osSemaphoreNew(1, 1, &uartReadySem_attributes);
 
     /* USER CODE BEGIN RTOS_SEMAPHORES */
     /* add semaphores, ... */
@@ -129,6 +141,10 @@ void MX_FREERTOS_Init(void)
     /* add threads, ... */
     /* USER CODE END RTOS_THREADS */
 
+    /* Create the event(s) */
+    /* creation of w25qxxEvent */
+    w25qxxEventHandle = osEventFlagsNew(&w25qxxEvent_attributes);
+
     /* USER CODE BEGIN RTOS_EVENTS */
     /* add events, ... */
     /* USER CODE END RTOS_EVENTS */
@@ -144,10 +160,33 @@ void MX_FREERTOS_Init(void)
 void BlinkStart(void *argument)
 {
     /* USER CODE BEGIN BlinkStart */
+    uint32_t flag;
+    uint32_t blink_interval = 10;
+
     /* Infinite loop */
     for (;;)
     {
-        osDelay(1);
+        flag = osEventFlagsWait(w25qxxEventHandle, W25QXX_FLAG_IDLE | W25QXX_FLAG_BUSY | W25QXX_FLAG_ERASE,
+                                osFlagsWaitAny | osFlagsNoClear, osWaitForever);
+
+        switch (flag)
+        {
+        case W25QXX_FLAG_IDLE:
+            blink_interval = 5000;
+            break;
+        case W25QXX_FLAG_BUSY:
+            blink_interval = 500;
+            break;
+        case W25QXX_FLAG_ERASE:
+            blink_interval = 50;
+            break;
+        default:
+            osEventFlagsClear(w25qxxEventHandle, 0xff); // Race condition potential
+            printf("BlinkStart: few flags detected 0x%08x\n", flag);
+        }
+
+        HAL_GPIO_TogglePin(LEDB_GPIO_Port, LEDB_Pin);
+        osDelay(blink_interval);
     }
     /* USER CODE END BlinkStart */
 }
@@ -166,7 +205,7 @@ void w25qxxStart(void *argument)
     for (;;)
     {
         w25qxx_Demo(Trace, true);
-        osDelay(1);
+        osDelay(osWaitForever);
     }
     /* USER CODE END w25qxxStart */
 }
@@ -181,15 +220,39 @@ void w25qxxStart(void *argument)
 void TraceStart(void *argument)
 {
     /* USER CODE BEGIN TraceStart */
+    osStatus_t uartReadySemAcqStatus;
+    osStatus_t msgQueueGetStatus;
     msg_t msg;
 
+    /* Infinite loop */
     for (;;)
     {
-        if (osMessageQueueGet(msgQueueHandle, &msg, NULL, 0) == osOK)
+        /* Wait for tx complete signal from uart ISR */
+        uartReadySemAcqStatus = osSemaphoreAcquire(uartReadySemHandle, 100);
+        if (uartReadySemAcqStatus != osOK)
         {
-            w25qxx_Print(msg.data);
+            printf("Error acquiring semaphore in TraceStart: %d\n", uartReadySemAcqStatus);
+            continue;
         }
-        osDelay(1);
+
+        /* Get message from queue to be printed */
+        msgQueueGetStatus = osMessageQueueGet(msgQueueHandle, &msg, NULL, osWaitForever);
+        if (msgQueueGetStatus != osOK)
+        {
+            printf("Error getting message from queue in TraceStart: %d\n", msgQueueGetStatus);
+            continue;
+        }
+        else
+            w25qxx_Print(msg.data);
+
+        /* Clear event flags for blink task */
+        osEventFlagsClear(w25qxxEventHandle, 0xff);
+        if (strstr(msg.data, "erase..."))
+            osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_ERASE);
+        else if (strstr(msg.data, "success"))
+            osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_IDLE);
+        else
+            osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_BUSY);
     }
     /* USER CODE END TraceStart */
 }

@@ -14,7 +14,8 @@
 			"w25qxx_interface.h": "c",
 			"string.h": "c",
 			"stdio.h": "c",
-			"trace.h": "c"
+			"trace.h": "c",
+			"freertos.h": "c"
 		}
 	}
 }

@@ -3,12 +3,13 @@
 void Trace(const char *message)
 {
     msg_t msg;
+    osStatus_t msgQueuePutStatus;
 
     if (message == NULL || msgQueueHandle == NULL)
     {
         printf("Trace: null message or message queue handle\n");
 
-        return; // Avoid null pointer dereference
+        return;
     }
 
     msg.size = strlen(message);
@@ -18,5 +19,12 @@ void Trace(const char *message)
     strncpy(msg.data, message, MSG_SIZE_MAX);
     msg.data[MSG_SIZE_MAX - 1] = '\n';
     msg.data[MSG_SIZE_MAX] = '\0'; // Ensure null termination
-    osMessageQueuePut(msgQueueHandle, &msg, 0, 0);
+
+    msgQueuePutStatus = osMessageQueuePut(msgQueueHandle, &msg, 0, 100);
+    if (msgQueuePutStatus != osOK)
+    {
+        printf("Error putting message in queue: %d\n", msgQueuePutStatus);
+
+        return;
+    }
 }
