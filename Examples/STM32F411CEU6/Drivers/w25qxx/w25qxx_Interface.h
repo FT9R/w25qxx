@@ -12,9 +12,8 @@
 extern "C" {
 #endif
 
-#define UART_TRANSMIT_TIMEOUT 1000
-#define SPI1_CS0_PIN          SPI1_CS0_Pin
-#define SPI1_CS0_PORT         SPI1_CS0_GPIO_Port
+#define SPI1_CS0_PIN  SPI1_CS0_Pin
+#define SPI1_CS0_PORT SPI1_CS0_GPIO_Port
 
 /* Macro */
 #define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))

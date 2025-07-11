@@ -41,8 +41,8 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState)
 
 void w25qxx_Delay(uint32_t ms)
 {
-    osStatus_t ret = osDelay(ms);
-    if (ret != osOK)
+    osStatus_t delayStatus = osDelay(ms);
+    if (delayStatus != osOK)
     {
         w25qxx_Print("w25qxx_Delay: OS wait for timeout error\n");
     }
@@ -50,11 +50,10 @@ void w25qxx_Delay(uint32_t ms)
 
 void w25qxx_Print(const char *message)
 {
-    HAL_StatusTypeDef ret =
-        HAL_UART_Transmit(&huart1, (const uint8_t *) message, strlen(message), UART_TRANSMIT_TIMEOUT);
-    if (ret != HAL_OK)
+    HAL_StatusTypeDef transmitStatus = HAL_UART_Transmit_IT(&huart1, (const uint8_t *) message, strlen(message));
+    if (transmitStatus != HAL_OK)
     {
-        printf("w25qxx_Print: UART transmission error (%d)\n", ret);
+        printf("w25qxx_Print: UART transmission error (%d)\n", transmitStatus);
         printf("Message: %s\n", message);
     }
 }
