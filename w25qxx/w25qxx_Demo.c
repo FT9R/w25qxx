@@ -1,12 +1,14 @@
 #include "w25qxx_Demo.h"
 
+#define DEMO_TARGET_PAGE 31
+
 /* Private variables */
 static w25qxx_HandleTypeDef w25qxx_Handle;
 static const uint8_t bufferWrite[] = "Hello World!";
 static uint8_t bufferRead[sizeof(bufferWrite)] = {0};
 static uint8_t erasedTemplate[sizeof(bufferWrite)];
-static struct DemoFlags_s
-{
+
+static struct DemoFlags_s {
     uint8_t success : 1;
     uint8_t error : 1;
 } demoFlags;
@@ -89,7 +91,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     if (forceChipErase)
     {
         fpPrint("Chip erase...\n");
-        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_DELAY);
     }
 
     fpPrint("First approach to read\n");
@@ -155,6 +157,13 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     return 1;
 }
 
+/**
+ * @section Private Functions
+ */
+/**
+ * @brief Error handler for the W25QXX demo
+ * @param fpPrint Function pointer for printing messages
+ */
 static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
 {
     demoFlags.error = 1u;

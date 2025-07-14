@@ -8,23 +8,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define SPI1_CS0_PIN  SPI1_CS0_Pin
-#define SPI1_CS0_PORT SPI1_CS0_GPIO_Port
-
-/* Macro */
-#define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))
-#define SET_BIT(REG, BIT)                   ((REG) |= (BIT))
-#define CLEAR_BIT(REG, BIT)                 ((REG) &= ~(BIT))
-#define READ_BIT(REG, BIT)                  ((REG) & (BIT))
-#define CLEAR_REG(REG)                      ((REG) = (0x0))
-#define WRITE_REG(REG, VAL)                 ((REG) = (VAL))
-#define READ_REG(REG)                       ((REG))
-#define MODIFY_REG(REG, CLEARMASK, SETMASK) WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
-
 /* Data types */
 typedef enum w25qxx_Transfer_Status_e {
     W25QXX_TRANSFER_SUCCESS,
@@ -33,10 +16,13 @@ typedef enum w25qxx_Transfer_Status_e {
 
 typedef enum w25qxx_CS_State_e { W25QXX_CS_LOW, W25QXX_CS_HIGH } w25qxx_CS_State_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @section Handle related functions
  */
-
 /**
  * @brief The one of SPIx receive function templates
  * @param pDataRx pointer to data buffer
@@ -66,12 +52,12 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 /**
  * @section General functions
  */
-
 /**
- * @brief Provides minimum delay (in milliseconds)
+ * @brief Provides a delay (in milliseconds)
  * @param ms specifies the delay time length, in milliseconds
+ * @return The actual delay time achieved, in milliseconds
  */
-void w25qxx_Delay(uint32_t ms);
+uint32_t w25qxx_Delay(uint32_t ms);
 
 /**
  * @brief Function used to print any debug messages

@@ -1,5 +1,100 @@
 #include "w25qxx.h"
 
+/* Instruction Set */
+#define W25QXX_CMD_WRITE_ENABLE              0x06
+#define W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE  0x50
+#define W25QXX_CMD_WRITE_DISABLE             0x04
+#define W25QXX_CMD_RELEASE_POWER_DOWN        0xAB
+#define W25QXX_CMD_MANUFACTURER_DEVICE_ID    0x90
+#define W25QXX_CMD_JEDEC_ID                  0x9F
+#define W25QXX_CMD_READ_UNIQUE_ID            0x4B
+#define W25QXX_CMD_READ_DATA                 0x03
+#define W25QXX_CMD_FAST_READ                 0x0B
+#define W25QXX_CMD_PAGE_PROGRAM              0x02
+#define W25QXX_CMD_SECTOR_ERASE_4KB          0x20
+#define W25QXX_CMD_BLOCK_ERASE_32KB          0x52
+#define W25QXX_CMD_BLOCK_ERASE_64KB          0xD8
+#define W25QXX_CMD_CHIP_ERASE                0xC7
+#define W25QXX_CMD_READ_STATUS_REGISTER1     0x05
+#define W25QXX_CMD_WRITE_STATUS_REGISTER1    0x01
+#define W25QXX_CMD_READ_STATUS_REGISTER2     0x35
+#define W25QXX_CMD_WRITE_STATUS_REGISTER2    0x31
+#define W25QXX_CMD_READ_STATUS_REGISTER3     0x15
+#define W25QXX_CMD_WRITE_STATUS_REGISTER3    0x11
+#define W25QXX_CMD_READ_SFDP_REGISTER        0x5A
+#define W25QXX_CMD_ERASE_SECURITY_REGISTER   0x44
+#define W25QXX_CMD_PROGRAM_SECURITY_REGISTER 0x42
+#define W25QXX_CMD_READ_SECURITY_REGISTER    0x48
+#define W25QXX_CMD_GLOBAL_BLOCK_LOCK         0x7E
+#define W25QXX_CMD_GLOBAL_BLOCK_UNLOCK       0x98
+#define W25QXX_CMD_READ_BLOCK_LOCK           0x3D
+#define W25QXX_CMD_INDIVIDUAL_BLOCK_LOCK     0x36
+#define W25QXX_CMD_INDIVIDUAL_BLOCK_UNLOCK   0x39
+#define W25QXX_CMD_ERASE_PROGRAM_SUSPEND     0x75
+#define W25QXX_CMD_ERASE_PROGRAM_RESUME      0x7A
+#define W25QXX_CMD_POWER_DOWN                0xB9
+#define W25QXX_CMD_ENABLE_RESET              0x66
+#define W25QXX_CMD_RESET_DEVICE              0x99
+
+/* Timings [ms] */
+#define W25QXX_PAGE_PROGRAM_TIME          3
+#define W25QXX_WRITE_STATUS_REGISTER_TIME 15
+#define W25QXX_SECTOR_ERASE_TIME_4KB      400
+#define W25QXX_BLOCK_ERASE_TIME_32KB      1600
+#define W25QXX_BLOCK_ERASE_TIME_64KB      2000
+
+enum w25qxx_ChipEraseTime {
+    CETIME_W25Q80 = 12000,
+    CETIME_W25Q16 = 25000,
+    CETIME_W25Q32 = 50000,
+    CETIME_W25Q64 = 100000,
+    CETIME_W25Q128 = 200000
+};
+
+/* Timeouts [ms] */
+#define W25QXX_TX_TIMEOUT       100
+#define W25QXX_RX_TIMEOUT       100
+#define W25QXX_RESPONSE_TIMEOUT 100
+
+/* Macro */
+#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                            \
+    do                                                                \
+    {                                                                 \
+        w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
+        w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
+        w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0);  \
+    }                                                                 \
+    while (0)
+#define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
+    do                                                       \
+    {                                                        \
+        if (w25qxx_Handle->interface.CS_Set != NULL)         \
+            w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
+        return w25qxx_Handle->error = (W25QXX_ERROR);        \
+    }                                                        \
+    while (0)
+#define W25QXX_ERROR_CHECK                             \
+    do                                                 \
+    {                                                  \
+        if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
+            W25QXX_ERROR_SET(w25qxx_Handle->error);    \
+    }                                                  \
+    while (0)
+#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                   \
+    do                                                                                                      \
+    {                                                                                                       \
+        if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
+    }                                                                                                       \
+    while (0)
+#define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
+    do                                                                                                          \
+    {                                                                                                           \
+        if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                                 \
+    }                                                                                                           \
+    while (0)
+
 /* Private function prototypes */
 static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
 static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
@@ -557,6 +652,8 @@ w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
+    uint32_t delayRounded;
+
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
         return W25QXX_STATUS_UNDEFINED;
@@ -603,7 +700,9 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         }
 
         /* Timeout handling */
-        w25qxx_Handle->interface.Delay(1);
+        delayRounded = w25qxx_Handle->interface.Delay(1); // FIXME: delay round up
+        if (timeout < delayRounded)
+            timeout = 0;
         if (timeout)
             --timeout;
         else

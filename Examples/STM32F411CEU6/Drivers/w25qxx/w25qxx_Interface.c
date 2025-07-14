@@ -1,5 +1,12 @@
 #include "w25qxx_Interface.h"
 
+#define W25QXX_DELAY_ROUNDUP 100
+#define SPI1_CS0_PIN         SPI1_CS0_Pin
+#define SPI1_CS0_PORT        SPI1_CS0_GPIO_Port
+
+/* Private function prototypes */
+static uint32_t UInt_RoundUp(uint32_t value, uint32_t round_to);
+
 w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout)
 {
     if (pDataRx == NULL)
@@ -39,13 +46,16 @@ void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState)
     }
 }
 
-void w25qxx_Delay(uint32_t ms)
+uint32_t w25qxx_Delay(uint32_t ms)
 {
-    osStatus_t delayStatus = osDelay(ms);
+    uint32_t msRounded = UInt_RoundUp(ms, W25QXX_DELAY_ROUNDUP);
+    osStatus_t delayStatus = osDelay(msRounded);
     if (delayStatus != osOK)
     {
         w25qxx_Print("w25qxx_Delay: OS wait for timeout error\n");
     }
+
+    return msRounded;
 }
 
 void w25qxx_Print(const char *message)
@@ -56,4 +66,21 @@ void w25qxx_Print(const char *message)
         printf("w25qxx_Print: UART transmission error (%d)\n", transmitStatus);
         printf("Message: %s\n", message);
     }
+}
+
+/**
+ * @section Private Functions
+ */
+/**
+ * @brief Rounds up an unsigned integer to the nearest multiple of another unsigned integer
+ * @param value value to round up
+ * @param round_to value to round up to (must be non-zero)
+ * @return Rounded-up value
+ */
+static uint32_t UInt_RoundUp(uint32_t value, uint32_t round_to)
+{
+    if (round_to == 0)
+        return value; // Avoid division by zero
+
+    return ((value + round_to - 1) / round_to) * round_to;
 }
