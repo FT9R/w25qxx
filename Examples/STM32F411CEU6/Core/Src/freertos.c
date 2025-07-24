@@ -205,7 +205,7 @@ void w25qxxStart(void *argument)
     for (;;)
     {
         w25qxx_Demo(Trace, true);
-        osDelay(osWaitForever);
+        osThreadSuspend(osThreadGetId());
     }
     /* USER CODE END w25qxxStart */
 }
@@ -249,7 +249,7 @@ void TraceStart(void *argument)
         osEventFlagsClear(w25qxxEventHandle, 0xff);
         if (strstr(msg.data, "erase..."))
             osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_ERASE);
-        else if (strstr(msg.data, "success"))
+        else if ((strstr(msg.data, "success")) || (strstr(msg.data, "exists")))
             osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_IDLE);
         else
             osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_BUSY);
