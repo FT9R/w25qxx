@@ -52,6 +52,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -142,9 +143,7 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
     RCC_OscInitStruct.PLL.PLLQ = 4;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
         Error_Handler();
-    }
 
     /** Initializes the CPU, AHB and APB buses clocks
      */
@@ -155,9 +154,7 @@ void SystemClock_Config(void)
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
-    {
         Error_Handler();
-    }
 
     /** Enables the Clock Security System
      */
@@ -182,9 +179,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
     /* USER CODE END Callback 0 */
     if (htim->Instance == TIM11)
-    {
         HAL_IncTick();
-    }
     /* USER CODE BEGIN Callback 1 */
 
     /* USER CODE END Callback 1 */

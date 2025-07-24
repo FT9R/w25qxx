@@ -1,5 +1,52 @@
 #include "w25qxx.h"
 
+/* Macro */
+#define TOGGLE_BIT(REG, BIT)                ((REG) ^= (BIT))
+#define SET_BIT(REG, BIT)                   ((REG) |= (BIT))
+#define CLEAR_BIT(REG, BIT)                 ((REG) &= ~(BIT))
+#define READ_BIT(REG, BIT)                  ((REG) & (BIT))
+#define CLEAR_REG(REG)                      ((REG) = (0x0))
+#define WRITE_REG(REG, VAL)                 ((REG) = (VAL))
+#define READ_REG(REG)                       ((REG))
+#define MODIFY_REG(REG, CLEARMASK, SETMASK) WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
+#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                            \
+    do                                                                \
+    {                                                                 \
+        w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
+        w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
+        w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0);  \
+    }                                                                 \
+    while (0)
+#define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
+    do                                                       \
+    {                                                        \
+        if (w25qxx_Handle->interface.CS_Set != NULL)         \
+            w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
+        return w25qxx_Handle->error = (W25QXX_ERROR);        \
+    }                                                        \
+    while (0)
+#define W25QXX_ERROR_CHECK                             \
+    do                                                 \
+    {                                                  \
+        if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
+            W25QXX_ERROR_SET(w25qxx_Handle->error);    \
+    }                                                  \
+    while (0)
+#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                   \
+    do                                                                                                      \
+    {                                                                                                       \
+        if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
+    }                                                                                                       \
+    while (0)
+#define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
+    do                                                                                                          \
+    {                                                                                                           \
+        if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
+            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                                 \
+    }                                                                                                           \
+    while (0)
+
 /* Instruction Set */
 #define W25QXX_CMD_WRITE_ENABLE              0x06
 #define W25QXX_CMD_VOLATILE_SR_WRITE_ENABLE  0x50
@@ -56,46 +103,6 @@ enum w25qxx_ChipEraseTime {
 #define W25QXX_RX_TIMEOUT       100
 #define W25QXX_RESPONSE_TIMEOUT 100
 
-/* Macro */
-#define W25QXX_ADDRESS_BYTES_SWAP(ADDRESS)                            \
-    do                                                                \
-    {                                                                 \
-        w25qxx_Handle->addressBytes[0] = (uint8_t) ((ADDRESS) >> 16); \
-        w25qxx_Handle->addressBytes[1] = (uint8_t) ((ADDRESS) >> 8);  \
-        w25qxx_Handle->addressBytes[2] = (uint8_t) ((ADDRESS) >> 0);  \
-    }                                                                 \
-    while (0)
-#define W25QXX_ERROR_SET(W25QXX_ERROR)                       \
-    do                                                       \
-    {                                                        \
-        if (w25qxx_Handle->interface.CS_Set != NULL)         \
-            w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH); \
-        return w25qxx_Handle->error = (W25QXX_ERROR);        \
-    }                                                        \
-    while (0)
-#define W25QXX_ERROR_CHECK                             \
-    do                                                 \
-    {                                                  \
-        if (w25qxx_Handle->error != W25QXX_ERROR_NONE) \
-            W25QXX_ERROR_SET(w25qxx_Handle->error);    \
-    }                                                  \
-    while (0)
-#define W25QXX_BEGIN_TRANSMIT(DATA_SOURCE, SIZE, TIMEOUT)                                                   \
-    do                                                                                                      \
-    {                                                                                                       \
-        if (w25qxx_Handle->interface.Transmit((DATA_SOURCE), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
-            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                             \
-    }                                                                                                       \
-    while (0)
-#define W25QXX_BEGIN_RECEIVE(DATA_DESTINATION, SIZE, TIMEOUT)                                                   \
-    do                                                                                                          \
-    {                                                                                                           \
-        if (w25qxx_Handle->interface.Receive((DATA_DESTINATION), (SIZE), (TIMEOUT)) != W25QXX_TRANSFER_SUCCESS) \
-            W25QXX_ERROR_SET(W25QXX_ERROR_SPI);                                                                 \
-    }                                                                                                           \
-    while (0)
-
-/* Private function prototypes */
 static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
 static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handle);
 static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle);
@@ -135,7 +142,6 @@ w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
     w25qxx_Handle->interface.Receive = fpReceive;
     w25qxx_Handle->interface.Transmit = fpTransmit;
     w25qxx_Handle->interface.CS_Set = fpCS_Set;
-    w25qxx_Handle->interface.Delay = w25qxx_Delay;
 
     return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_LINK, W25QXX_STATUS_RESET);
 }
@@ -151,7 +157,7 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
 
     /* Start operation */
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
-    w25qxx_Handle->interface.Delay(100);
+    w25qxx_Delay(100);
 
     w25qxx_ReleasePowerDown(w25qxx_Handle);
     W25QXX_ERROR_CHECK;
@@ -194,7 +200,7 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
     }
 
     /* Operation succeed */
-    w25qxx_Handle->interface.Delay(10);
+    w25qxx_Delay(10);
     return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_INIT, W25QXX_STATUS_READY);
 }
 
@@ -253,11 +259,11 @@ w25qxx_Error_t w25qxx_Write(w25qxx_HandleTypeDef *w25qxx_Handle, const uint8_t *
         break;
 
     case W25QXX_WAIT_DELAY:
-        w25qxx_Handle->interface.Delay(W25QXX_PAGE_PROGRAM_TIME);
+        w25qxx_Delay(W25QXX_PAGE_PROGRAM_TIME);
         break;
 
     case W25QXX_WAIT_BUSY:
-        if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_PAGE_PROGRAM_TIME) != W25QXX_STATUS_READY)
+        if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_PAGE_PROGRAM_TIME) != W25QXX_STATUS_READY)
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
         break;
 
@@ -364,11 +370,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
             break;
 
         case W25QXX_WAIT_DELAY:
-            w25qxx_Handle->interface.Delay(W25QXX_SECTOR_ERASE_TIME_4KB);
+            w25qxx_Delay(W25QXX_SECTOR_ERASE_TIME_4KB);
             break;
 
         case W25QXX_WAIT_BUSY:
-            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_SECTOR_ERASE_TIME_4KB) != W25QXX_STATUS_READY)
+            if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_SECTOR_ERASE_TIME_4KB) != W25QXX_STATUS_READY)
                 W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
             break;
 
@@ -403,11 +409,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
             break;
 
         case W25QXX_WAIT_DELAY:
-            w25qxx_Handle->interface.Delay(W25QXX_BLOCK_ERASE_TIME_32KB);
+            w25qxx_Delay(W25QXX_BLOCK_ERASE_TIME_32KB);
             break;
 
         case W25QXX_WAIT_BUSY:
-            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_32KB) != W25QXX_STATUS_READY)
+            if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_32KB) != W25QXX_STATUS_READY)
                 W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
             break;
 
@@ -442,11 +448,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
             break;
 
         case W25QXX_WAIT_DELAY:
-            w25qxx_Handle->interface.Delay(W25QXX_BLOCK_ERASE_TIME_64KB);
+            w25qxx_Delay(W25QXX_BLOCK_ERASE_TIME_64KB);
             break;
 
         case W25QXX_WAIT_BUSY:
-            if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_64KB) != W25QXX_STATUS_READY)
+            if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_BLOCK_ERASE_TIME_64KB) != W25QXX_STATUS_READY)
                 W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
             break;
 
@@ -499,11 +505,11 @@ w25qxx_Error_t w25qxx_Erase(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_EraseIns
             break;
 
         case W25QXX_WAIT_DELAY:
-            w25qxx_Handle->interface.Delay(chipEraseTimeout);
+            w25qxx_Delay(chipEraseTimeout);
             break;
 
         case W25QXX_WAIT_BUSY:
-            if (w25qxx_WaitWithTimeout(w25qxx_Handle, chipEraseTimeout) != W25QXX_STATUS_READY)
+            if (w25qxx_BusyCheck(w25qxx_Handle, chipEraseTimeout) != W25QXX_STATUS_READY)
                 W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
             break;
 
@@ -567,7 +573,7 @@ w25qxx_Error_t w25qxx_WriteStatus(w25qxx_HandleTypeDef *w25qxx_Handle, uint8_t s
     /* Task wait */
     if (statusRegisterBehaviour != W25QXX_SR_VOLATILE)
     {
-        if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_WRITE_STATUS_REGISTER_TIME) != W25QXX_STATUS_READY)
+        if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_WRITE_STATUS_REGISTER_TIME) != W25QXX_STATUS_READY)
             W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
     }
 
@@ -626,33 +632,15 @@ w25qxx_Error_t w25qxx_ResetError(w25qxx_HandleTypeDef *w25qxx_Handle)
     w25qxx_Handle->error = W25QXX_ERROR_NONE;
 
     /* Try to get response from device */
-    if (w25qxx_WaitWithTimeout(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != W25QXX_STATUS_READY)
+    if (w25qxx_BusyCheck(w25qxx_Handle, W25QXX_RESPONSE_TIMEOUT) != W25QXX_STATUS_READY)
         W25QXX_ERROR_SET(W25QXX_ERROR_TIMEOUT);
 
     return w25qxx_StatusUpdate(w25qxx_Handle, w25qxx_Handle->status, W25QXX_STATUS_READY);
 }
 
-w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle)
+w25qxx_Status_t w25qxx_BusyCheck(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
 {
-    /* Avoid dereferencing the null handle */
-    if (w25qxx_Handle == NULL)
-        return W25QXX_STATUS_UNDEFINED;
-
-    /* Existing errors check */
-    if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return W25QXX_STATUS_UNDEFINED;
-
-    /* Get busy bit state */
-    if (w25qxx_ReadStatus(w25qxx_Handle, 1u) != W25QXX_ERROR_NONE)
-        return W25QXX_STATUS_UNDEFINED;
-
-    /* Return device busy status */
-    return READ_BIT(w25qxx_Handle->statusRegister, 1u << 0) ? W25QXX_STATUS_UNDEFINED : W25QXX_STATUS_READY;
-}
-
-w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint32_t timeout)
-{
-    uint32_t delayRounded;
+    uint32_t delayActual;
 
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
@@ -660,10 +648,6 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
 
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
-        return W25QXX_STATUS_UNDEFINED;
-
-    /* Argument guards */
-    if (timeout == 0)
         return W25QXX_STATUS_UNDEFINED;
 
     /* Command */
@@ -700,16 +684,22 @@ w25qxx_Status_t w25qxx_WaitWithTimeout(w25qxx_HandleTypeDef *w25qxx_Handle, uint
         }
 
         /* Timeout handling */
-        delayRounded = w25qxx_Handle->interface.Delay(1); // FIXME: delay round up
-        if (timeout < delayRounded)
-            timeout = 0;
-        if (timeout)
-            --timeout;
-        else
+        if (timeout == 0)
         {
             w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
 
-            return W25QXX_STATUS_UNDEFINED;
+            return W25QXX_STATUS_BUSY;
+        }
+        delayActual = w25qxx_Delay(1);
+        if ((delayActual == 0) || (timeout < delayActual))
+        {
+            timeout = 0;
+            continue;
+        }
+        else
+        {
+            timeout -= delayActual;
+            continue;
         }
     }
 }
@@ -732,7 +722,7 @@ static w25qxx_Error_t w25qxx_PowerDown(w25qxx_HandleTypeDef *w25qxx_Handle)
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
-    w25qxx_Handle->interface.Delay(1);
+    w25qxx_Delay(1);
 
     return w25qxx_Handle->error;
 }
@@ -752,7 +742,7 @@ static w25qxx_Error_t w25qxx_ReleasePowerDown(w25qxx_HandleTypeDef *w25qxx_Handl
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
-    w25qxx_Handle->interface.Delay(1);
+    w25qxx_Delay(1);
 
     return w25qxx_Handle->error;
 }
@@ -778,7 +768,7 @@ static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_LOW);
     W25QXX_BEGIN_TRANSMIT(&w25qxx_Handle->CMD, sizeof(w25qxx_Handle->CMD), W25QXX_TX_TIMEOUT);
     w25qxx_Handle->interface.CS_Set(W25QXX_CS_HIGH);
-    w25qxx_Handle->interface.Delay(1);
+    w25qxx_Delay(1);
 
     return w25qxx_Handle->error;
 }
@@ -874,12 +864,10 @@ static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)
         CRC16 ^= pBuffer[i];
 
         for (j = 0; j < 8; j++)
-        {
             if (CRC16 & 1)
                 CRC16 = (CRC16 >> 1) ^ 0xA001;
             else
                 CRC16 = (CRC16 >> 1);
-        }
     }
 
     return CRC16;

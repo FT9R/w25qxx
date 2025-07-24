@@ -13,7 +13,10 @@ static struct DemoFlags_s {
     uint8_t error : 1;
 } demoFlags;
 
-/* Private function prototypes */
+/**
+ * @brief Error handler for the W25QXX demo
+ * @param fpPrint Function pointer for printing messages
+ */
 static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message));
 
 uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
@@ -91,7 +94,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     if (forceChipErase)
     {
         fpPrint("Chip erase...\n");
-        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_DELAY);
+        w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
     }
 
     fpPrint("First approach to read\n");
@@ -159,10 +162,6 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
 
 /**
  * @section Private Functions
- */
-/**
- * @brief Error handler for the W25QXX demo
- * @param fpPrint Function pointer for printing messages
  */
 static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
 {
@@ -244,6 +243,10 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
 
     case W25QXX_STATUS_RESET:
         fpPrint("reset\n");
+        break;
+
+    case W25QXX_STATUS_BUSY:
+        fpPrint("busy\n");
         break;
 
     case W25QXX_STATUS_READY:
