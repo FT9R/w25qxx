@@ -64,11 +64,16 @@ typedef enum w25qxx_Error_e {
     W25QXX_ERROR_INSTRUCTION
 } w25qxx_Error_t;
 
+typedef w25qxx_Transfer_Status_t (*w25qxx_rx_fp)(void *handle, uint8_t *pDataRx, uint16_t size, uint32_t timeout);
+typedef w25qxx_Transfer_Status_t (*w25qxx_tx_fp)(void *handle, const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
+typedef void (*w25qxx_cs_fp)(w25qxx_CS_State_t newState);
+
 typedef struct w25qxx_HandleTypeDef_s {
     struct {
-        w25qxx_Transfer_Status_t (*Receive)(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
-        w25qxx_Transfer_Status_t (*Transmit)(const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
-        void (*CS_Set)(w25qxx_CS_State_t newState);
+        w25qxx_rx_fp receive;
+        w25qxx_tx_fp transmit;
+        w25qxx_cs_fp cs_set;
+        void *handle; // Optional SPI handle to be passed to rx/tx fun
     } interface;
 
     w25qxx_Status_t status;
@@ -90,15 +95,14 @@ extern "C" {
 /**
  * @brief Links user-defined interface functions to a device handle
  * @param w25qxx_Handle pointer to the device handle structure
+ * @param spi_Handle pointer to the user-defined SPI handle (force NULL if not used)
  * @param fpReceive pointer to the user-defined SPI receive function
  * @param fpTransmit pointer to the user-defined SPI transmit function
  * @param fpCS_Set pointer to the user-defined chip select set function
  * @return `w25qxx_Handle->error`
  */
-w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle,
-                           w25qxx_Transfer_Status_t (*fpReceive)(uint8_t *, uint16_t, uint32_t),
-                           w25qxx_Transfer_Status_t (*fpTransmit)(const uint8_t *, uint16_t, uint32_t),
-                           void (*fpCS_Set)(w25qxx_CS_State_t));
+w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, void *spi_Handle, w25qxx_rx_fp fpReceive,
+                           w25qxx_tx_fp fpTransmit, w25qxx_cs_fp fpCS_Set);
 
 /**
  * @brief Checks if the device is available and determines the number of pages

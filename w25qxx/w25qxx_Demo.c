@@ -28,7 +28,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
         return 1;
 
     fpPrint("\nInterface link\n");
-    w25qxx_Link(&w25qxx_Handle, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit, w25qxx_SPI1_CS0_Set);
+    w25qxx_Link(&w25qxx_Handle, &hspi1, w25qxx_SPI_Receive, w25qxx_SPI_Transmit, w25qxx_SPI1_CS0_Set);
 
     fpPrint("Device initialization\n");
     w25qxx_Init(&w25qxx_Handle);

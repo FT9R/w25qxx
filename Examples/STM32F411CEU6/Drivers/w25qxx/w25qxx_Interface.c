@@ -12,25 +12,29 @@
  */
 static uint32_t UInt_RoundUp(uint32_t value, uint32_t roundTo);
 
-w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout)
+w25qxx_Transfer_Status_t w25qxx_SPI_Receive(void *handle, uint8_t *pDataRx, uint16_t size, uint32_t timeout)
 {
+    if (handle == NULL)
+        return W25QXX_TRANSFER_ERROR;
     if (pDataRx == NULL)
         return W25QXX_TRANSFER_ERROR;
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    return (HAL_SPI_Receive(&hspi1, pDataRx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
+    return (HAL_SPI_Receive(handle, pDataRx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
                                                                        : W25QXX_TRANSFER_ERROR;
 }
 
-w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(const uint8_t *pDataTx, uint16_t size, uint32_t timeout)
+w25qxx_Transfer_Status_t w25qxx_SPI_Transmit(void *handle, const uint8_t *pDataTx, uint16_t size, uint32_t timeout)
 {
+    if (handle == NULL)
+        return W25QXX_TRANSFER_ERROR;
     if (pDataTx == NULL)
         return W25QXX_TRANSFER_ERROR;
     if (size == 0u)
         return W25QXX_TRANSFER_ERROR;
 
-    return (HAL_SPI_Transmit(&hspi1, (uint8_t *) pDataTx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
+    return (HAL_SPI_Transmit(handle, (uint8_t *) pDataTx, size, timeout) == HAL_OK) ? W25QXX_TRANSFER_SUCCESS
                                                                                     : W25QXX_TRANSFER_ERROR;
 }
 

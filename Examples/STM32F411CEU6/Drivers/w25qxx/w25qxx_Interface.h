@@ -24,24 +24,26 @@ extern "C" {
  * @section Handle related functions
  */
 /**
- * @brief The one of SPIx receive function templates
+ * @brief SPI receive function template
+ * @param handle pointer to the SPI handle
  * @param pDataRx pointer to data buffer
  * @param size amount of data to be received
  * @param timeout timeout duration
  * @return Status of the data transfer request operation
- * @note Timeout argument is not necessary, so the function return can be forced to success
+ * @note Timeout argument is optional, so the function return can be forced to success
  */
-w25qxx_Transfer_Status_t w25qxx_SPI1_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
+w25qxx_Transfer_Status_t w25qxx_SPI_Receive(void *handle, uint8_t *pDataRx, uint16_t size, uint32_t timeout);
 
 /**
- * @brief The one of SPIx transmit function templates
+ * @brief SPI transmit function template
+ * @param handle pointer to the SPI handle
  * @param pDataTx pointer to data buffer
  * @param size amount of data to be sent
  * @param timeout timeout duration
  * @return Status of the data transfer request operation
- * @note Timeout argument is not necessary, so the function return can be forced to success
+ * @note Timeout argument is optional, so the function return can be forced to success
  */
-w25qxx_Transfer_Status_t w25qxx_SPI1_Transmit(const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
+w25qxx_Transfer_Status_t w25qxx_SPI_Transmit(void *handle, const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 
 /**
  * @brief The one of chip select function templates
