@@ -12,7 +12,7 @@ extern "C" {
  * @param forceChipErase pass `true` to initiate chip erase before target page read
  * @return `0` on success, `1` on failure
  */
-uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase);
+uint8_t w25qxx_Demo(w25qxx_print_fp fpPrint, bool forceChipErase);
 
 #ifdef __cplusplus
 }

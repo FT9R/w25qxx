@@ -21,9 +21,6 @@ extern "C" {
 #endif
 
 /**
- * @section Handle related functions
- */
-/**
  * @brief SPI receive function template
  * @param handle pointer to the SPI handle
  * @param pDataRx pointer to data buffer
@@ -52,9 +49,6 @@ w25qxx_Transfer_Status_t w25qxx_SPI_Transmit(void *handle, const uint8_t *pDataT
 void w25qxx_SPI1_CS0_Set(w25qxx_CS_State_t newState);
 
 /**
- * @section General functions
- */
-/**
  * @brief Provides a delay (in milliseconds)
  * @param ms specifies the delay time length, in milliseconds
  * @return The actual delay time achieved, in milliseconds
@@ -64,6 +58,7 @@ uint32_t w25qxx_Delay(uint32_t ms);
 /**
  * @brief Function used to print any debug messages
  * @param message the message to print
+ * @note Do not use async print methods without queue
  */
 void w25qxx_Print(const char *message);
 

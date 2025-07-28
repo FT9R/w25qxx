@@ -227,7 +227,7 @@ void TraceStart(void *argument)
     /* Infinite loop */
     for (;;)
     {
-        /* Wait for tx complete signal from uart ISR */
+        /* Wait until UART is ready - tx complete signal from uart ISR */
         uartReadySemAcqStatus = osSemaphoreAcquire(uartReadySemHandle, 100);
         if (uartReadySemAcqStatus != osOK)
         {
@@ -247,7 +247,7 @@ void TraceStart(void *argument)
 
         /* Clear event flags for blink task */
         osEventFlagsClear(w25qxxEventHandle, 0xff);
-        if (strstr(msg.data, "erase..."))
+        if (strstr(msg.data, "erase"))
             osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_ERASE);
         else if ((strstr(msg.data, "success")) || (strstr(msg.data, "exists")))
             osEventFlagsSet(w25qxxEventHandle, W25QXX_FLAG_IDLE);

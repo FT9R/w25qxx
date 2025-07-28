@@ -17,9 +17,9 @@ static struct DemoFlags_s {
  * @brief Error handler for the W25QXX demo
  * @param fpPrint Function pointer for printing messages
  */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message));
+static void w25qxx_DemoErrorHandler(w25qxx_print_fp fpPrint);
 
-uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
+uint8_t w25qxx_Demo(w25qxx_print_fp fpPrint, bool forceChipErase)
 {
     /* Check the flags */
     if (demoFlags.success)
@@ -27,65 +27,17 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     if (demoFlags.error)
         return 1;
 
-    fpPrint("\nInterface link\n");
-    w25qxx_Link(&w25qxx_Handle, &hspi1, w25qxx_SPI_Receive, w25qxx_SPI_Transmit, w25qxx_SPI1_CS0_Set);
+    /* Link platform functions */
+    w25qxx_Handle.interface.handle = &hspi1;
+    w25qxx_Handle.interface.receive = w25qxx_SPI_Receive;
+    w25qxx_Handle.interface.transmit = w25qxx_SPI_Transmit;
+    w25qxx_Handle.interface.cs_set = w25qxx_SPI1_CS0_Set;
+    w25qxx_Handle.interface.delay = w25qxx_Delay;
+    w25qxx_Handle.interface.print = fpPrint;
 
-    fpPrint("Device initialization\n");
+    /* Initialize device */
     w25qxx_Init(&w25qxx_Handle);
-
-    fpPrint("Manufacturer: ");
-    switch (w25qxx_Handle.ID[0])
-    {
-    case W25QXX_MANUFACTURER_ID:
-        fpPrint("Winbond\n");
-        break;
-
-    default:
-        fpPrint("undefined\n");
-        w25qxx_DemoErrorHandler(fpPrint);
-
-        return 1;
-        break;
-    }
-
-    fpPrint("Device: ");
-    switch (w25qxx_Handle.ID[1])
-    {
-    case W25Q80:
-        fpPrint("W25Q80");
-        break;
-
-    case W25Q16:
-        fpPrint("W25Q16");
-        break;
-
-    case W25Q32:
-        fpPrint("W25Q32");
-        break;
-
-    case W25Q64:
-        fpPrint("W25Q64");
-        break;
-
-    case W25Q128:
-        fpPrint("W25Q128");
-        break;
-
-    default:
-        fpPrint("undefined\n");
-        w25qxx_DemoErrorHandler(fpPrint);
-
-        return 1;
-        break;
-    }
-
-    /* Memory array capacity */
-    char capacityString[30];
-    snprintf(capacityString, sizeof(capacityString), " (%uMbit in %u pages)\n",
-             (w25qxx_Handle.numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle.numberOfPages);
-    fpPrint(capacityString);
-
-    fpPrint("Forcing status registers to its default state\n");
+    fpPrint("* Forcing status registers to its default state\n");
     w25qxx_Handle.statusRegister = 0x00;
     w25qxx_WriteStatus(&w25qxx_Handle, 1u, W25QXX_SR_VOLATILE);
     w25qxx_WriteStatus(&w25qxx_Handle, 2u, W25QXX_SR_VOLATILE);
@@ -93,11 +45,11 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
 
     if (forceChipErase)
     {
-        fpPrint("Chip erase...\n");
+        fpPrint("* Chip erase...\n");
         w25qxx_Erase(&w25qxx_Handle, W25QXX_CHIP_ERASE, 0, W25QXX_WAIT_BUSY);
     }
 
-    fpPrint("First approach to read\n");
+    fpPrint("* First approach to read\n");
     w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE), W25QXX_CRC,
                 W25QXX_FASTREAD_NO);
     switch (w25qxx_Handle.error)
@@ -105,7 +57,7 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     case W25QXX_ERROR_NONE:
         if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
         {
-            fpPrint("Data already exists at target page boundaries\n");
+            fpPrint("* Data already exists at target page boundaries\n");
             demoFlags.success = 1u;
 
             return 0;
@@ -115,35 +67,35 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
     case W25QXX_ERROR_CHECKSUM:
         memset(erasedTemplate, 0xff, sizeof(erasedTemplate));
         if (memcmp(w25qxx_Handle.frameBuf, erasedTemplate, sizeof(bufferRead)) == 0)
-            fpPrint("Target page is probably erased\n");
+            fpPrint("* Target page is probably erased\n");
         else
-            fpPrint("Target page contains corrupted data\n");
+            fpPrint("* Target page contains corrupted data\n");
 
-        fpPrint("Checksum error reset\n");
+        fpPrint("* Checksum error reset\n");
         w25qxx_ResetError(&w25qxx_Handle);
 
-        fpPrint("Sector erase...\n");
+        fpPrint("* Sector erase...\n");
         w25qxx_Erase(&w25qxx_Handle, W25QXX_SECTOR_ERASE_4KB,
                      W25QXX_SECTOR_TO_ADDRESS(W25QXX_PAGE_TO_SECTOR(DEMO_TARGET_PAGE)),
                      W25QXX_WAIT_BUSY); // Minimal erase operation
 
-        fpPrint("Target page programming\n");
+        fpPrint("* Target page programming\n");
         w25qxx_Write(&w25qxx_Handle, bufferWrite, sizeof(bufferWrite), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE),
                      W25QXX_CRC, W25QXX_WAIT_BUSY);
 
-        fpPrint("Second approach to read\n");
+        fpPrint("* Second approach to read\n");
         w25qxx_Read(&w25qxx_Handle, bufferRead, sizeof(bufferRead), W25QXX_PAGE_TO_ADDRESS(DEMO_TARGET_PAGE),
                     W25QXX_CRC, W25QXX_FASTREAD_NO);
         if (memcmp(bufferRead, bufferWrite, sizeof(bufferRead)) == 0)
         {
-            fpPrint("Writing process success\n");
+            fpPrint("* Writing process success\n");
             demoFlags.success = 1u;
 
             return 0;
         }
         else
         {
-            fpPrint("Writing process failure\n");
+            fpPrint("* Writing process failure\n");
             w25qxx_DemoErrorHandler(fpPrint);
 
             return 1;
@@ -163,22 +115,26 @@ uint8_t w25qxx_Demo(void (*fpPrint)(const char *message), bool forceChipErase)
 /**
  * @section Private Functions
  */
-static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
+static void w25qxx_DemoErrorHandler(w25qxx_print_fp fpPrint)
 {
     demoFlags.error = 1u;
 
-    fpPrint("An error occured: ");
+    fpPrint("* An error occured: ");
     switch (w25qxx_Handle.error)
     {
     case W25QXX_ERROR_NONE:
         break;
 
-    case W25QXX_ERROR_STATUS:
-        fpPrint("status match\n");
+    case W25QXX_ERROR_PLATFORM:
+        fpPrint("platform\n");
         break;
 
-    case W25QXX_ERROR_INITIALIZATION:
-        fpPrint("initialization\n");
+    case W25QXX_ERROR_ID:
+        fpPrint("unexpected ID\n");
+        break;
+
+    case W25QXX_ERROR_STATUS:
+        fpPrint("status match\n");
         break;
 
     case W25QXX_ERROR_ARGUMENT:
@@ -206,43 +162,35 @@ static void w25qxx_DemoErrorHandler(void (*fpPrint)(const char *message))
         break;
     }
 
-    fpPrint("Last detected status: ");
+    fpPrint("* Last detected status: ");
     switch (w25qxx_Handle.status)
     {
-    case W25QXX_STATUS_NOLINK:
-        fpPrint("no link\n");
-        break;
-
-    case W25QXX_STATUS_LINK:
-        fpPrint("link\n");
+    case W25QXX_STATUS_RESET:
+        fpPrint("reset\n");
         break;
 
     case W25QXX_STATUS_INIT:
-        fpPrint("busy init\n");
+        fpPrint("init\n");
         break;
 
     case W25QXX_STATUS_WRITE:
-        fpPrint("busy write\n");
+        fpPrint("write\n");
         break;
 
     case W25QXX_STATUS_READ:
-        fpPrint("busy read\n");
+        fpPrint("read\n");
         break;
 
     case W25QXX_STATUS_ERASE:
-        fpPrint("busy erase\n");
+        fpPrint("erase\n");
         break;
 
     case W25QXX_STATUS_WRITE_SR:
-        fpPrint("busy write status register\n");
+        fpPrint("write status register\n");
         break;
 
     case W25QXX_STATUS_READ_SR:
-        fpPrint("busy read status register\n");
-        break;
-
-    case W25QXX_STATUS_RESET:
-        fpPrint("reset\n");
+        fpPrint("read status register\n");
         break;
 
     case W25QXX_STATUS_BUSY:

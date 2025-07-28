@@ -38,15 +38,13 @@ typedef enum w25qxx_EraseInstruction_e {
 } w25qxx_EraseInstruction_t;
 
 typedef enum w25qxx_Status_e {
-    W25QXX_STATUS_NOLINK,
-    W25QXX_STATUS_LINK,
+    W25QXX_STATUS_RESET,
     W25QXX_STATUS_INIT,
     W25QXX_STATUS_WRITE,
     W25QXX_STATUS_READ,
     W25QXX_STATUS_ERASE,
     W25QXX_STATUS_WRITE_SR,
     W25QXX_STATUS_READ_SR,
-    W25QXX_STATUS_RESET,
     W25QXX_STATUS_BUSY,
     W25QXX_STATUS_READY,
     W25QXX_STATUS_UNDEFINED
@@ -54,8 +52,9 @@ typedef enum w25qxx_Status_e {
 
 typedef enum w25qxx_Error_e {
     W25QXX_ERROR_NONE,
+    W25QXX_ERROR_PLATFORM,
+    W25QXX_ERROR_ID,
     W25QXX_ERROR_STATUS,
-    W25QXX_ERROR_INITIALIZATION,
     W25QXX_ERROR_ARGUMENT,
     W25QXX_ERROR_ADDRESS,
     W25QXX_ERROR_SPI,
@@ -67,13 +66,19 @@ typedef enum w25qxx_Error_e {
 typedef w25qxx_Transfer_Status_t (*w25qxx_rx_fp)(void *handle, uint8_t *pDataRx, uint16_t size, uint32_t timeout);
 typedef w25qxx_Transfer_Status_t (*w25qxx_tx_fp)(void *handle, const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 typedef void (*w25qxx_cs_fp)(w25qxx_CS_State_t newState);
+typedef void (*w25qxx_print_fp)(const char *message);
+typedef uint32_t (*w25qxx_delay_fp)(uint32_t ms);
 
 typedef struct w25qxx_HandleTypeDef_s {
     struct {
-        w25qxx_rx_fp receive;
-        w25qxx_tx_fp transmit;
-        w25qxx_cs_fp cs_set;
-        void *handle; // Optional SPI handle to be passed to rx/tx fun
+        w25qxx_rx_fp receive; // Pointer to the platform SPI receive function
+        w25qxx_tx_fp transmit; // Pointer to the platform SPI transmit function
+        w25qxx_cs_fp cs_set; // Pointer to the platform chip select set function
+        w25qxx_delay_fp delay; // Pointer to the platform delay function
+
+        /* Optional (force `NULL` if not used) */
+        w25qxx_print_fp print; // Pointer to the function that will print debug messages
+        void *handle; // Pointer to the SPI handle be used in rx/tx function
     } interface;
 
     w25qxx_Status_t status;
@@ -91,18 +96,6 @@ typedef struct w25qxx_HandleTypeDef_s {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- * @brief Links user-defined interface functions to a device handle
- * @param w25qxx_Handle pointer to the device handle structure
- * @param spi_Handle pointer to the user-defined SPI handle (force NULL if not used)
- * @param fpReceive pointer to the user-defined SPI receive function
- * @param fpTransmit pointer to the user-defined SPI transmit function
- * @param fpCS_Set pointer to the user-defined chip select set function
- * @return `w25qxx_Handle->error`
- */
-w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, void *spi_Handle, w25qxx_rx_fp fpReceive,
-                           w25qxx_tx_fp fpTransmit, w25qxx_cs_fp fpCS_Set);
 
 /**
  * @brief Checks if the device is available and determines the number of pages

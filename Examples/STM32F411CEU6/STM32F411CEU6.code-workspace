@@ -15,7 +15,8 @@
 			"string.h": "c",
 			"stdio.h": "c",
 			"trace.h": "c",
-			"freertos.h": "c"
+			"freertos.h": "c",
+			"spi.h": "c"
 		}
 	}
 }

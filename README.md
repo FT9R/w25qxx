@@ -28,22 +28,34 @@ default:
 ## Features
 * Many devices on the same bus are supported with its dedicated handles:
 ```C
-/* First device */
+/* First device - SPI1, CS0 */
 w25qxx_HandleTypeDef w25qxx_Handle1;
-w25qxx_Link(&w25qxx_Handle1, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
-            w25qxx_SPI1_CS0_Set);
+w25qxx_Handle1.interface.handle = &hspi1;
+w25qxx_Handle1.interface.receive = w25qxx_SPI_Receive;
+w25qxx_Handle1.interface.transmit = w25qxx_SPI_Transmit;
+w25qxx_Handle1.interface.cs_set = w25qxx_SPI1_CS0_Set;
+w25qxx_Handle1.interface.delay = w25qxx_Delay;
+w25qxx_Handle1.interface.print = w25qxx_Print;
 w25qxx_Init(&w25qxx_Handle1);
 
-/* Second device */
+/* Second device - SPI1, CS1 */
 w25qxx_HandleTypeDef w25qxx_Handle2;
-w25qxx_Link(&w25qxx_Handle2, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
-            w25qxx_SPI1_CS1_Set);
+w25qxx_Handle2.interface.handle = &hspi1;
+w25qxx_Handle2.interface.receive = w25qxx_SPI_Receive;
+w25qxx_Handle2.interface.transmit = w25qxx_SPI_Transmit;
+w25qxx_Handle2.interface.cs_set = w25qxx_SPI1_CS1_Set;
+w25qxx_Handle2.interface.delay = w25qxx_Delay;
+w25qxx_Handle2.interface.print = w25qxx_Print;
 w25qxx_Init(&w25qxx_Handle2);
 
-/* Third device */
+/* First device - SPI2, CS0 */
 w25qxx_HandleTypeDef w25qxx_Handle3;
-w25qxx_Link(&w25qxx_Handle3, w25qxx_SPI1_Receive, w25qxx_SPI1_Transmit,
-            w25qxx_SPI1_CS2_Set);
+w25qxx_Handle3.interface.handle = &hspi2;
+w25qxx_Handle3.interface.receive = w25qxx_SPI_Receive;
+w25qxx_Handle3.interface.transmit = w25qxx_SPI_Transmit;
+w25qxx_Handle3.interface.cs_set = w25qxx_SPI2_CS0_Set;
+w25qxx_Handle3.interface.delay = w25qxx_Delay;
+w25qxx_Handle3.interface.print = w25qxx_Print;
 w25qxx_Init(&w25qxx_Handle3);
 ```
 * Data transfer is carried out by standard SPI instructions, using the CLK, /CS, DI, DO pins.  
@@ -76,15 +88,24 @@ SPIx_Init();
 ```
 * Provide platform depended implementations for functions below in the `w25qxx_Interface.c`:
 ```C
-w25qxx_Transfer_Status_t w25qxx_SPIx_Receive(uint8_t *pDataRx, uint16_t size, uint32_t timeout);
-w25qxx_Transfer_Status_t w25qxx_SPIx_Transmit(uint8_t *pDataTx, uint16_t size, uint32_t timeout);
+w25qxx_Transfer_Status_t w25qxx_SPI_Receive(void *handle, uint8_t *pDataRx, uint16_t size, uint32_t timeout);
+w25qxx_Transfer_Status_t w25qxx_SPI_Transmit(void *handle, const uint8_t *pDataTx, uint16_t size, uint32_t timeout);
 void w25qxx_SPIx_CSx_Set(w25qxx_CS_State_t newState);
-void w25qxx_Delay(uint32_t ms);
-void w25qxx_Print(char *message);
+uint32_t w25qxx_Delay(uint32_t ms);
+void w25qxx_Print(const char *message); // Optional
 ```
-* Link handle related functions above to a device handle:
+* Link platform functions above to a device handle:
 ```C
-w25qxx_Link(&w25qxx_Handle, w25qxx_SPIx_Receive, w25qxx_SPIx_Transmit, w25qxx_SPIx_CSx_Set);
+w25qxx_HandleTypeDef w25qxx_Handle;
+
+w25qxx_Handle.interface.receive = w25qxx_SPI_Receive;
+w25qxx_Handle.interface.transmit = w25qxx_SPI_Transmit;
+w25qxx_Handle.interface.cs_set = w25qxx_SPIx_CSx_Set;
+w25qxx_Handle.interface.delay = w25qxx_Delay;
+
+/* Can be forced to `NULL` */
+w25qxx_Handle.interface.handle = &hspi1;
+w25qxx_Handle.interface.print = w25qxx_Print;
 ```
 * Initialize the FLASH device:
 ```C

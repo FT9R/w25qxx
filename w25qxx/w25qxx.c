@@ -113,39 +113,8 @@ static w25qxx_Error_t w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle);
 // static w25qxx_Error_t w25qxx_WriteDisable(w25qxx_HandleTypeDef *w25qxx_Handle);
 static w25qxx_Error_t w25qxx_StatusUpdate(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_Status_t statusCheck,
                                           w25qxx_Status_t statusSet);
+static void Print(w25qxx_HandleTypeDef *w25qxx_Handle, const char *message);
 static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize);
-
-w25qxx_Error_t w25qxx_Link(w25qxx_HandleTypeDef *w25qxx_Handle, void *spi_Handle, w25qxx_rx_fp fpReceive,
-                           w25qxx_tx_fp fpTransmit, w25qxx_cs_fp fpCS_Set)
-{
-    /* Avoid dereferencing the null handle */
-    if (w25qxx_Handle == NULL)
-        return W25QXX_ERROR_ARGUMENT;
-
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_NOLINK, W25QXX_STATUS_LINK) != W25QXX_ERROR_NONE)
-        W25QXX_ERROR_SET(w25qxx_Handle->error);
-
-    /* Argument guards */
-    if (fpReceive == NULL)
-        W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
-    if (fpTransmit == NULL)
-        W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
-    if (fpCS_Set == NULL)
-        W25QXX_ERROR_SET(W25QXX_ERROR_ARGUMENT);
-
-    /* Set up handle fields to its default state */
-    memset(w25qxx_Handle, 0, sizeof(w25qxx_HandleTypeDef));
-    if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_NOLINK, W25QXX_STATUS_LINK) != W25QXX_ERROR_NONE)
-        W25QXX_ERROR_SET(w25qxx_Handle->error);
-
-    /* Link functions within handle with the user defined ones */
-    w25qxx_Handle->interface.handle = spi_Handle;
-    w25qxx_Handle->interface.receive = fpReceive;
-    w25qxx_Handle->interface.transmit = fpTransmit;
-    w25qxx_Handle->interface.cs_set = fpCS_Set;
-
-    return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_LINK, W25QXX_STATUS_RESET);
-}
 
 w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
@@ -156,52 +125,26 @@ w25qxx_Error_t w25qxx_Init(w25qxx_HandleTypeDef *w25qxx_Handle)
     if (w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_RESET, W25QXX_STATUS_INIT) != W25QXX_ERROR_NONE)
         W25QXX_ERROR_SET(w25qxx_Handle->error);
 
+    /* Check platform functions */
+    if (w25qxx_Handle->interface.receive == NULL)
+        W25QXX_ERROR_SET(W25QXX_ERROR_PLATFORM);
+    if (w25qxx_Handle->interface.transmit == NULL)
+        W25QXX_ERROR_SET(W25QXX_ERROR_PLATFORM);
+    if (w25qxx_Handle->interface.cs_set == NULL)
+        W25QXX_ERROR_SET(W25QXX_ERROR_PLATFORM);
+    if (w25qxx_Handle->interface.delay == NULL)
+        W25QXX_ERROR_SET(W25QXX_ERROR_PLATFORM);
+
     /* Start operation */
     w25qxx_Handle->interface.cs_set(W25QXX_CS_HIGH);
     w25qxx_Delay(100);
-
     w25qxx_ReleasePowerDown(w25qxx_Handle);
-    W25QXX_ERROR_CHECK;
-
     w25qxx_ResetDevice(w25qxx_Handle);
-    W25QXX_ERROR_CHECK;
 
     /* Get the Manufacturer ID and Device ID */
     w25qxx_ReadID(w25qxx_Handle);
-    W25QXX_ERROR_CHECK;
-    if (w25qxx_Handle->ID[0] != W25QXX_MANUFACTURER_ID)
-        W25QXX_ERROR_SET(W25QXX_ERROR_INITIALIZATION);
-
-    /* Determine number of pages */
-    switch (w25qxx_Handle->ID[1])
-    {
-    case W25Q80:
-        w25qxx_Handle->numberOfPages = 8 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
-        break;
-
-    case W25Q16:
-        w25qxx_Handle->numberOfPages = 16 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
-        break;
-
-    case W25Q32:
-        w25qxx_Handle->numberOfPages = 32 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
-        break;
-
-    case W25Q64:
-        w25qxx_Handle->numberOfPages = 64 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
-        break;
-
-    case W25Q128:
-        w25qxx_Handle->numberOfPages = 128 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
-        break;
-
-    /* Unsupported device */
-    default:
-        W25QXX_ERROR_SET(W25QXX_ERROR_INITIALIZATION);
-    }
-
-    /* Operation succeed */
     w25qxx_Delay(10);
+    
     return w25qxx_StatusUpdate(w25qxx_Handle, W25QXX_STATUS_INIT, W25QXX_STATUS_READY);
 }
 
@@ -777,6 +720,8 @@ static w25qxx_Error_t w25qxx_ResetDevice(w25qxx_HandleTypeDef *w25qxx_Handle)
 
 static w25qxx_Error_t w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
 {
+    char capacityString[30];
+
     /* Avoid dereferencing the null handle */
     if (w25qxx_Handle == NULL)
         return W25QXX_ERROR_ARGUMENT;
@@ -797,6 +742,57 @@ static w25qxx_Error_t w25qxx_ReadID(w25qxx_HandleTypeDef *w25qxx_Handle)
     /* Get Manufacturer ID and Device ID */
     W25QXX_BEGIN_RECEIVE(w25qxx_Handle->ID, sizeof(w25qxx_Handle->ID), W25QXX_RX_TIMEOUT);
     w25qxx_Handle->interface.cs_set(W25QXX_CS_HIGH);
+
+    /* Check if we work with Winbond Serial Flash device */
+    Print(w25qxx_Handle, "Manufacturer: ");
+    switch (w25qxx_Handle->ID[0])
+    {
+    case W25QXX_MANUFACTURER_ID:
+        Print(w25qxx_Handle, "Winbond\n");
+        break;
+
+    default:
+        Print(w25qxx_Handle, "undefined\n");
+        W25QXX_ERROR_SET(W25QXX_ERROR_ID);
+    }
+
+    /* Determine device and number of pages */
+    Print(w25qxx_Handle, "Device: ");
+    switch (w25qxx_Handle->ID[1])
+    {
+    case W25Q80:
+        Print(w25qxx_Handle, "W25Q80");
+        w25qxx_Handle->numberOfPages = 8 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
+        break;
+
+    case W25Q16:
+        Print(w25qxx_Handle, "W25Q16");
+        w25qxx_Handle->numberOfPages = 16 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
+        break;
+
+    case W25Q32:
+        Print(w25qxx_Handle, "W25Q32");
+        w25qxx_Handle->numberOfPages = 32 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
+        break;
+
+    case W25Q64:
+        Print(w25qxx_Handle, "W25Q64");
+        w25qxx_Handle->numberOfPages = 64 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
+        break;
+
+    case W25Q128:
+        Print(w25qxx_Handle, "W25Q128");
+        w25qxx_Handle->numberOfPages = 128 * (W25QXX_KB_TO_BYTE(1) * W25QXX_KB_TO_BYTE(1) / W25QXX_PAGE_SIZE / 8);
+        break;
+
+    /* Unsupported device */
+    default:
+        Print(w25qxx_Handle, "undefined\n");
+        W25QXX_ERROR_SET(W25QXX_ERROR_ID);
+    }
+    snprintf(capacityString, sizeof(capacityString), " (%uMbit in %u pages)\n",
+             (w25qxx_Handle->numberOfPages * W25QXX_PAGE_SIZE * 8 / 1024 / 1024), w25qxx_Handle->numberOfPages);
+    Print(w25qxx_Handle, capacityString);
 
     return w25qxx_Handle->error;
 }
@@ -842,6 +838,10 @@ static w25qxx_Error_t w25qxx_WriteEnable(w25qxx_HandleTypeDef *w25qxx_Handle)
 static w25qxx_Error_t w25qxx_StatusUpdate(w25qxx_HandleTypeDef *w25qxx_Handle, w25qxx_Status_t statusCheck,
                                           w25qxx_Status_t statusSet)
 {
+    /* Avoid dereferencing the null handle */
+    if (w25qxx_Handle == NULL)
+        return W25QXX_ERROR_ARGUMENT;
+
     /* Existing errors check */
     if (w25qxx_Handle->error != W25QXX_ERROR_NONE)
         return w25qxx_Handle->error;
@@ -853,7 +853,63 @@ static w25qxx_Error_t w25qxx_StatusUpdate(w25qxx_HandleTypeDef *w25qxx_Handle, w
     /* Status update */
     w25qxx_Handle->status = statusSet;
 
+    /* Debug trace */
+    Print(w25qxx_Handle, "Status update: ");
+    switch (w25qxx_Handle->status)
+    {
+    case W25QXX_STATUS_RESET:
+        Print(w25qxx_Handle, "reset\n");
+        break;
+
+    case W25QXX_STATUS_INIT:
+        Print(w25qxx_Handle, "init\n");
+        break;
+
+    case W25QXX_STATUS_WRITE:
+        Print(w25qxx_Handle, "write\n");
+        break;
+
+    case W25QXX_STATUS_READ:
+        Print(w25qxx_Handle, "read\n");
+        break;
+
+    case W25QXX_STATUS_ERASE:
+        Print(w25qxx_Handle, "erase\n");
+        break;
+
+    case W25QXX_STATUS_WRITE_SR:
+        Print(w25qxx_Handle, "write status register\n");
+        break;
+
+    case W25QXX_STATUS_READ_SR:
+        Print(w25qxx_Handle, "read status register\n");
+        break;
+
+    case W25QXX_STATUS_BUSY:
+        Print(w25qxx_Handle, "busy\n");
+        break;
+
+    case W25QXX_STATUS_READY:
+        Print(w25qxx_Handle, "ready\n");
+        break;
+
+    case W25QXX_STATUS_UNDEFINED:
+        Print(w25qxx_Handle, "undefined\n");
+        break;
+    }
+
     return w25qxx_Handle->error;
+}
+
+static void Print(w25qxx_HandleTypeDef *w25qxx_Handle, const char *message)
+{
+    /* Avoid dereferencing the null handle */
+    if (w25qxx_Handle == NULL)
+        return;
+
+    if (message != NULL)
+        if (w25qxx_Handle->interface.print != NULL)
+            w25qxx_Handle->interface.print(message);
 }
 
 static uint16_t ModBus_CRC(const uint8_t *pBuffer, uint16_t bufSize)

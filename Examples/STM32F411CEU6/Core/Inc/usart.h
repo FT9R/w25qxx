@@ -29,7 +29,7 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-#include "cmsis_os.h"
+
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
@@ -49,4 +49,3 @@ void MX_USART1_UART_Init(void);
 #endif
 
 #endif /* __USART_H__ */
-
